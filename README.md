@@ -33,18 +33,66 @@ The project applies **Hybrid Filtering techniques** (Collaborative Filtering + C
 ---
 
 ## 📂 Repository Structure
-📦 recommendation-system
-├── data/ # Dataset (local purchase invoices)
-├── notebooks/ # Jupyter Notebooks for analysis and prototyping
-├── src/ # Main source code
-│ ├── preprocessing/ # Data cleaning and transformation scripts
-│ ├── models/ # Recommendation model implementations
-│ ├── evaluation/ # Evaluation metrics and validation functions
-│ └── utils/ # Helper functions
-├── tests/ # Unit tests
-├── requirements.txt # Project dependencies
-└── README.md # Documentation
 
+```bash
+Recommendation-Systems-Sefaz/
+│
+├── data/
+│   ├── raw/               # original datasets (unmodified)
+│   │   ├── products.csv   # simulated product data
+│   │   └── ratings.csv    # simulated user ratings
+│   │
+│   ├── processed/         # datasets ready for ML training
+│   │   ├── products_clean.csv
+│   │   └── ratings_clean.csv
+│   │
+│   └── external/          # optional external datasets (e.g., Instacart, Dunnhumby)
+│
+├── src/
+│   ├── dataset/           # data manipulation and updates
+│   │   ├── loader.py
+│   │   ├── simulator.py
+│   │   └── updater.py
+│   │
+│   ├── recommender/       # recommendation algorithms
+│   │   ├── collaborative.py
+│   │   ├── content.py
+│   │   └── hybrid.py
+│   │
+│   └── utils/             # preprocessing helpers, logging, etc.
+│
+├── streamlit_app/         # interactive interface
+│   └── main.py
+│
+├── notebooks/             # exploratory analyses
+├── tests/                 # unit tests
+└── README.md
+```
+
+## 📐 Project Architecture
+
+This project follows a **Modular Architecture for Recommender Systems**, inspired by **Cookiecutter Data Science** and **Clean Architecture principles**.  
+
+- **data/**  
+  - Keeps raw, processed, and external datasets well separated.  
+  - Ensures reproducibility by never overwriting the original data (`raw/`).  
+
+- **src/**  
+  - Encapsulates all the system’s logic.  
+  - `dataset/` handles dataset loading, simulation, and updates.  
+  - `recommender/` implements Collaborative Filtering, Content-Based Filtering, and Hybrid approaches.  
+  - `utils/` centralizes preprocessing and logging functions.  
+
+- **streamlit_app/**  
+  - Provides a friendly user interface to **simulate new data entries** (products and ratings) and visualize recommendations.  
+
+- **notebooks/**  
+  - Dedicated to exploratory analysis and model evaluation during development.  
+
+- **tests/**  
+  - Unit tests ensure maintainability and reliability of each module.  
+
+👉 This separation of concerns guarantees clarity, scalability, and makes it easy to later migrate from **simulated CSV data** to **real SEFAZ-AM data** when available.  
 
 ---
 
@@ -58,15 +106,3 @@ The project applies **Hybrid Filtering techniques** (Collaborative Filtering + C
 
 - **Hybrid Filtering:**  
   Combines both approaches for higher precision and broader coverage.  
-
----
-
-## 🚀 How to Run
-
-1. Clone this repository:  
-   ```bash
-   git clone https://github.com/your-username/recommendation-system.git
-   cd recommendation-system
-
-
-
