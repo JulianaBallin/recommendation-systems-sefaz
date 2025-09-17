@@ -1,4 +1,4 @@
-# 📊 Local Purchases Recommendation System
+# Local Purchases Recommendation System
 
 This repository is dedicated to the **development and training of a recommendation system** based on **local purchase invoices (NF-e)** from the Manaus-AM region.  
 The project applies **Hybrid Filtering techniques** (Collaborative Filtering + Content-Based Filtering) to explore consumer behavior and generate relevant product recommendations.
@@ -6,103 +6,113 @@ The project applies **Hybrid Filtering techniques** (Collaborative Filtering + C
 ---
 
 ## 👩‍🎓 Team
-
 - **Juliana Ballin Lima** – Universidade do Estado do Amazonas (UEA - EST)  
 - **Lucas Carvalho dos Santos** – Universidade do Estado do Amazonas (UEA - EST)  
 
 ---
 
 ## 🎯 Project Goals
-
 1. Extract purchasing patterns from **electronic invoices (NF-e)**.  
 2. Develop and train a **hybrid recommendation system**.  
-3. Evaluate performance using metrics such as **Precision, Recall, and NDCG**.  
+3. Evaluate performance using metrics such as **Precision, Recall, and RMSE/MAE**.  
 4. Provide a solution tailored to the **local context of Manaus-AM**.  
 
 ---
 
-## 🛠️ Technologies
-
-- **Python 3.10+**  
-- **Pandas / NumPy** – Data preprocessing  
-- **Scikit-learn** – Modeling and metrics  
-- **Surprise / LightFM** – Recommendation algorithms  
-- **Jupyter Notebook** – Exploratory analysis and experiments  
-- **Matplotlib / Seaborn** – Data visualization  
+## 🏙️ Usage Scenario
+The system simulates the behavior of **local customers purchasing products** in Manaus.  
+The recommendation engine learns from purchase histories to:  
+- Suggest **similar products** to those already bought.  
+- Suggest **similar clients** with overlapping interests.  
+- Provide insights into **consumer behavior by neighborhood and category**.  
 
 ---
 
-## 📂 Repository Structure
-
-```bash
-Recommendation-Systems-Sefaz/
+## 🗂️ Project Architecture
+```
+recommendation-systems-sefaz/
+│── README.md
+│── requirements.txt
+│
+├── frontend/
+│ └── streamlit_app/
+│ └── main.py
+│
+├── backend/
+│ ├── dataset/
+│ │ ├── loader.py # Load raw and processed data
+│ │ ├── simulator.py # Generate/simulate client-product ratings
+│ │ └── updater.py # Update datasets with new entries
+│ │
+│ ├── recommender/
+│ │ ├── collaborative.py # User-based and item-based collaborative filtering
+│ │ ├── content.py # Content-based filtering using product attributes
+│ │ ├── hybrid.py # Hybrid recommendation (collaborative + content)
+│ │ └── metrics.py # Evaluation metrics (RMSE, MAE, Precision, Recall)
+│ │
+│ ├── utils/
+│ │ ├── preprocessing.py # Data cleaning, normalization, feature extraction
+│ │ ├── similarity.py # Helper functions for cosine, Pearson, etc.
+│ │ └── helpers.py # General utility functions (logging, configs, etc.)
 │
 ├── data/
-│   ├── raw/               # original datasets (unmodified)
-│   │   ├── products.csv   # simulated product data
-│   │   └── ratings.csv    # simulated user ratings
-│   │
-│   ├── processed/         # datasets ready for ML training
-│   │   ├── products_clean.csv
-│   │   └── ratings_clean.csv
-│   │
-│   └── external/          # optional external datasets (e.g., Instacart, Dunnhumby)
+│ ├── raw/
+│ │ ├── products.csv # Products (raw NF-e data)
+│ │ ├── clients.csv # Clients (registry)
+│ │ └── ratings.csv # Raw client-product ratings
+│ ├── processed/
+│ │ ├── products_clean.csv # Products enriched with category + neighborhood
+│ │ ├── clients_clean.csv # Normalized clients data
+│ │ └── ratings_clean.csv # Normalized ratings
 │
-├── src/
-│   ├── dataset/           # data manipulation and updates
-│   │   ├── loader.py
-│   │   ├── simulator.py
-│   │   └── updater.py
-│   │
-│   ├── recommender/       # recommendation algorithms
-│   │   ├── collaborative.py
-│   │   ├── content.py
-│   │   └── hybrid.py
-│   │
-│   └── utils/             # preprocessing helpers, logging, etc.
-│
-├── streamlit_app/         # interactive interface
-│   └── main.py
-│
-├── notebooks/             # exploratory analyses
-├── tests/                 # unit tests
-└── README.md
+└── tests/
+├── test_loader.py
+├── test_collaborative.py
+└── test_metrics.py
+
 ```
+---
 
-## 📐 Project Architecture
+## 📊 Datasets
 
-This project follows a **Modular Architecture for Recommender Systems**, inspired by **Cookiecutter Data Science** and **Clean Architecture principles**.  
-
-- **data/**  
-  - Keeps raw, processed, and external datasets well separated.  
-  - Ensures reproducibility by never overwriting the original data (`raw/`).  
-
-- **src/**  
-  - Encapsulates all the system’s logic.  
-  - `dataset/` handles dataset loading, simulation, and updates.  
-  - `recommender/` implements Collaborative Filtering, Content-Based Filtering, and Hybrid approaches.  
-  - `utils/` centralizes preprocessing and logging functions.  
-
-- **streamlit_app/**  
-  - Provides a friendly user interface to **simulate new data entries** (products and ratings) and visualize recommendations.  
-
-- **notebooks/**  
-  - Dedicated to exploratory analysis and model evaluation during development.  
-
-- **tests/**  
-  - Unit tests ensure maintainability and reliability of each module.  
-
-👉 This separation of concerns guarantees clarity, scalability, and makes it easy to later migrate from **simulated CSV data** to **real SEFAZ-AM data** when available.  
+- **products.csv** → Raw data from invoices (id, description, value, etc.).  
+- **products_clean.csv** → Enriched with **category** + **neighborhood** (processed).  
+- **clients.csv** → Customer registry (name, CPF, birthdate, gender, CEP).  
+- **clients_clean.csv** → Processed clients with normalized fields.  
+- **ratings.csv** → Raw classifications (client × product).  
+- **ratings_clean.csv** → Normalized ratings (used for recommendation training).  
 
 ---
 
-## 📊 Methodology
+## 🤝 Recommendation Approaches
 
-- **Collaborative Filtering:**  
-  Based on user–item interactions, using matrix factorization and embeddings.  
+- **Collaborative Filtering** (User-based and Item-based)  
+- **Content-Based Filtering** (product features)  
+- **Hybrid Model** (combination of both approaches)  
 
-- **Content-Based Filtering:**  
-  Uses product attributes such as categories, brands, and average values.  
+---
 
-- **Hybrid Filtering:**  
-  Combines both approaches for higher precision and broader coverage.  
+## 📐 Similarity Metrics
+
+We tested two approaches:  
+- **Cosine Similarity** → good for sparse vectors and when importance lies in direction, not magnitude.  
+- **Pearson Correlation** → measures linear correlation between ratings, reducing user bias.  
+
+➡️ **Chosen Metric:** *Cosine Similarity* (more stable with sparse product-client matrices).  
+
+---
+
+## 📏 Accuracy Evaluation
+The system is evaluated with:  
+- **Precision & Recall** → relevance of recommendations.  
+- **RMSE & MAE** → accuracy of predicted ratings.  
+- **NDCG** → ranking quality of recommended products.  
+
+---
+
+## 🛠️ Technologies
+- **Python 3.10+**  
+- **Pandas / NumPy** – Data preprocessing  
+- **Scikit-learn** – Modeling and evaluation  
+- **Streamlit** – Frontend interface  
+- **Matplotlib / Seaborn** – Visualization  
