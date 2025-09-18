@@ -4,3 +4,5 @@ sefaz/
 .sefaz
 .sefaz/
 .history
+__pycache__
+__pycache__/

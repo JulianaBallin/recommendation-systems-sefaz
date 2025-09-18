@@ -59,11 +59,10 @@ recommendation-systems-sefaz/
 │ ├── raw/
 │ │ ├── products.csv # Products (raw NF-e data)
 │ │ ├── clients.csv # Clients (registry)
-│ │ └── ratings.csv # Raw client-product ratings
 │ ├── processed/
 │ │ ├── products_clean.csv # Products enriched with category + neighborhood
 │ │ ├── clients_clean.csv # Normalized clients data
-│ │ └── ratings_clean.csv # Normalized ratings
+│ │ └── ratings.csv # client-product ratings
 │
 └── tests/
 ├── test_loader.py
