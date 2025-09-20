@@ -112,6 +112,7 @@ The system is evaluated with:
 ## 🛠️ Technologies
 - **Python 3.10+**  
 - **Pandas / NumPy** – Data preprocessing  
-- **Scikit-learn** – Modeling and evaluation  
+- **Scikit-learn** – Modeling and evaluation
+- **FastAPI** – Backend API  
 - **Streamlit** – Frontend interface  
 - **Matplotlib / Seaborn** – Visualization  

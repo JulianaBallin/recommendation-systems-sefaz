@@ -6,3 +6,6 @@ sefaz/
 .history
 __pycache__
 __pycache__/
+.python-version
+.vscode
+.env
