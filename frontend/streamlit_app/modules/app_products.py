@@ -1,134 +1,127 @@
+"""
+app_products.py
+---------------
+Interface Streamlit para gerenciar produtos:
+1. Adicionar produto manualmente
+2. Adicionar produtos em lote via upload CSV
+3. Visualizar produtos raw
+4. Visualizar produtos derivados
+"""
+
 import streamlit as st
-import os
 import pandas as pd
-import tempfile
 
-from backend.utils.product_loader import add_product, add_products_from_csv
-from backend.utils.ui_messages import show_success, show_error
-
-
-EXPECTED_COLUMNS = [
-    "CODIGO","DESCRICAO","QTD","UN","VALOR_UNITARIO","VALOR_TOTAL",
-    "NOME_SUPERMERCADO","CNPJ","ENDERECO","NUMERO_NFCE","SERIE","DATA_HORA_COMPRA"
-]
+from backend.dataset import loader
+from backend.utils import dictionaries, product_loader
 
 
-def render_products_page():
-    st.title("📦 Gerenciar Produtos")
+def run():
+    st.title("📦 Produtos")
+    st.markdown("Gerencie produtos cadastrados a partir das notas fiscais ou manualmente.")
 
-    # -------------------
-    # FORMULÁRIO INDIVIDUAL
-    # -------------------
-    st.subheader("➕ Adicionar Produto Individual")
+    # Carrega dicionários
+    cat_map = dictionaries.load_category_map()
+    brand_map = dictionaries.load_brand_map()
 
-    with st.form("form_add_product"):
-        col1, col2, col3 = st.columns(3)
+    # ======================================================
+    # 1. Adicionar Produto Manualmente
+    # ======================================================
+    st.subheader("Adicionar Produto Manualmente")
 
-        with col1:
-            codigo = st.text_input("Código *", placeholder="823004165003")
-            descricao = st.text_input("Descrição *", placeholder="BISCOITO RECHEADO 140G")
-            qtd = st.text_input("Quantidade *", placeholder="10")
-            un = st.text_input("Unidade *", placeholder="UN, CX, KG")
+    with st.form("form_produto_unitario", clear_on_submit=True):
+        descricao = st.text_input("Descrição do produto (ex.: 'Arroz Tio João 5kg')")
 
-        with col2:
-            valor_unitario = st.text_input("Valor Unitário *", placeholder="4.89")
-            valor_total = st.text_input("Valor Total *", placeholder="39.12")
-            supermercado = st.text_input("Supermercado *", placeholder="SUPERMERCADO DB LTDA")
-            cnpj = st.text_input("CNPJ *", placeholder="22.999.939/0041-95")
+        categoria = st.selectbox(
+            "Selecione a Categoria*",
+            options=["-"] + (
+                sorted([c for c in cat_map["categoria"].dropna().unique().tolist() if c.strip() != ""])
+                if not cat_map.empty else []
+            ),
+            index=0
+        )
 
-        with col3:
-            endereco = st.text_area("Endereço *", placeholder="RUA BARAO DO RIO BRANCO, 974, FLORES MANAUS -AM")
-            numero_nfce = st.text_input("Número NFCE *", placeholder="193064")
-            serie = st.text_input("Série *", placeholder="004")
-            data_compra = st.text_input("Data/Hora Compra *", placeholder="17/08/2025 12:34:06")
+        marca = st.selectbox(
+            "Selecione a Marca*",
+            options=["-"] + (
+                sorted([m for m in brand_map["marca"].dropna().unique().tolist() if m.strip() != ""])
+                if not brand_map.empty else []
+            ),
+            index=0
+        )
 
         submitted = st.form_submit_button("Adicionar Produto")
 
         if submitted:
-            try:
-                # validação extra para código
-                if not codigo.isdigit() or len(codigo) < 13:
-                    raise ValueError("Código deve conter ao menos 13 caracteres numéricos.")
+            if descricao.strip() == "":
+                st.error("❌ A descrição não pode estar vazia.")
+            else:
+                produto = {
+                    "Categoria": categoria,
+                    "Marca": marca,
+                    "Descricao": descricao.strip().upper()
+                }
+                novo_id = product_loader.append_product(produto)
+                st.success(f"✅ Produto adicionado com ID {novo_id} ao dataset derivado!")
 
-                add_product(
-                    codigo, descricao, qtd, un, valor_unitario, valor_total,
-                    supermercado, cnpj, endereco, numero_nfce, serie, data_compra
-                )
-                show_success(f"Produto '{descricao}' adicionado com sucesso ao dataset RAW!")
-            except Exception as e:
-                show_error(f"Erro ao adicionar produto: {e}")
+    st.markdown("---")
 
-    # -------------------
-    # UPLOAD CSV
-    # -------------------
-    st.subheader("📂 Adicionar Produtos em Lote via CSV")
-    uploaded_file = st.file_uploader("Selecione um arquivo CSV", type=["csv"])
+    # ======================================================
+    # 2. Adicionar Produtos em Lote
+    # ======================================================
+    st.subheader("Adicionar Produtos em Lote (NF → Raw + Derived)")
 
-    if uploaded_file is not None:
-        st.markdown(f"**Arquivo selecionado:** `{uploaded_file.name}`")
-
+    file = st.file_uploader("Carregar arquivo CSV de nota fiscal", type=["csv"])
+    if file:
         try:
-            # Tenta ler o CSV para preview
-            df_preview = pd.read_csv(uploaded_file, nrows=5)
-            st.write("### 🔎 Prévia dos dados")
-            st.dataframe(df_preview, use_container_width=True)
+            df_raw = pd.read_csv(file)
+            df_raw.columns = [c.strip().upper() for c in df_raw.columns]
 
-            # Detecta automaticamente se tem cabeçalho
-            has_header_guess = set(df_preview.columns).issubset(set(EXPECTED_COLUMNS))
-            has_header = st.checkbox("Arquivo contém cabeçalho?", value=has_header_guess)
+            if "DESCRICAO" not in df_raw.columns:
+                st.error("CSV inválido: precisa ter a coluna DESCRICAO")
+            else:
+                # Preview antes de salvar
+                st.info("📋 Pré-visualização dos dados carregados (3 primeiras + 3 últimas linhas):")
 
-            if st.button("Cadastrar Produtos"):
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
-                    tmp.write(uploaded_file.getbuffer())
-                    tmp_path = tmp.name
+                if len(df_raw) > 6:
+                    preview_df = pd.concat([df_raw.head(3), df_raw.tail(3)])
+                else:
+                    preview_df = df_raw
 
-                try:
-                    if not has_header:
-                        # Relê sem cabeçalho e renomeia colunas
-                        df = pd.read_csv(tmp_path, header=None)
-                        if df.shape[1] != len(EXPECTED_COLUMNS):
-                            raise ValueError("Número de colunas inválido")
-                        df.columns = EXPECTED_COLUMNS
-                        df.to_csv(tmp_path, index=False)
+                st.dataframe(preview_df)
+                st.write(f"**Total de registros no arquivo:** {len(df_raw)}")
 
-                    # Verifica colunas antes de cadastrar
-                    df_check = pd.read_csv(tmp_path, nrows=1)
-                    if not set(EXPECTED_COLUMNS).issubset(df_check.columns):
-                        raise ValueError("Estrutura de colunas inválida")
-
-                    add_products_from_csv(tmp_path)
-                    show_success("Produtos adicionados com sucesso a partir do CSV!")
-
-                except Exception as e:
-                    show_error(f"Erro ao processar CSV: {e}")
-                    st.write("### ✅ Estrutura de colunas esperada:")
-                    st.code(",".join(EXPECTED_COLUMNS))
+                if st.button("Confirmar e adicionar ao sistema"):
+                    try:
+                        qtd = product_loader.append_batch(df_raw)
+                        st.success(f"✅ {qtd} produtos válidos adicionados ao sistema.")
+                    except ValueError as e:
+                        st.error(str(e))
 
         except Exception as e:
-            show_error(f"Erro ao ler CSV: {e}")
-            st.write("### ✅ Estrutura de colunas esperada:")
-            st.code(",".join(EXPECTED_COLUMNS))
+            st.error(f"Erro ao processar CSV: {e}")
 
-    # -------------------
-    # VISUALIZAR DATASET
-    # -------------------
-    st.subheader("📊 Visualizar Dataset de Produtos")
+    st.markdown("---")
 
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
-    datasets_options = {
-        "Raw": os.path.join(BASE_DIR, "data", "raw", "products.csv"),
-        "Processed": os.path.join(BASE_DIR, "data", "processed", "products_clean.csv")
-    }
-
-    dataset_choice = st.selectbox("Selecione o dataset", list(datasets_options.keys()))
-    dataset_path = datasets_options[dataset_choice]
-
-    if os.path.exists(dataset_path):
-        df = pd.read_csv(dataset_path)
-        show_success(f"Dataset carregado: {dataset_choice}")
-        st.write("### 📝 Cabeçalho")
-        st.dataframe(df.head(), use_container_width=True)
-        st.write("### 🔽 Últimas 10 linhas")
-        st.dataframe(df.tail(10), use_container_width=True)
+    # ======================================================
+    # 3. Visualizar Produtos Raw
+    # ======================================================
+    st.subheader("Visualizar Produtos Raw (NF)")
+    preview_raw = loader.preview_raw_receipts()
+    if preview_raw["total"] > 0:
+        st.dataframe(pd.concat([preview_raw["head"], preview_raw["tail"]]))
+        st.write(f"**Total de registros de NF:** {preview_raw['total']}")
     else:
-        show_error(f"Nenhum dataset encontrado em {dataset_path}")
+        st.info("Nenhum produto raw encontrado.")
+
+    st.markdown("---")
+
+    # ======================================================
+    # 4. Visualizar Produtos Derivados
+    # ======================================================
+    st.subheader("Visualizar Produtos Normalizados")
+    preview_derived = loader.preview_clean_products(n=10)
+    if preview_derived["total"] > 0:
+        st.dataframe(preview_derived["preview"])
+        st.write(f"**Total de produtos derivados:** {preview_derived['total']}")
+    else:
+        st.info("Nenhum produto normalizado ainda.")

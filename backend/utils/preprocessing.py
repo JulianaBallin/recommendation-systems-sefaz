@@ -1,5 +1,3 @@
-# backend/utils/preprocessing.py
-
 """
 Preprocessing utilities for cleaning and enriching product datasets.
 """
@@ -7,10 +5,6 @@ Preprocessing utilities for cleaning and enriching product datasets.
 import pandas as pd
 from backend.utils.dictionaries import CATEGORY_MAP, BRAND_MAP, BAIRRO_ZONA_MAP
 
-
-# -------------------------
-# Extraction helper functions
-# -------------------------
 
 def extract_category(description: str) -> str:
     """Return category from product description using CATEGORY_MAP keywords."""
@@ -47,10 +41,6 @@ def map_zone(bairro: str) -> str:
     """Return zone based on bairro using BAIRRO_ZONA_MAP dict."""
     return BAIRRO_ZONA_MAP.get(str(bairro).upper(), "Zona Desconhecida")
 
-
-# -------------------------
-# Main update function
-# -------------------------
 
 def update_products(raw_file: str, clean_file: str):
     """
