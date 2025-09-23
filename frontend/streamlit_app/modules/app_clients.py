@@ -1,87 +1,118 @@
-import sys, os
+"""
+app_clients.py
+---------------
+Interface Streamlit para gerenciar clientes:
+1. Cadastrar cliente manualmente
+2. Adicionar clientes em lote via upload CSV
+3. Visualizar clientes brutos (raw)
+4. Visualizar clientes derivados (limpos e normalizados)
+"""
+
 import streamlit as st
 import pandas as pd
-import datetime
-from backend.utils.client_loader import clean_clients
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+from backend.dataset import loader
+from backend.utils import client_loader
 
-RAW_PATH = os.path.join(BASE_DIR,"data/raw/clients.csv")
 
 def run():
-    st.title("👤 Clientes")
-    st.write("Página de Clientes em desenvolvimento...")
-
-def save_client(data: dict):
-    df_new = pd.DataFrame([data])
-
-    try:
-        df_existing = pd.read_csv(RAW_PATH)
-        df_all = pd.concat([df_existing, df_new], ignore_index=True)
-    except FileNotFoundError:
-        df_all = df_new
-
-    df_clean = clean_clients(df_all)
-    df_clean.to_csv(RAW_PATH, index=False)
-
-    return df_clean
-
-def render_clients_form():
-    st.header("Cadastro de Cliente 🧑")
-
-    nome = st.text_input(
-        "Nome*",
-        placeholder="João da Silva"
-    )
-    cpf = st.text_input(
-        "CPF * (formato: 000.000.000-00)",
-        placeholder="000.000.000-00"
-    )
-
-    # limite de datas: 01/01/1950 até hoje
-    min_date = datetime.date(1950, 1, 1)
-    max_date = datetime.date.today()
-    nascimento = st.date_input(
-        "Data de Nascimento * (DD/MM/AAAA)",
-        min_value=datetime.date(1950, 1, 1),
-        max_value=datetime.date.today(),
-        value=datetime.date(2000, 1, 1),
-        format="DD/MM/YYYY"
-    )
+    # Reset do formulário se flag estiver ativa
+    if "reset_client_form" in st.session_state and st.session_state.reset_client_form:
+        st.session_state.reset_client_form = False
+        st.session_state.cpf_input = ""
+        st.session_state.nome_input = ""
+        st.session_state.nasc_input = ""
+        st.session_state.cep_input = ""
+        st.session_state.genero_input = "-"
 
 
-    genero_label = st.selectbox(
-        "Gênero *",
-        ["Feminino", "Masculino", "Outros"]
-    )
+    st.title("👥 Clientes")
+    st.markdown("Gerencie clientes cadastrados manualmente ou via upload de CSV.")
 
-    # converte label para inicial
-    genero_map = {"Feminino": "F", "Masculino": "M", "Outros": "O"}
-    genero = genero_map[genero_label]
+    # ======================================================
+    # 1. Cadastrar Cliente Manualmente
+    # ======================================================
+    st.subheader("Cadastrar Cliente Manualmente")
 
-    cep = st.text_input(
-        "CEP * (formato: 00000-000)",
-        placeholder="00000-000"
-    )
+    with st.form("form_cliente_unitario", clear_on_submit=False):
+        cpf = st.text_input("CPF (apenas números)", key="cpf_input")
+        nome = st.text_input("Nome completo", key="nome_input")
+        nascimento = st.text_input("Data de nascimento (dd/mm/yyyy)", key="nasc_input")
+        cep = st.text_input("CEP (somente Manaus-AM, ex.: 69075000)", key="cep_input")
+        genero = st.selectbox("Gênero", ["-", "Feminino", "Masculino", "Outro"], key="genero_input")
 
-    if st.button("Salvar Cliente"):
-        if not nome or not cpf or not nascimento or not genero or not cep:
-            st.error("⚠️ Todos os campos marcados com * são obrigatórios.")
-            return
+        submitted = st.form_submit_button("Cadastrar Cliente")
 
-        data = {
-            "NAME": nome,
-            "CPF": cpf,
-            "BIRTHDATE": nascimento.strftime("%d/%m/%Y"),  # formato DD/MM/AAAA
-            "GENDER": genero,
-            "CEP": cep
-        }
+        if submitted:
+            if genero == "-":
+                st.error("❌ Você deve selecionar o gênero.")
+            else:
+                cliente = {
+                    "Cpf": cpf.strip(),
+                    "Name": nome.strip(),
+                    "Birthdate": nascimento.strip(),
+                    "Cep": cep.strip(),
+                    "Gender": genero,
+                }
+                ok, msg = client_loader.append_client(cliente)
 
+                if ok:
+                    st.success("✅ Cliente cadastrado com sucesso!")
+                    st.session_state.reset_client_form = True
+                    st.rerun()
+
+                else:
+                    st.error(f"❌ Não foi possível cadastrar: {msg}")
+
+
+    st.markdown("---")
+
+    # ======================================================
+    # 2. Adicionar Clientes em Lote
+    # ======================================================
+    st.subheader("Adicionar Clientes em Lote (CSV)")
+
+    file = st.file_uploader("Carregar arquivo CSV de clientes", type=["csv"])
+    if file:
         try:
-            df_clean = save_client(data)
-            st.success("✅ Cliente salvo com sucesso!")
-            st.dataframe(df_clean.tail())
-        except ValueError as e:
-            st.error(f"Erro de validação: {e}")
+            df_raw = pd.read_csv(file)
+            df_raw.columns = [c.strip().upper() for c in df_raw.columns]
+
+            required_cols = {"CPF", "NOME", "DATA_NASCIMENTO", "CEP", "GENERO"}
+            if not required_cols.issubset(set(df_raw.columns)):
+                st.error(
+                    f"CSV inválido. Colunas esperadas: {', '.join(required_cols)}"
+                )
+            else:
+                st.info("Pré-visualização dos dados carregados:")
+                st.dataframe(df_raw.head(3))
+                st.dataframe(df_raw.tail(3))
+
+                if st.button("Confirmar e adicionar ao sistema"):
+                    qtd, invalids = client_loader.append_batch_clients(df_raw)
+
+                    if qtd > 0:
+                        st.success(f"✅ {qtd} clientes válidos adicionados à base.")
+
+                    if invalids:
+                        st.warning("⚠️ Algumas linhas não foram adicionadas:")
+                        for line, reason in invalids:
+                            st.text(f"Linha {line}: {reason}")
+                            
         except Exception as e:
-            st.error(f"Erro inesperado: {e}")
+            st.error(f"Erro ao processar CSV: {e}")
+
+    st.markdown("---")
+
+    # ======================================================
+    # 3. Visualizar Clientes Brutos (Raw)
+    # ======================================================
+    st.subheader("Visualizar Clientes Cadastrados")
+    preview = client_loader.preview_clients()
+    if preview["total"] > 0:
+        st.dataframe(preview["preview"])
+        st.write(f"**Total de clientes cadastrados:** {preview['total']}")
+    else:
+        st.info("Nenhum cliente encontrado.")
+
+    st.markdown("---")
