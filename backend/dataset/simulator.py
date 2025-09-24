@@ -1,1 +1,0 @@
-# Generate/simulate client-product ratings

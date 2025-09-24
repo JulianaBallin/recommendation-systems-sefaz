@@ -31,43 +31,61 @@ The recommendation engine learns from purchase histories to:
 ## 🗂️ Project Architecture
 ```
 recommendation-systems-sefaz/
-│── README.md
-│── requirements.txt
-│
-├── frontend/
-│ └── streamlit_app/
-│ └── main.py
-│
-├── backend/
-│ ├── dataset/
-│ │ ├── loader.py # Load raw and processed data
-│ │ ├── simulator.py # Generate/simulate client-product ratings
-│ │ └── updater.py # Update datasets with new entries
-│ │
-│ ├── recommender/
-│ │ ├── collaborative.py # User-based and item-based collaborative filtering
-│ │ ├── content.py # Content-based filtering using product attributes
-│ │ ├── hybrid.py # Hybrid recommendation (collaborative + content)
-│ │ └── metrics.py # Evaluation metrics (RMSE, MAE, Precision, Recall)
-│ │
-│ ├── utils/
-│ │ ├── preprocessing.py # Data cleaning, normalization, feature extraction
-│ │ ├── similarity.py # Helper functions for cosine, Pearson, etc.
-│ │ └── helpers.py # General utility functions (logging, configs, etc.)
 │
 ├── data/
-│ ├── raw/
-│ │ ├── products.csv # Products (raw NF-e data)
-│ │ ├── clients.csv # Clients (registry)
-│ ├── processed/
-│ │ ├── products_clean.csv # Products enriched with category + neighborhood
-│ │ ├── clients_clean.csv # Normalized clients data
-│ │ └── ratings.csv # client-product ratings
+│   ├── raw/                
+│   │   ├── receipt_nf.csv
+│   │   ├── clients.csv
+│   │
+│   ├── derived/            
+│   │   ├── products.csv
+│   │   ├── supermarkets_dataset.csv
+│   │   ├── ratings.csv
+│   │
+│   └── dictionaries/        
+│       ├── bairros_zonas.csv
+│       ├── brand_map.csv
+│       └── category_map.csv
 │
-└── tests/
-├── test_loader.py
-├── test_collaborative.py
-└── test_metrics.py
+├── backend/
+│   ├── dataset/             
+│   │   ├── loader.py       
+│   │   ├── generator.py     
+│   │   └── __init__.py
+│   │
+│   ├── utils/
+│   │   ├── product_loader.py       # regras de limpeza + validação products
+│   │   ├── client_loader.py        # regras de limpeza + validação clients
+│   │   ├── supermarket_loader.py   # geração e normalização de supermercados
+│   │   ├── preprocessing.py        # funções auxiliares genéricas
+│   │   ├── dictionaries.py         # dicionários internos
+│   │   ├── ui_messages.py          # feedback frontend
+│   │   └── similarity.py
+│   │
+│   ├── recommender/         # Algoritmos de recomendação
+│   │   ├── collaborative.py
+│   │   ├── content.py
+│   │   ├── hybrid.py
+│   │   ├── metrics.py
+│   │   └── __init__.py
+│   │
+│   └── __init__.py
+│
+├── frontend/
+│   └── streamlit_app/
+│       ├── main.py
+│       ├── modules/
+│       │   ├── app_products.py
+│       │   ├── app_clients.py
+│       │   ├── app_ratings.py
+│       │   ├── app_home.py
+│       │   └── __init__.py
+│       └── __init__.py
+│
+├── README.md
+├── requirements.txt
+└── .gitignore
+
 
 ```
 ---

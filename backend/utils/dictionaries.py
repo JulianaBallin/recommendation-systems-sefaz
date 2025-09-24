@@ -1,140 +1,120 @@
-# backend/utils/dictionaries.py
+"""
+dictionaries.py
+---------------
+Carregamento dos dicionários auxiliares usados para normalizar
+produtos e clientes (categorias, marcas, bairros, etc.).
+"""
 
-# Categorias
-CATEGORY_MAP = {
-    # Grãos e massas
-    "ARROZ": "Grãos",
-    "FEIJAO": "Grãos",
-    "LENTILHA": "Grãos",
-    "ERVILHA": "Grãos",
-    "GRÃO DE BICO": "Grãos",
-    "MACARRAO": "Massas",
-    "MASSA": "Massas",
-    "MIOJO": "Massas Instantâneas",
+import pandas as pd
+import os
+import unicodedata
+import re
 
-    # Laticínios
-    "LEITE": "Laticínios",
-    "QUEIJO": "Laticínios",
-    "IOGURTE": "Laticínios",
-    "MANTEIGA": "Laticínios",
-    "REQUEIJAO": "Laticínios",
-    "CREME DE LEITE": "Laticínios",
-    "ZERO LAC": "Zero Lactose",
-    "0 LAC": "Zero Lactose",
+from backend.dataset import loader  # usa normalize_text
 
-    # Snacks / industrializados
-    "BISCOITO": "Alimento Industrializado",
-    "BOLACHA": "Alimento Industrializado",
-    "SALGADINHO": "Alimento Industrializado",
-    "CHOCOLATE": "Doces",
-    "BALA": "Doces",
-    "PIRULITO": "Doces",
-    "MAIONESE": "Condimentos",
-    "KETCHUP": "Condimentos",
-    "MOSTARDA": "Condimentos",
+# Caminho base do projeto (2 níveis acima deste arquivo)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
-    # Bebidas
-    "REFRIGERANTE": "Bebidas",
-    "SUCOS": "Bebidas",
-    "AGUA": "Bebidas",
-    "ENERGETICO": "Bebidas",
-    "CERVEJA": "Bebidas",
-    "VINHO": "Bebidas",
-
-    # Óleos e gorduras
-    "OLEO": "Óleos e Gorduras",
-    "AZEITE": "Óleos e Gorduras",
-    "MARGARINA": "Óleos e Gorduras",
-
-    # Higiene e limpeza
-    "AMACIANTE": "Limpeza",
-    "SABAO": "Limpeza",
-    "DETERGENTE": "Limpeza",
-    "ALCOOL": "Limpeza",
-    "DESINFETANTE": "Limpeza",
-    "SHAMPOO": "Higiene",
-    "SABONETE": "Higiene",
-    "CREME DENTAL": "Higiene",
-    "PAPEL HIGIENICO": "Higiene",
-
-    # Proteínas
-    "FRANGO": "Proteínas",
-    "CARNE": "Proteínas",
-    "PEIXE": "Proteínas",
-    "PORCO": "Proteínas",
-    "LINGUICA": "Proteínas",
-    "OVO": "Proteínas",
-
-    # Fitness / saudáveis
-    "WHEY": "Fitness",
-    "PROTEINA": "Fitness",
-    "BARRA CEREAL": "Fitness",
-    "INTEGRAL": "Fitness",
-    "LIGHT": "Fitness",
-    "DIET": "Fitness",
-
-    # Default
-    "INDEFINIDO": "Indefinido"
-}
+CATEGORY_CSV = os.path.join(BASE_DIR, "data/dictionaries/category_map.csv")
+BRAND_CSV = os.path.join(BASE_DIR, "data/dictionaries/brand_map.csv")
 
 
-# Marcas
-BRAND_MAP = [
-    # Bebidas
-    "COCA-COLA", "PEPSI", "FANTA", "GUARANA ANTARCTICA", "SCHWEPPES",
-    "SKOL", "BRAHMA", "ANTARCTICA", "BOHEMIA", "HEINEKEN", "AMSTEL",
-    "RED BULL", "MONSTER",
+# ======================================================
+# 🔹 Funções de carregamento de dicionários
+# ======================================================
 
-    # Carnes / proteínas
-    "SADIA", "PERDIGAO", "SEARA", "FRIBOI", "MARFRIG", "MINERVA",
-
-    # Grãos e massas
-    "TIO JOAO", "CAMIL", "URBANO", "PILAR", "RENATA", "ADRIELLE",
-
-    # Laticínios
-    "NESTLE", "ITALAC", "PIRACANJUBA", "BETANIA", "NINHO",
-    "VERDE CAMPO", "ITAMBÉ",
-
-    # Doces e snacks
-    "LACTA", "GAROTO", "HERSHEYS", "FERRERO", "MARS", "ARCOR",
-    "TRAKINAS", "CLUB SOCIAL", "BIS", "KITKAT",
-
-    # Limpeza
-    "OMO", "YPE", "BRILUX", "MINUANO", "LIMPOL",
-
-    # Higiene
-    "COLGATE", "ORAL-B", "DOVE", "PALMOLIVE", "NIVEA", "LUX"
-]
+def _normalize_text(value: str) -> str:
+    """Normaliza texto: maiúsculo, sem acento, sem caracteres especiais extras."""
+    if pd.isna(value):
+        return ""
+    text = str(value).upper().strip()
+    text = unicodedata.normalize("NFKD", text).encode("ASCII", "ignore").decode("utf-8")
+    text = re.sub(r"\s+", " ", text)   # normaliza múltiplos espaços
+    return text
 
 
-# Bairros e zonas
-BAIRRO_ZONA_MAP = {
-    "FLORES": "Centro-Sul",
-    "PARQUE 10 DE NOVEMBRO": "Centro-Sul",
-    "ADRIANÓPOLIS": "Centro-Sul",
-    "ALEIXO": "Centro-Sul",
-    "NOSSA SENHORA DAS GRAÇAS": "Centro-Sul",
-    "CENTRO": "Sul",
-    "APARECIDA": "Sul",
-    "MORRO DA LIBERDADE": "Sul",
-    "PRAÇA 14 DE JANEIRO": "Sul",
-    "EDUARDO GOMES": "Oeste",
-    "ALVORADA": "Oeste",
-    "SÃO JORGE": "Oeste",
-    "PLANALTO": "Oeste",
-    "CIDADE NOVA": "Norte",
-    "COLÔNIA SANTO ANTÔNIO": "Norte",
-    "COLÔNIA TERRA NOVA": "Norte",
-    "MONTE DAS OLIVEIRAS": "Norte",
-    "NOVA CIDADE": "Norte",
-    "REDENÇÃO": "Norte",
-    "JORGE TEIXEIRA": "Leste",
-    "TANCREDO NEVES": "Leste",
-    "ZUMBI DOS PALMARES": "Leste",
-    "SÃO JOSÉ OPERÁRIO": "Leste"
-}
+def load_category_map(path: str = CATEGORY_CSV) -> pd.DataFrame:
+    """
+    Carrega mapa de categorias a partir do CSV.
+    - Usa a coluna 'categoria'
+    - Remove duplicatas e valores vazios
+    - Padroniza o texto sem acentuação
+    """
+    df = pd.read_csv(path)
+    df.columns = [c.strip().lower() for c in df.columns]
 
-if __name__ == "__main__":
-    print("CATEGORY_MAP:", len(CATEGORY_MAP), "categorias")
-    print("BRAND_MAP:", len(BRAND_MAP), "marcas")
-    print("BAIRRO_ZONA_MAP:", len(BAIRRO_ZONA_MAP), "bairros")
+    if "categoria" not in df.columns:
+        raise ValueError(f"Coluna 'categoria' não encontrada em {path}")
+
+    df = df.dropna(subset=["categoria"])
+    df["categoria"] = df["categoria"].apply(_normalize_text)
+    df = df[df["categoria"] != ""]
+    df = df.drop_duplicates(subset=["categoria"])
+
+    return df.reset_index(drop=True)
+
+
+def load_brand_map(path: str = BRAND_CSV) -> pd.DataFrame:
+    """
+    Carrega mapa de marcas a partir do CSV.
+    - Usa a coluna 'marca'
+    - Remove duplicatas e valores vazios
+    - Padroniza o texto sem acentuação
+    """
+    df = pd.read_csv(path)
+    df.columns = [c.strip().lower() for c in df.columns]
+
+    if "marca" not in df.columns:
+        raise ValueError(f"Coluna 'marca' não encontrada em {path}")
+
+    df = df.dropna(subset=["marca"])
+    df["marca"] = df["marca"].apply(_normalize_text)
+    df = df[df["marca"] != ""]
+    df = df.drop_duplicates(subset=["marca"])
+
+    return df.reset_index(drop=True)
+
+
+def normalize_product(descricao: str) -> dict:
+    """
+    Normaliza a descrição de um produto e identifica sua Categoria e Marca
+    usando os dicionários auxiliares.
+
+    Regras:
+    - Descrição limpa (maiúscula, sem acentos, sem caracteres especiais, sem espaços extras)
+    - Categoria: detectada no texto usando category_map
+    - Marca: detectada no texto usando brand_map
+    - Se não encontrar correspondência → "DESCONHECIDO"
+    """
+    if pd.isna(descricao):
+        descricao = ""
+    desc_clean = loader.normalize_text(descricao)
+
+    # Carrega dicionários
+    cat_map = load_category_map()
+    brand_map = load_brand_map()
+
+    categoria = "DESCONHECIDO"
+    marca = "DESCONHECIDO"
+
+    # Procura categoria pela chave_categoria no texto
+    if not cat_map.empty and "chave_categoria" in cat_map.columns and "categoria" in cat_map.columns:
+        for _, row in cat_map.iterrows():
+            chave = loader.normalize_text(row["chave_categoria"])
+            if chave and chave in desc_clean:
+                categoria = loader.normalize_text(row["categoria"])
+                break
+
+    # Procura marca pela palavra no texto
+    if not brand_map.empty and "palavra" in brand_map.columns and "marca" in brand_map.columns:
+        for _, row in brand_map.iterrows():
+            palavra = loader.normalize_text(row["palavra"])
+            if palavra and palavra in desc_clean:
+                marca = loader.normalize_text(row["marca"])
+                break
+
+    return {
+        "Categoria": categoria,
+        "Marca": marca,
+        "Descricao": desc_clean,
+    }
