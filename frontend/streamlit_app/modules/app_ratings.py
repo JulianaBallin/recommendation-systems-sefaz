@@ -2,10 +2,22 @@ import streamlit as st
 import pandas as pd
 from backend.dataset import loader
 from backend.utils.preprocessing import validate_cpf, normalize_text, normalize_name
+from backend.utils.ui_messages import show_table 
 
 def run():
-    st.title("Avaliação e Recomendação")
+    st.title("⭐ Avaliação e Recomendação")
     st.markdown("---")
+    st.markdown(
+        """
+        <p style="text-align: center; margin-bottom: 25px;">
+            Ajude-nos a melhorar suas recomendações de compras!  
+            <strong>Avalie os produtos</strong> cadastrados informando a <strong>marca</strong> ou a <strong>categoria</strong>.  
+            Esse passo é opcional, mas quanto mais detalhes você fornecer, mais precisas serão as sugestões futuras.  
+            Assim, você ganha recomendações relevantes e apoio na hora de decidir suas próximas compras.
+        </p>
+        """,
+        unsafe_allow_html=True
+    )
 
     # === Carregar dados ===
     clients = loader.load_raw_clients()
@@ -26,14 +38,14 @@ def run():
     # =======================
     # SEÇÃO 1: AVALIAÇÃO POR PRODUTO
     # =======================
-    st.subheader("Avaliar Produto")
+    st.subheader("👤 Selecionar Usuário")
 
     cpf_val = st.session_state.get("cpf_val", "")
     nome_val = st.session_state.get("nome_val", "")
     selected_client = None
 
-    cpf_input = st.text_input("CPF", value=cpf_val, key="cpf_input")
-    nome_input = st.text_input("Nome", value=nome_val, key="nome_input")
+    cpf_input = st.text_input("CPF*", value=cpf_val, key="cpf_input")
+    nome_input = st.text_input("Nome*", value=nome_val, key="nome_input")
 
     # CPF → Nome
     if cpf_input:
@@ -69,14 +81,14 @@ def run():
             st.error(f"Erro ao validar nome: {e}")
 
     # Seleção de Produto
-    st.markdown("### Selecione um Produto")
+    st.markdown("### 🛍️ Selecionar Produto")
     options = ["----"] + (
         products["DESCRICAO"].dropna().unique().tolist()
         if not products.empty and "DESCRICAO" in products.columns
         else []
     )
     produto_desc = st.selectbox(
-        "Digite ou escolha um produto",
+        "Digite ou escolha um produto*",
         options=options,
         index=0,
         key="produto_select",
@@ -86,7 +98,7 @@ def run():
         produto_row = products[products["DESCRICAO"] == produto_desc].iloc[0]
 
         # Produto
-        st.markdown("### ⭐ Avaliação do Produto")
+        st.markdown("### ⭐ Avaliação do Produto*")
         st.markdown(f"**{produto_row['DESCRICAO']}**")
         rating_desc = st.slider("Nota", 1, 5, 3)
 
@@ -143,5 +155,6 @@ def run():
 
     # Mostrar avaliações
     if not ratings.empty:
-        st.markdown("### Tabela de Avaliações")
-        st.dataframe(ratings.tail(10))
+        st.markdown("### 📊 Visualizar Registros de Avaliações")
+        show_table(ratings)
+        st.markdown(f"**Total de avaliações:** {len(ratings)}")

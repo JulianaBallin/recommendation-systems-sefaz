@@ -13,11 +13,23 @@ import pandas as pd
 
 from backend.dataset import loader
 from backend.utils import dictionaries, product_loader
+from backend.utils.ui_messages import show_success, show_error, show_info
+from backend.utils.ui_messages import show_table
 
 
 def run():
-    st.title("📦 Produtos")
-    st.markdown("Gerencie produtos cadastrados a partir das notas fiscais ou manualmente.")
+    # Título da página
+    st.markdown('<h1 class="title">🛒 Gerenciar Produtos</h1>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="paragraph">'
+        'Gerencie seus produtos de supermercado utilizando duas formas eficientes de cadastro: '
+        '1 - Registrar itens pontuais com o <strong>Cadastro Manual</strong>, ideal para ajustes rápidos ou produtos avulsos. '
+        '2 - Para inserir grandes volumes de uma vez, use a <strong>Importação em Lote</strong> via arquivo CSV. '
+        'Este método exige um formato específico contendo: '
+        '<strong>CÓDIGO, DESCRIÇÃO, QTD, UN, VALOR_UNITÁRIO, VALOR_TOTAL, NOME_SUPERMERCADO, CNPJ, ENDEREÇO, NÚMERO_NFCE, SÉRIE e a DATA_HORA_COMPRA</strong>.'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
     # Carrega dicionários
     cat_map = dictionaries.load_category_map()
@@ -26,15 +38,15 @@ def run():
     # ======================================================
     # 1. Adicionar Produto Manualmente
     # ======================================================
-    st.subheader("Adicionar Produto Manualmente")
+    st.markdown('<h2 class="subtitle">➕ Adicionar Produto Manualmente</h2>', unsafe_allow_html=True)
 
     with st.form("form_produto_unitario", clear_on_submit=True):
-        descricao = st.text_input("Descrição do produto (ex.: 'Arroz Tio João 5kg')")
+        descricao = st.text_input("Descrição do produto* (ex.: 'Arroz Tio João 5kg')")
 
         categoria = st.selectbox(
             "Selecione a Categoria*",
             options=["-"] + (
-                sorted([c for c in cat_map["categoria"].dropna().unique().tolist() if c.strip() != ""])
+                sorted([c for c in cat_map["CATEGORIA"].dropna().unique().tolist() if c.strip() != ""])
                 if not cat_map.empty else []
             ),
             index=0
@@ -43,7 +55,7 @@ def run():
         marca = st.selectbox(
             "Selecione a Marca*",
             options=["-"] + (
-                sorted([m for m in brand_map["marca"].dropna().unique().tolist() if m.strip() != ""])
+                sorted([m for m in brand_map["MARCA"].dropna().unique().tolist() if m.strip() != ""])
                 if not brand_map.empty else []
             ),
             index=0
@@ -53,22 +65,27 @@ def run():
 
         if submitted:
             if descricao.strip() == "":
-                st.error("❌ A descrição não pode estar vazia.")
+                show_error(" A descrição não pode estar vazia.")
+            elif categoria == "-" or not categoria.strip():
+                show_error(" A categoria é obrigatória. Selecione uma opção.")
+            elif marca == "-" or not marca.strip():
+                show_error(" A marca é obrigatória. Selecione uma opção.")
             else:
                 produto = {
-                    "Categoria": categoria,
-                    "Marca": marca,
-                    "Descricao": descricao.strip().upper()
+                    "CATEGORIA": categoria.strip().upper(),
+                    "MARCA": marca.strip().upper(),
+                    "DESCRICAO": descricao.strip().upper()
                 }
                 novo_id = product_loader.append_product(produto)
-                st.success(f"✅ Produto adicionado com ID {novo_id} ao dataset derivado!")
+                show_success(f"✅ Produto adicionado com ID {novo_id} ao dataset derivado!")
 
-    st.markdown("---")
+
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
     # ======================================================
     # 2. Adicionar Produtos em Lote
     # ======================================================
-    st.subheader("Adicionar Produtos em Lote (NF → Raw + Derived)")
+    st.markdown('<h2 class="subtitle">📂 Adicionar Produtos em Lote (CSV)</h2>', unsafe_allow_html=True)
 
     file = st.file_uploader("Carregar arquivo CSV de nota fiscal", type=["csv"])
     if file:
@@ -77,10 +94,9 @@ def run():
             df_raw.columns = [c.strip().upper() for c in df_raw.columns]
 
             if "DESCRICAO" not in df_raw.columns:
-                st.error("CSV inválido: precisa ter a coluna DESCRICAO")
+                show_error("CSV inválido: precisa ter a coluna DESCRICAO")
             else:
-                # Preview antes de salvar
-                st.info("📋 Pré-visualização dos dados carregados (3 primeiras + 3 últimas linhas):")
+                show_info("📋 Pré-visualização dos dados carregados (3 primeiras + 3 últimas linhas):")
 
                 if len(df_raw) > 6:
                     preview_df = pd.concat([df_raw.head(3), df_raw.tail(3)])
@@ -88,40 +104,59 @@ def run():
                     preview_df = df_raw
 
                 st.dataframe(preview_df)
-                st.write(f"**Total de registros no arquivo:** {len(df_raw)}")
+                st.markdown(f'<div class="paragraph"><b>Total de registros no arquivo:</b> {len(df_raw)}</div>',
+                            unsafe_allow_html=True)
 
                 if st.button("Confirmar e adicionar ao sistema"):
-                    try:
-                        qtd = product_loader.append_batch(df_raw)
-                        st.success(f"✅ {qtd} produtos válidos adicionados ao sistema.")
-                    except ValueError as e:
-                        st.error(str(e))
+                    qtd, df_sucesso, df_erros = product_loader.append_batch(df_raw)
+
+                    # =======================
+                    # ✅ Produtos válidos
+                    # =======================
+                    if qtd > 0:
+                        show_success(f"{qtd} produtos válidos foram adicionados ao sistema (RAW + Products).")
+                        st.markdown("### ✅ Registros Válidos Salvos")
+                        st.dataframe(df_sucesso[["ID", "DESCRICAO", "CATEGORIA", "MARCA"]])
+
+                    # =======================
+                    # ❌ Produtos inválidos
+                    # =======================
+                    if not df_erros.empty:
+                        show_error("Alguns produtos não foram adicionados por erro de validação:")
+                        st.markdown("### ❌ Registros Inválidos (não salvos)")
+                        st.dataframe(df_erros[["Linha", "Descricao", "Erro"]])
 
         except Exception as e:
-            st.error(f"Erro ao processar CSV: {e}")
+            show_error(f"Erro ao processar CSV: {e}")
 
-    st.markdown("---")
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
     # ======================================================
     # 3. Visualizar Produtos Raw
     # ======================================================
-    st.subheader("Visualizar Produtos Raw (NF)")
+    st.markdown('<h2 class="subtitle">📑 Visualizar Registros Notas Fiscais (RAW)</h2>', unsafe_allow_html=True)
     preview_raw = loader.preview_raw_receipts()
     if preview_raw["total"] > 0:
-        st.dataframe(pd.concat([preview_raw["head"], preview_raw["tail"]]))
-        st.write(f"**Total de registros de NF:** {preview_raw['total']}")
+        df_preview = preview_raw["preview"]   # já vem head+tail ou tudo
+        show_table(df_preview)
+        st.markdown(
+            f'<div class="paragraph"><b>Total de registros de NF:</b> {preview_raw["total"]}</div>',
+            unsafe_allow_html=True
+        )
     else:
-        st.info("Nenhum produto raw encontrado.")
+        show_info("Nenhum produto raw encontrado.")
 
-    st.markdown("---")
+
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
     # ======================================================
     # 4. Visualizar Produtos Derivados
     # ======================================================
-    st.subheader("Visualizar Produtos Normalizados")
+    st.markdown('<h2 class="subtitle">✅ Visualizar Produtos Derivados NF</h2>', unsafe_allow_html=True)
     preview_derived = loader.preview_clean_products(n=10)
     if preview_derived["total"] > 0:
-        st.dataframe(preview_derived["preview"])
-        st.write(f"**Total de produtos derivados:** {preview_derived['total']}")
+        show_table(preview_derived["preview"])
+        st.markdown(f'<div class="paragraph"><b>Total de produtos derivados (NF):</b> {preview_derived["total"]}</div>',
+                    unsafe_allow_html=True)
     else:
-        st.info("Nenhum produto normalizado ainda.")
+        show_info("Nenhum produto normalizado ainda.")

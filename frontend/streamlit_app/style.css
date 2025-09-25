@@ -1,0 +1,274 @@
+/* ===== Fundo geral ===== */
+body, .stApp {
+    background-color: #fff9f1 !important;
+    color: #362828 !important;
+    font-family: "Segoe UI", "Arial", sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+}
+
+/* ===== Barra lateral ===== */
+section[data-testid="stSidebar"] {
+    background-color: #2e453b !important; /* fundo verde escuro */
+}
+section[data-testid="stSidebar"] * {
+    color: #ffffff !important; /* força texto branco */
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+}
+
+/* ===== Inputs e caixas de seleção ===== */
+.stTextInput > div > div > input,
+.stTextArea textarea,
+.stSelectbox div[data-baseweb="select"] > div,
+.stMultiSelect div[data-baseweb="select"] > div,
+.stNumberInput input,
+.stDateInput input {
+    background-color: #efe3d4 !important; /* bege */
+    color: #362828 !important;            /* texto escuro */
+    border-radius: 8px !important;
+    border: 1px solid #a69076 !important;
+    font-size: 16px !important;
+    padding: 8px 10px !important;
+    height: auto !important;
+    min-height: 40px !important;
+}
+
+/* ===== Botões (submissão e uploader) ===== */
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stButton"] > button,
+button[kind="formSubmit"],
+div[data-testid="stFileUploadDropzone"] button {
+    background-color: #2e453b !important;  /* verde escuro */
+    color: #ffffff !important;             /* texto branco */
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    margin: 10px auto !important;          /* mesmo espaçamento em cima e embaixo */
+    border: none !important;
+    cursor: pointer !important;
+    display: flex !important;              /* força flexbox */
+    justify-content: center !important;    /* centraliza horizontalmente */
+    align-items: center !important;        /* centraliza verticalmente */
+    transition: all 0.2s ease-in-out !important;
+    text-align: center !important;
+}
+
+/* Hover unificado para todos os botões */
+div[data-testid="stFormSubmitButton"] > button:hover,
+div[data-testid="stButton"] > button:hover,
+button[kind="formSubmit"]:hover,
+div[data-testid="stFileUploadDropzone"] button:hover {
+    background-color: #5c913b !important;  /* verde claro */
+    color: #ffffff !important;             /* mantém branco */
+    transform: scale(1.02) !important;
+}
+
+/* ===== Forçar estilo de texto dos botões ===== */
+div[data-testid="stFormSubmitButton"] > button p,
+div[data-testid="stButton"] > button p,
+div[data-testid="stFileUploadDropzone"] button p {
+    color: #ffffff !important;   /* texto branco */
+    font-weight: 600 !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+/* ===== Ajustar tamanho e centralizar ===== */
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stButton"] > button,
+div[data-testid="stFileUploadDropzone"] button {
+    width: auto !important;              /* botão só do tamanho do texto */
+    min-width: 180px !important;         /* largura mínima */
+    max-width: 250px !important;         /* largura máxima */
+    margin: 10px auto !important;        /* centraliza horizontalmente */
+    display: block !important;           /* garante centralização */
+}
+
+/* ===== Corrigir apenas o botão "Browse files" ===== */
+.stFileUploader button {
+    background-color: #2e453b !important;  /* verde escuro */
+    color: #ffffff !important;             /* texto branco */
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    margin: 10px auto !important;          /* centraliza */
+    border: none !important;
+    cursor: pointer !important;
+    display: block !important;
+    text-align: center !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover do Browse files */
+.stFileUploader button:hover {
+    background-color: #5c913b !important;  /* verde claro */
+    color: #ffffff !important;
+    transform: scale(1.02) !important;
+}
+
+/* Forçar texto branco dentro do Browse files */
+.stFileUploader button span,
+.stFileUploader button p {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+/* ===== Label do File Uploader (texto acima) ===== */
+.stFileUploader label[data-testid="stWidgetLabel"] {
+    background: none !important;    /* sem fundo */
+    color: #362828 !important;      /* cor de parágrafo */
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    margin-bottom: 6px !important;
+    cursor: default !important;     /* não parece botão */
+}
+
+/* ===== Dropzone do File Uploader (Browse files) ===== */
+.stFileUploader div[data-testid="stFileUploaderDropzone"] {
+    background-color: #efe3d4 !important; /* bege */
+    border: 1px dashed #a69076 !important;
+    border-radius: 8px !important;
+    color: #362828 !important;
+    text-align: center !important;
+    padding: 12px !important;
+}
+.stFileUploader div[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #5c913b !important; /* verde no hover */
+}
+
+/* ===== Tabelas personalizadas ===== */
+.stDataFrame, .stTable {
+    background-color: #efe3d4 !important; /* bege */
+    color: #362828 !important;            /* texto escuro */
+    border-radius: 8px !important;
+    padding: 8px !important;
+}
+
+/* Cabeçalho da tabela */
+.stDataFrame th, .stTable th {
+    background-color: #2e453b !important; /* verde escuro */
+    color: #ffffff !important;            /* branco */
+    font-weight: 700 !important;
+    text-align: center !important;
+    border: 1px solid #a69076 !important;
+}
+
+/* Células da tabela */
+.stDataFrame td, .stTable td {
+    background-color: #fff9f1 !important; /* fundo claro */
+    color: #362828 !important;            /* texto escuro */
+    border: 1px solid #a69076 !important;
+    padding: 6px 10px !important;
+}
+
+/* Hover nas linhas */
+.stDataFrame tbody tr:hover td, .stTable tbody tr:hover td {
+    background-color: #dcd3c3 !important; /* bege mais escuro no hover */
+    color: #000000 !important;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* ===== Forçar estilo do st.dataframe (AgGrid/Arrow) ===== */
+[data-testid="stDataFrame"] {
+    background-color: #fff9f1 !important; /* fundo bege */
+    color: #362828 !important;            /* texto escuro */
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+/* Texto dentro do dataframe */
+[data-testid="stDataFrame"] div,
+[data-testid="stDataFrame"] span {
+    color: #362828 !important;  /* texto escuro */
+    font-size: 14px !important;
+}
+
+/* Cabeçalho do dataframe */
+[data-testid="stDataFrame"] thead tr th {
+    background-color: #2e453b !important; /* verde escuro */
+    color: #ffffff !important;            /* branco */
+    font-weight: 700 !important;
+    text-align: center !important;
+}
+
+/* Linhas "zebra" para contraste */
+[data-testid="stDataFrame"] tbody tr:nth-child(even) {
+    background-color: #efe3d4 !important; /* bege claro */
+}
+[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
+    background-color: #ffffff !important; /* branco */
+}
+
+
+/* ===== Títulos ===== */
+h1 {
+    color: #3e721d !important;
+    font-weight: 800 !important;
+    font-size: 50px !important;
+    text-align: center !important;
+    margin-bottom: 25px !important;
+}
+h2, h3, h4 {
+    color: #2e453b !important;
+    font-weight: 700 !important;
+    margin-top: 20px !important;
+    margin-bottom: 15px !important;
+}
+
+/* ===== Parágrafos e descrições ===== */
+p, .paragraph, .stMarkdown {
+    color: #362828 !important;
+    font-size: 23px !important; /* maior fonte */
+    line-height: 1.5 !important;
+    text-align: justify !important;
+    margin-bottom: 18px !important;
+}
+
+/* ===== Linhas divisórias ===== */
+hr {
+    border: 1px solid #a69076 !important; /* mais suave */
+    margin: 20px 0 !important;
+}
+
+/* ===== Mensagens ===== */
+.success-box {
+    background-color: #5c913b !important;
+    color: #fff !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    margin: 10px 0 !important;
+}
+.error-box {
+    background-color: #c1272d !important;
+    color: #fff !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    margin: 10px 0 !important;
+}
+.info-box {
+    background-color: #393839 !important;
+    color: #fff !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    margin: 10px 0 !important;
+}
+
+/* ===== Links ===== */
+a {
+    color: #3e721d !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+a:hover {
+    color: #2e453b !important;
+    text-decoration: underline !important;
+}

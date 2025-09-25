@@ -33,46 +33,19 @@ def _normalize_text(value: str) -> str:
     return text
 
 
-def load_category_map(path: str = CATEGORY_CSV) -> pd.DataFrame:
-    """
-    Carrega mapa de categorias a partir do CSV.
-    - Usa a coluna 'categoria'
-    - Remove duplicatas e valores vazios
-    - Padroniza o texto sem acentuação
-    """
-    df = pd.read_csv(path)
-    df.columns = [c.strip().lower() for c in df.columns]
+def load_category_map() -> pd.DataFrame:
+    if not os.path.exists(CATEGORY_CSV):
+        return pd.DataFrame(columns=["CHAVE_CATEGORIA", "CATEGORIA"])
+    df = pd.read_csv(CATEGORY_CSV, dtype=str)
+    df.columns = [c.strip().upper() for c in df.columns]   # 🔹 força maiúsculo
+    return df
 
-    if "categoria" not in df.columns:
-        raise ValueError(f"Coluna 'categoria' não encontrada em {path}")
-
-    df = df.dropna(subset=["categoria"])
-    df["categoria"] = df["categoria"].apply(_normalize_text)
-    df = df[df["categoria"] != ""]
-    df = df.drop_duplicates(subset=["categoria"])
-
-    return df.reset_index(drop=True)
-
-
-def load_brand_map(path: str = BRAND_CSV) -> pd.DataFrame:
-    """
-    Carrega mapa de marcas a partir do CSV.
-    - Usa a coluna 'marca'
-    - Remove duplicatas e valores vazios
-    - Padroniza o texto sem acentuação
-    """
-    df = pd.read_csv(path)
-    df.columns = [c.strip().lower() for c in df.columns]
-
-    if "marca" not in df.columns:
-        raise ValueError(f"Coluna 'marca' não encontrada em {path}")
-
-    df = df.dropna(subset=["marca"])
-    df["marca"] = df["marca"].apply(_normalize_text)
-    df = df[df["marca"] != ""]
-    df = df.drop_duplicates(subset=["marca"])
-
-    return df.reset_index(drop=True)
+def load_brand_map() -> pd.DataFrame:
+    if not os.path.exists(BRAND_CSV):
+        return pd.DataFrame(columns=["MARCA"])
+    df = pd.read_csv(BRAND_CSV, dtype=str)
+    df.columns = [c.strip().upper() for c in df.columns]   # 🔹 força maiúsculo
+    return df
 
 
 def normalize_product(descricao: str) -> dict:
@@ -97,20 +70,20 @@ def normalize_product(descricao: str) -> dict:
     categoria = "DESCONHECIDO"
     marca = "DESCONHECIDO"
 
-    # Procura categoria pela chave_categoria no texto
-    if not cat_map.empty and "chave_categoria" in cat_map.columns and "categoria" in cat_map.columns:
+    # 🔹 Procura categoria pela CHAVE_CATEGORIA no texto
+    if not cat_map.empty and "CHAVE_CATEGORIA" in cat_map.columns and "CATEGORIA" in cat_map.columns:
         for _, row in cat_map.iterrows():
-            chave = loader.normalize_text(row["chave_categoria"])
+            chave = loader.normalize_text(row["CHAVE_CATEGORIA"])
             if chave and chave in desc_clean:
-                categoria = loader.normalize_text(row["categoria"])
+                categoria = loader.normalize_text(row["CATEGORIA"])
                 break
 
-    # Procura marca pela palavra no texto
-    if not brand_map.empty and "palavra" in brand_map.columns and "marca" in brand_map.columns:
+    # 🔹 Procura marca pela PALAVRA no texto
+    if not brand_map.empty and "PALAVRA" in brand_map.columns and "MARCA" in brand_map.columns:
         for _, row in brand_map.iterrows():
-            palavra = loader.normalize_text(row["palavra"])
+            palavra = loader.normalize_text(row["PALAVRA"])
             if palavra and palavra in desc_clean:
-                marca = loader.normalize_text(row["marca"])
+                marca = loader.normalize_text(row["MARCA"])
                 break
 
     return {

@@ -1,16 +1,25 @@
 import streamlit as st
+import os
 
 def run():
-    st.title("Local Purchases Recommendation System")
-    st.markdown("---")
+    # === Título principal ===
+    st.markdown('<h1 class="title">Sistema de Recomendação de Compras Locais</h1>', unsafe_allow_html=True)
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
-    # Contexto
+    # === Contexto ===
     st.markdown(
         """
-        <div style="font-size:22px; line-height:1.6; color:white;">
+        <div class="paragraph">
         Este sistema foi desenvolvido para analisar notas fiscais eletrônicas (NF-e) da região de Manaus-AM 
         e gerar recomendações personalizadas de produtos com base em <b>Filtragem Colaborativa</b>.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
+    st.markdown(
+        """
+        <div class="paragraph">
         O sistema recomenda produtos baseado nas avaliações dos clientes nas dimensões de 
         <b>categoria, marca e descrição</b>.
         </div>
@@ -18,16 +27,16 @@ def run():
         unsafe_allow_html=True,
     )
 
-    st.markdown("---")
-    st.subheader("Navegação")
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitle">Navegação</h2>', unsafe_allow_html=True)
 
-    # CSS único para cartões
+    # === CSS para cartões ===
     st.markdown(
         """
         <style>
         .card {
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #a69076;
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -39,12 +48,13 @@ def run():
             justify-content: center;
             align-items: center;
             margin: auto;
-            color: white;
+            color: #fff;
+            background-color: #2e453b;
         }
         .card:hover {
             transform: scale(1.05);
             cursor: pointer;
-            background-color: #333333;
+            background-color: #3e721d;
         }
         .card-icon {
             font-size: 45px;
@@ -53,7 +63,7 @@ def run():
         .card-title {
             font-size: 16px;
             font-weight: bold;
-            color: white;
+            color: #fff;
         }
         /* botão transparente em cima do cartão */
         div.stButton > button {
@@ -68,7 +78,7 @@ def run():
         unsafe_allow_html=True,
     )
 
-    # Função auxiliar: renderiza cartão + botão invisível em cima
+    # === Função auxiliar: renderiza cartão + botão invisível ===
     def nav_card(label, icon, key, page_name):
         col = st.container()
         with col:
@@ -85,16 +95,17 @@ def run():
                 st.session_state["page"] = page_name
                 st.rerun()
 
-    # Layout de cartões
+    # === Layout de cartões de navegação ===
     col1, col2, col3, col4 = st.columns(4, gap="large")
     with col1: nav_card("Menu", "🏠", "nav_menu", "menu")
-    with col2: nav_card("Produtos", "📦", "nav_produtos", "produtos")
-    with col3: nav_card("Clientes", "👤", "nav_clientes", "clientes")
+    with col2: nav_card("Produtos", "🛒", "nav_produtos", "produtos")
+    with col3: nav_card("Clientes", "👨‍👨‍👦", "nav_clientes", "clientes")
     with col4: nav_card("Avaliação", "⭐", "nav_avaliacao", "avaliacao")
 
-    st.markdown("---")
-    st.subheader("Ferramentas Utilizadas")
+    st.markdown('<hr class="divider">', unsafe_allow_html=True)
+    st.markdown('<h2 class="subtitle">Ferramentas Utilizadas</h2>', unsafe_allow_html=True)
 
+    # === Cartões de ferramentas ===
     tools_col1, tools_col2, tools_col3, tools_col4 = st.columns(4, gap="large")
 
     with tools_col1:
@@ -102,7 +113,7 @@ def run():
             """
             <a href="https://github.com" target="_blank">
                 <div class="card">
-                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="50">
+                    <img src="https://img.icons8.com/ios11/512/FFFFFF/github.png" width="50">
                     <div class="card-title">GitHub</div>
                 </div>
             </a>
@@ -128,7 +139,7 @@ def run():
             """
             <a href="https://www.python.org" target="_blank">
                 <div class="card">
-                    <img src="https://www.python.org/static/community_logos/python-logo.png" width="80">
+                    <img src="https://images.icon-icons.com/112/PNG/512/python_18894.png" width="80">
                     <div class="card-title">Python</div>
                 </div>
             </a>

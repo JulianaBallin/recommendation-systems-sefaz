@@ -19,6 +19,7 @@ from backend.utils.preprocessing import (
 )
 from backend.utils import dictionaries
 from backend.dataset import loader
+import unicodedata
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -153,16 +154,30 @@ def clean_products(df: pd.DataFrame) -> pd.DataFrame:
 # 🔹 Funções de validação individual
 # ======================================================
 
+def normalize_key(text: str) -> str:
+    """Normaliza texto para comparação: maiúsculo e sem acentos."""
+    if not isinstance(text, str):
+        return ""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    return text.upper().strip()
+
 def validate_categoria(categoria: str, cat_map: pd.DataFrame) -> tuple[bool, str]:
-    """Valida categoria contra o mapa de categorias."""
-    if categoria in cat_map["chave_categoria"].unique():
+    """Valida categoria contra o mapa de categorias (case/acentos ignorados)."""
+    categoria_norm = normalize_key(categoria)
+    categorias_norm = [normalize_key(c) for c in cat_map["CATEGORIA"].dropna().unique()]
+    if categoria_norm in categorias_norm:
         return True, ""
     return False, f"Categoria inválida: {categoria}"
 
-
 def validate_marca(marca: str, brand_map: pd.DataFrame) -> tuple[bool, str]:
-    """Valida marca contra o mapa de marcas."""
-    if marca == "Genérica" or marca in brand_map["marca"].unique():
+    """Valida marca contra o mapa de marcas (case/acentos ignorados)."""
+    marca_norm = normalize_key(marca)
+    marcas_norm = [normalize_key(m) for m in brand_map["marca"].dropna().unique()]
+
+    if marca_norm == "GENERICA":  # exceção
+        return True, ""
+    if marca_norm in marcas_norm:
         return True, ""
     return False, f"Marca inválida: {marca}"
 
@@ -194,28 +209,50 @@ def validate_produto(
 
 
 def normalize_and_validate(
-    description: str, cat_map: pd.DataFrame = None, brand_map: pd.DataFrame = None
+    description: str,
+    cat_map: pd.DataFrame = None,
+    brand_map: pd.DataFrame = None
 ) -> dict:
     """
     Normaliza e valida um produto a partir da descrição:
-    - Extrai Categoria e Marca usando dictionaries
-    - Valida com os mapas
-    - Retorna dict pronto para salvar
+    - Extrai Categoria e Marca usando dicionários
+    - Retorna dict pronto para salvar (CATEGORIA, MARCA, DESCRICAO)
     """
     if cat_map is None:
         cat_map = dictionaries.load_category_map()
     if brand_map is None:
         brand_map = dictionaries.load_brand_map()
 
-    produto = dictionaries.normalize_product(description)
-    ok, msg = validate_produto(
-        produto["Categoria"], produto["Marca"], produto["Descricao"], cat_map, brand_map
-    )
-    if not ok:
-        raise ValueError(f"Produto inválido: {msg} | {description}")
+    desc_norm = dictionaries._normalize_text(description)
 
-    return produto
+    categoria = "DESCONHECIDO"
+    marca = "GENERICA"
 
+    # 🔹 Verifica categoria
+    if not cat_map.empty and "CHAVE_CATEGORIA" in cat_map.columns and "CATEGORIA" in cat_map.columns:
+        for _, row in cat_map.iterrows():
+            chave = dictionaries._normalize_text(row["CHAVE_CATEGORIA"])
+            if chave and chave in desc_norm:
+                categoria = dictionaries._normalize_text(row["CATEGORIA"])
+                break
+
+    # 🔹 Verifica marca
+    if not brand_map.empty and "PALAVRA" in brand_map.columns and "MARCA" in brand_map.columns:
+        for _, row in brand_map.iterrows():
+            chave = dictionaries._normalize_text(row["PALAVRA"])
+            if chave and chave in desc_norm:
+                marca = dictionaries._normalize_text(row["MARCA"])
+                break
+
+    # 🔎 Validação: descrição não pode ser vazia
+    if not desc_norm or len(desc_norm) < 3:
+        raise ValueError(f"Descrição inválida: '{description}'")
+
+    return {
+        "CATEGORIA": categoria.upper(),
+        "MARCA": marca.upper(),
+        "DESCRICAO": desc_norm.upper()
+    }
 
 # ======================================================
 # 🔹 Funções de persistência (ID, Append, Contagem)
@@ -241,15 +278,22 @@ def append_product(record: dict, derived_path: str = DATA_DERIVED) -> int:
     if os.path.exists(derived_path) and os.stat(derived_path).st_size > 0:
         df = pd.read_csv(derived_path)
     else:
-        # cria DataFrame vazio com as colunas corretas
-        df = pd.DataFrame(columns=["ID", "Categoria", "Marca", "Descricao"])
+        df = pd.DataFrame(columns=["ID", "CATEGORIA", "MARCA", "DESCRICAO"])
+
+    # 🔹 Normaliza record para maiúsculo
+    record = {k.strip().upper(): v for k, v in record.items()}
 
     # Gera ID
     new_id = generate_unique_id(df)
     record["ID"] = new_id
-    df = pd.concat([df, pd.DataFrame([record])], ignore_index=True)
-    df.to_csv(derived_path, index=False)
 
+    df = pd.concat([df, pd.DataFrame([record])], ignore_index=True)
+
+    # 🔹 Garante colunas em maiúsculo e sem duplicadas
+    df.columns = [c.strip().upper() for c in df.columns]
+    df = df.loc[:, ~df.columns.duplicated()]
+
+    df.to_csv(derived_path, index=False)
     return new_id
 
 
@@ -259,62 +303,77 @@ def generate_unique_id(df: pd.DataFrame) -> int:
         return 1
     return int(df["ID"].max()) + 1
 
-
-# ======================================================
-# 🔹 Função principal de inserção em lote
-# ======================================================
 def append_batch(
     df_new: pd.DataFrame,
     raw_path: str = loader.RAW_RECEIPTS,
     derived_path: str = loader.DERIVED_PRODUCTS,
-) -> int:
+) -> tuple[int, pd.DataFrame, pd.DataFrame]:
     """
-    Adiciona lote de produtos (NF → raw + derived).
-    - Valida todos os registros
-    - Salva raw (completo)
-    - Gera derived (ID, Categoria, Marca, Descricao)
-    Retorna a quantidade de novos produtos adicionados.
+    Adiciona lote de produtos:
+    - Valida linha a linha
+    - Salva somente válidos no RAW (notas completas)
+    - Gera DERIVED (Categoria, Marca, Descrição normalizada)
+    Retorna: (qtd_sucesso, df_sucesso, df_erros)
     """
-    # ==============================
-    # 1. Validação
-    # ==============================
-    is_valid, msg = validate_receipts(df_new)
-    if not is_valid:
-        raise ValueError(f"Erro de validação no CSV: {msg}")
+    # Carrega dicionários
+    cat_map = dictionaries.load_category_map()
+    brand_map = dictionaries.load_brand_map()
 
-    # ==============================
-    # 2. RAW (Notas fiscais completas)
-    # ==============================
-    if os.path.exists(raw_path) and os.stat(raw_path).st_size > 0:
-        raw = pd.read_csv(raw_path)
-    else:
-        raw = pd.DataFrame(columns=df_new.columns)
+    # Carrega RAW existente (somente válidos já salvos antes)
+    raw = pd.read_csv(raw_path) if os.path.exists(raw_path) and os.stat(raw_path).st_size > 0 else pd.DataFrame(columns=df_new.columns)
 
-    raw = pd.concat([raw, df_new], ignore_index=True)
+    # Carrega DERIVED existente
+    derived = pd.read_csv(derived_path) if os.path.exists(derived_path) and os.stat(derived_path).st_size > 0 else pd.DataFrame(columns=["ID", "CATEGORIA", "MARCA", "DESCRICAO"])
+
+    sucessos, erros = [], []
+
+    for idx, row in df_new.iterrows():
+        descricao = str(row.get("DESCRICAO", "")).strip()
+
+        # 🔎 Valida linha inteira
+        linha_df = pd.DataFrame([row])
+        ok, msg = validate_receipts(linha_df)
+
+        if not ok or descricao == "":
+            erros.append({
+                "Linha": idx + 1,
+                "Descricao": descricao,
+                "Erro": msg if not ok else "Descrição vazia"
+            })
+            continue
+
+        try:
+            # 🔹 Normaliza categoria/marca pela descrição
+            produto = normalize_and_validate(descricao, cat_map, brand_map)
+            produto = {k.strip().upper(): v for k, v in produto.items()}
+            produto["ID"] = generate_unique_id(derived)
+
+            # ✅ Só adiciona no RAW se válido
+            raw = pd.concat([raw, linha_df], ignore_index=True)
+
+            # ✅ Só adiciona no DERIVED se válido
+            sucessos.append(produto)
+            derived = pd.concat([derived, pd.DataFrame([produto])], ignore_index=True)
+
+        except ValueError as e:
+            erros.append({
+                "Linha": idx + 1,
+                "Descricao": descricao,
+                "Erro": str(e)
+            })
+            continue
+
+    # 🔹 Salva somente os válidos
+    if not sucessos:
+        return 0, pd.DataFrame(), pd.DataFrame(erros)
+
     raw.to_csv(raw_path, index=False)
 
-    # ==============================
-    # 3. DERIVED (Produtos normalizados)
-    # ==============================
-    if os.path.exists(derived_path) and os.stat(derived_path).st_size > 0:
-        derived = pd.read_csv(derived_path)
-    else:
-        derived = pd.DataFrame(columns=["ID", "Categoria", "Marca", "Descricao"])
-
-    novos = []
-    for _, row in df_new.iterrows():
-        # Normaliza produto pela descrição
-        produto = dictionaries.normalize_product(str(row["DESCRICAO"]))
-
-        # Gera ID único
-        produto["ID"] = generate_unique_id(derived)
-
-        novos.append(produto)
-        derived = pd.concat([derived, pd.DataFrame([produto])], ignore_index=True)
-
+    derived.columns = [c.strip().upper() for c in derived.columns]
+    derived = derived.loc[:, ~derived.columns.duplicated()]
     derived.to_csv(derived_path, index=False)
 
-    return len(novos)
+    return len(sucessos), pd.DataFrame(sucessos), pd.DataFrame(erros)
 
 
 def count_records(path: str) -> int:

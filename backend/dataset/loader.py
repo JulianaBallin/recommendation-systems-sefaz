@@ -80,25 +80,56 @@ def save_raw_receipts(df: pd.DataFrame, path: str = RAW_RECEIPTS):
 def load_derived_products(path: str = DERIVED_PRODUCTS) -> pd.DataFrame:
     """
     Carrega produtos derivados (normalizados).
-    Retorna DataFrame vazio com colunas padrão se o arquivo não existir ou estiver vazio.
+    Retorna DataFrame vazio com colunas padrão se não existir ou estiver vazio.
     """
+    cols = ["ID", "CATEGORIA", "MARCA", "DESCRICAO"]
+
     if not os.path.exists(path) or os.stat(path).st_size == 0:
-        return pd.DataFrame(columns=["ID", "CATEGORIA", "MARCA", "DESCRICAO"])
+        return pd.DataFrame(columns=cols)
 
     df = pd.read_csv(path)
-    if df.empty:
-        return pd.DataFrame(columns=["ID", "CATEGORIA", "MARCA", "DESCRICAO"])
-    df.columns = [c.strip().capitalize() for c in df.columns]
-    return df
+
+    # 🔹 Força colunas maiúsculas
+    df.columns = [c.strip().upper() for c in df.columns]
+
+    # 🔹 Filtra só colunas válidas
+    df = df[[c for c in df.columns if c in cols]]
+
+    # 🔹 Garante todas as colunas
+    for col in cols:
+        if col not in df.columns:
+            df[col] = ""
+
+    return df[cols]
 
 
 def save_derived_products(df: pd.DataFrame):
     """
     Salva produtos derivados (normalizados) no CSV.
+    Sempre garante colunas maiúsculas únicas.
     """
     os.makedirs(os.path.dirname(DERIVED_PRODUCTS), exist_ok=True)
+    cols = ["ID", "CATEGORIA", "MARCA", "DESCRICAO"]
+
+    # 🔹 Normaliza para maiúsculo
+    df.columns = [c.strip().upper() for c in df.columns]
+
+    # 🔹 Remove duplicadas mantendo a primeira ocorrência
+    df = df.loc[:, ~df.columns.duplicated()]
+
+    # 🔹 Mantém só colunas válidas
+    df = df[[c for c in df.columns if c in cols]]
+
+    # 🔹 Garante que todas as colunas existam
+    for col in cols:
+        if col not in df.columns:
+            df[col] = ""
+
+    # 🔹 Limpa duplicatas de registros
     df = clean_dataframe(df, subset_cols=["ID"])
-    df.to_csv(DERIVED_PRODUCTS, index=False)
+
+    # 🔹 Salva apenas as colunas corretas e na ordem
+    df.to_csv(DERIVED_PRODUCTS, index=False, columns=cols)
 
 
 
@@ -131,75 +162,87 @@ def save_raw_clients(df: pd.DataFrame):
 
 
 
-# Funções de Preview (Produtos e Clientes)
+# ======================================================
+# Função auxiliar de preview
+# ======================================================
 
-def preview_table(path: str, n_head: int = 5, n_tail: int = 5) -> dict:
+def preview_dataframe(df: pd.DataFrame, n: int = 5) -> pd.DataFrame:
+    """
+    Retorna preview com até 2n linhas:
+    - Se df tiver até 2n linhas → retorna completo
+    - Caso contrário → retorna head(n) + tail(n)
+    """
+    total = len(df)
+    if total > 2 * n:
+        return pd.concat([df.head(n), df.tail(n)])
+    return df
+
+
+# ======================================================
+# Funções de Preview (Produtos e Clientes)
+# ======================================================
+
+def preview_table(path: str, n: int = 5) -> dict:
     """
     Retorna preview de um CSV qualquer:
-    - primeiras linhas
-    - últimas linhas
+    - primeiras e últimas linhas (se for grande)
     - quantidade total
     """
     if not os.path.exists(path):
-        return {"head": pd.DataFrame(), "tail": pd.DataFrame(), "total": 0}
+        return {"preview": pd.DataFrame(), "total": 0}
 
     df = pd.read_csv(path)
     return {
-        "head": df.head(n_head),
-        "tail": df.tail(n_tail),
+        "preview": preview_dataframe(df, n),
         "total": len(df),
     }
 
-def preview_raw_receipts(path: str = RAW_RECEIPTS, n_head: int = 5, n_tail: int = 5) -> dict:
+
+def preview_raw_receipts(path: str = RAW_RECEIPTS, n: int = 5) -> dict:
     """
     Retorna preview das notas fiscais (raw).
     """
     if not os.path.exists(path) or os.stat(path).st_size == 0:
-        return {"head": pd.DataFrame(), "tail": pd.DataFrame(), "total": 0}
+        return {"preview": pd.DataFrame(), "total": 0}
 
     df = pd.read_csv(path)
     return {
-        "head": df.head(n_head),
-        "tail": df.tail(n_tail),
+        "preview": preview_dataframe(df, n),
         "total": len(df),
     }
 
-def preview_clean_products(n: int = 10) -> dict:
+
+def preview_clean_products(n: int = 5) -> dict:
     """
     Retorna preview dos produtos derivados:
-    - primeiras n linhas (ID, Categoria, Marca, Descricao)
+    - primeiras e últimas linhas
     - quantidade total
     """
     if not os.path.exists(DERIVED_PRODUCTS):
         return {"preview": pd.DataFrame(), "total": 0}
 
     df = pd.read_csv(DERIVED_PRODUCTS)
+    df = df[["ID", "CATEGORIA", "MARCA", "DESCRICAO"]]
     return {
-        "preview": df[["ID", "CATEGORIA", "MARCA", "DESCRICAO"]].head(n),
+        "preview": preview_dataframe(df, n),
         "total": len(df),
     }
 
 
-def preview_derived_clients(n: int = 10) -> dict:
+def preview_derived_clients(n: int = 5) -> dict:
     """
     Retorna preview da base de clientes derivada (com zona atribuída):
-    - primeiras n linhas (sem duplicação para bases pequenas)
-    - últimas n linhas
-    - total de registros
+    - primeiras e últimas linhas
+    - quantidade total
     """
     if not os.path.exists(RAW_CLIENTS):
         return {"preview": pd.DataFrame(), "total": 0}
 
     df = pd.read_csv(RAW_CLIENTS)
-    total = len(df)
-
-    if total <= 2 * n:
-        preview = df
-    else:
-        preview = pd.concat([df.head(n), df.tail(n)])
-
-    return {"preview": preview, "total": total}
-
+    return {
+        "preview": preview_dataframe(df, n),
+        "total": len(df),
+    }
 
 
 # Funções de Avaliações (Ratings)
