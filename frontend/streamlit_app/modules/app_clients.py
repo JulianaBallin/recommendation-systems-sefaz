@@ -13,6 +13,8 @@ import pandas as pd
 from backend.utils import client_loader
 from backend.utils import ui_messages as ui
 from backend.utils.ui_messages import show_table
+from backend.dataset import loader
+
 
 
 def run():
@@ -85,30 +87,46 @@ def run():
     file = st.file_uploader("Carregar arquivo CSV de clientes", type=["csv"])
     if file:
         try:
-            df_raw = pd.read_csv(file)
+            df_raw = pd.read_csv(file, dtype=str)
             df_raw.columns = [c.strip().upper() for c in df_raw.columns]
 
-            required_cols = {"CPF", "NOME", "DATA_NASCIMENTO", "CEP", "GENERO"}
+
+            required_cols = {"CPF", "NAME", "BIRTHDATE", "CEP", "GENDER"}
             if not required_cols.issubset(set(df_raw.columns)):
                 ui.show_error(
-                    f"CSV inválido. Colunas esperadas: {', '.join(required_cols)}"
+                    f"CSV inválido. Colunas esperadas (nessa ordem): {', '.join(required_cols)}"
                 )
+
             else:
                 ui.show_info("📋 Pré-visualização dos dados carregados:")
-                st.dataframe(df_raw.head(3))
-                st.dataframe(df_raw.tail(3))
+                preview_df = loader.preview_dataframe(df_raw, n=5)
+                st.dataframe(preview_df)
+                st.markdown(f"**Total de registros no arquivo:** {len(df_raw)}")
 
                 if st.button("Confirmar e adicionar ao sistema"):
                     qtd, invalids = client_loader.append_batch_clients(df_raw)
 
-                    if qtd > 0:
-                        ui.show_success(f"{qtd} clientes válidos adicionados à base.")
+                    total = len(df_raw)
+                    reprovados = len(invalids)
+                    salvos = qtd
 
+                    # ✅ Mensagens resumo
+                    ui.show_info(
+                        f"📊 Resumo do processamento:\n"
+                        f"- Total enviado: {total}\n"
+                        f"- Válidos salvos: {salvos}\n"
+                        f"- Inválidos: {reprovados}"
+                    )
+
+                    # ✅ Clientes válidos
+                    if salvos > 0:
+                        ui.show_success(f"{salvos} clientes válidos foram adicionados à base.")
+
+                    # ❌ Clientes inválidos
                     if invalids:
-                        ui.show_info("⚠️ Algumas linhas não foram adicionadas:")
-                        for line, reason in invalids:
-                            st.text(f"Linha {line}: {reason}")
-                            
+                        ui.show_error("Alguns registros foram rejeitados por erro de validação:")
+                        st.dataframe(pd.DataFrame(invalids))
+                       
         except Exception as e:
             ui.show_error(f"Erro ao processar CSV: {e}")
 

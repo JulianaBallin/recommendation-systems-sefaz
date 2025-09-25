@@ -17,6 +17,8 @@ from datetime import datetime
 from backend.dataset import loader
 from backend.utils.preprocessing import normalize_text
 from backend.utils.preprocessing import validate_cpf, validate_name
+from backend.dataset.loader import clean_dataframe
+
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
@@ -119,16 +121,15 @@ def load_clients(path: str = CLIENTS_RAW) -> pd.DataFrame:
     """
     if os.path.exists(path) and os.stat(path).st_size > 0:
         df = pd.read_csv(path, dtype=str)
-        df.columns = [c.strip().capitalize() for c in df.columns]
+        df.columns = [c.strip().upper() for c in df.columns]  # 🔹 garante maiúsculo
         return df
-    return pd.DataFrame(columns=["Cpf", "Name", "Birthdate", "Cep", "Gender"])
+    return pd.DataFrame(columns=["CPF", "NAME", "BIRTHDATE", "CEP", "GENDER"])  # 🔹 já em maiúsculo
 
 
 def save_clients(df: pd.DataFrame, path: str = CLIENTS_RAW):
-    """
-    Salva a base de clientes no CSV.
-    """
     os.makedirs(os.path.dirname(path), exist_ok=True)
+    df.columns = [c.strip().upper() for c in df.columns]   # 🔹 garante maiúsculo
+    df = clean_dataframe(df, subset_cols=["CPF"])
     df.to_csv(path, index=False)
 
 
@@ -139,106 +140,104 @@ def append_client(record: dict, path: str = CLIENTS_RAW) -> tuple[bool, str]:
     ou (False, motivo) se inválido.
     """
     df = load_clients(path)
-    existing_cpfs = df["Cpf"].astype(str).tolist()
+    existing_cpfs = df["CPF"].astype(str).tolist()
 
     # Validações
-    ok, msg = validate_cpf(record.get("Cpf", ""), existing_cpfs)
+    ok, msg = validate_cpf(record.get("CPF", ""), existing_cpfs)
     if not ok:
         return False, msg
 
-    ok, msg = validate_name(record.get("Name", ""))
+    ok, msg = validate_name(record.get("NAME", ""))
     if not ok:
         return False, msg
 
-    ok, msg = validate_birthdate(record.get("Birthdate", ""))
+    ok, msg = validate_birthdate(record.get("BIRTHDATE", ""))
     if not ok:
         return False, msg
 
-    ok, msg = validate_cep(record.get("Cep", ""))
+    ok, msg = validate_cep(record.get("CEP", ""))
     if not ok:
         return False, msg
 
-    ok, msg = validate_gender(record.get("Gender", ""))
+    ok, msg = validate_gender(record.get("GENDER", ""))
     if not ok:
         return False, msg
-
 
     normalized = {
-        "Cpf": re.sub(r"[^0-9]", "", record["Cpf"]),
-        "Name": normalize_text(record["Name"]),   # ✅ normaliza corretamente
-        "Birthdate": record["Birthdate"].strip(),
-        "Cep": re.sub(r"[^0-9]", "", record["Cep"]),
-        "Gender": record["Gender"].strip().upper()[0],  # Apenas inicial
+        "CPF": re.sub(r"[^0-9]", "", record["CPF"]),
+        "NAME": normalize_text(record["NAME"]),
+        "BIRTHDATE": record["BIRTHDATE"].strip(),
+        "CEP": re.sub(r"[^0-9]", "", record["CEP"]),
+        "GENDER": record["GENDER"].strip().upper()[0],
     }
+
 
     df = pd.concat([df, pd.DataFrame([normalized])], ignore_index=True)
     save_clients(df, path)
     return True, ""
 
 
-def append_batch_clients(df_new: pd.DataFrame, path: str = CLIENTS_RAW) -> tuple[int, list[tuple[int, str]]]:
+def append_batch_clients(df_new: pd.DataFrame, path: str = CLIENTS_RAW) -> tuple[int, list[dict]]:
     """
     Adiciona clientes em lote a partir de um DataFrame.
-    - Valida linha por linha
-    - Apenas registros válidos são salvos
-    - Retorna (quantidade_adicionados, [(linha, motivo_erro), ...])
+    - Retorna (quantidade_adicionados, [ {Linha, Erro}, ... ])
     """
     df_existing = load_clients(path)
-    existing_cpfs = df_existing["Cpf"].astype(str).tolist()
+    existing_cpfs = df_existing["CPF"].astype(str).tolist()
 
     valid_rows = []
     errors = []
 
     for idx, row in df_new.iterrows():
         record = {
-            "Cpf": str(row.get("CPF", "")).strip(),
-            "Name": str(row.get("NOME", "")).strip(),
-            "Birthdate": str(row.get("DATA_NASCIMENTO", "")).strip(),
-            "Cep": str(row.get("CEP", "")).strip(),
-            "Gender": str(row.get("GENERO", "")).strip(),
+            "CPF": str(row.get("CPF", "")).strip(),
+            "NAME": str(row.get("NAME", "")).strip(),
+            "BIRTHDATE": str(row.get("BIRTHDATE", "")).strip(),
+            "CEP": str(row.get("CEP", "")).strip(),
+            "GENDER": str(row.get("GENDER", "")).strip(),
         }
 
         # 🔹 CPF
-        ok, msg = validate_cpf(record["Cpf"], existing_cpfs)
+        ok, msg = validate_cpf(record["CPF"], existing_cpfs)
         if not ok:
-            errors.append((idx + 1, msg))
+            errors.append({"Linha": idx + 1, "Erro": msg})
             continue
 
         # 🔹 Nome
-        ok, msg = validate_name(record["Name"])
+        ok, msg = validate_name(record["NAME"])
         if not ok:
-            errors.append((idx + 1, msg))
+            errors.append({"Linha": idx + 1, "Erro": msg})
             continue
 
         # 🔹 Data nascimento
-        ok, msg = validate_birthdate(record["Birthdate"])
+        ok, msg = validate_birthdate(record["BIRTHDATE"])
         if not ok:
-            errors.append((idx + 1, msg))
+            errors.append({"Linha": idx + 1, "Erro": msg})
             continue
 
         # 🔹 CEP
-        ok, msg = validate_cep(record["Cep"])
+        ok, msg = validate_cep(record["CEP"])
         if not ok:
-            errors.append((idx + 1, msg))
+            errors.append({"Linha": idx + 1, "Erro": msg})
             continue
 
         # 🔹 Gênero
-        ok, msg = validate_gender(record["Gender"])
+        ok, msg = validate_gender(record["GENDER"])
         if not ok:
-            errors.append((idx + 1, msg))
+            errors.append({"Linha": idx + 1, "Erro": msg})
             continue
 
-        # Se passou em todas as validações → normaliza e adiciona
+        # ✅ Se passou em tudo, normaliza e adiciona
         normalized = {
-            "Cpf": re.sub(r"[^0-9]", "", record["Cpf"]),
-            "Name": normalize_text(record["Name"]),
-            "Birthdate": record["Birthdate"],
-            "Cep": re.sub(r"[^0-9]", "", record["Cep"]),
-            "Gender": record["Gender"].upper()[0],  # F, M, O
+            "CPF": re.sub(r"[^0-9]", "", record["CPF"]),
+            "NAME": normalize_text(record["NAME"]),
+            "BIRTHDATE": record["BIRTHDATE"],
+            "CEP": re.sub(r"[^0-9]", "", record["CEP"]),
+            "GENDER": record["GENDER"].upper()[0],  # F, M, O
         }
 
         valid_rows.append(normalized)
-        existing_cpfs.append(normalized["Cpf"])
+        existing_cpfs.append(normalized["CPF"])
 
     # 🔹 Salva se houver válidos
     if valid_rows:
