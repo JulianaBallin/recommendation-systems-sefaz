@@ -1,0 +1,118 @@
+CHAVE_CATEGORIA,CATEGORIA
+ARROZ,Grãos e Massas
+FEIJAO,Grãos e Massas
+MACARRAO,Grãos e Massas
+FARINHA,Grãos e Massas
+TRIGO,Grãos e Massas
+AVEIA,Cereais
+CEREAL,Cereais
+LEITE,Laticínios
+QUEIJO,Laticínios
+IOGURTE,Laticínios
+MANTEIGA,Laticínios
+CREME DE LEITE,Laticínios
+REFRIGERANTE,Bebidas
+SODA,Bebidas
+COCA,Bebidas
+PEPSI,Bebidas
+GUARANA,Bebidas
+AGUA,Bebidas
+SUCO,Bebidas
+ENERGETICO,Bebidas
+CERVEJA,Bebidas Alcoólicas
+SKOL,Bebidas Alcoólicas
+BRAHMA,Bebidas Alcoólicas
+HEINEKEN,Bebidas Alcoólicas
+VODKA,Bebidas Alcoólicas
+VINHO,Bebidas Alcoólicas
+CARNE,Carnes
+FRANGO,Carnes
+PEIXE,Carnes
+BOVINA,Carnes
+SUINA,Carnes
+LINGUICA,Carnes
+SALSICHA,Carnes
+PRESUNTO,Frios
+MORTADELA,Frios
+SALAME,Frios
+MARGARINA,Frios
+BISCOITO,Salgadinhos e Biscoitos
+BOLACHA,Salgadinhos e Biscoitos
+SALGADINHO,Salgadinhos e Biscoitos
+CHOCOLATE,Doces
+BALA,Doces
+BOMBOM,Doces
+BROWNIE,Doces
+ACUCAR,Açúcar e Derivados
+MEL,Açúcar e Derivados
+OLEO,Óleos e Temperos
+AZEITE,Óleos e Temperos
+SAL,Óleos e Temperos
+PIMENTA,Óleos e Temperos
+TEMPERO,Óleos e Temperos
+CAFE,Cafés e Infusões
+CHA,Cafés e Infusões
+AROMATIZANTE,Cafés e Infusões
+PAPEL HIGIENICO,Higiene
+SABONETE,Higiene
+DETERGENTE,Limpeza
+AGUA SANITARIA,Limpeza
+AMACIANTE,Limpeza
+DESINFETANTE,Limpeza
+palavra,chave_categoria
+ARROZ,Grãos
+FEIJAO,Grãos
+LENTILHA,Grãos
+ERVILHA,Grãos
+GRÃO DE BICO,Grãos
+MACARRAO,Massas
+MASSA,Massas
+MIOJO,Massas Instantâneas
+LEITE,Laticínios
+QUEIJO,Laticínios
+IOGURTE,Laticínios
+MANTEIGA,Laticínios
+REQUEIJAO,Laticínios
+CREME DE LEITE,Laticínios
+ZERO LAC,Zero Lactose
+0 LAC,Zero Lactose
+BISCOITO,Alimento Industrializado
+BOLACHA,Alimento Industrializado
+SALGADINHO,Alimento Industrializado
+CHOCOLATE,Doces
+BALA,Doces
+PIRULITO,Doces
+MAIONESE,Condimentos
+KETCHUP,Condimentos
+MOSTARDA,Condimentos
+REFRIGERANTE,Bebidas
+SUCO,Bebidas
+SUCOS,Bebidas
+AGUA,Bebidas
+ENERGETICO,Bebidas
+CERVEJA,Bebidas
+VINHO,Bebidas
+OLEO,Óleos e Gorduras
+AZEITE,Óleos e Gorduras
+MARGARINA,Óleos e Gorduras
+AMACIANTE,Limpeza
+SABAO,Limpeza
+DETERGENTE,Limpeza
+ALCOOL,Limpeza
+DESINFETANTE,Limpeza
+SHAMPOO,Higiene
+SABONETE,Higiene
+CREME DENTAL,Higiene
+PAPEL HIGIENICO,Higiene
+FRANGO,Proteínas
+CARNE,Proteínas
+PEIXE,Proteínas
+PORCO,Proteínas
+LINGUICA,Proteínas
+OVO,Proteínas
+WHEY,Fitness
+PROTEINA,Fitness
+BARRA CEREAL,Fitness
+INTEGRAL,Fitness
+LIGHT,Fitness
+DIET,Fitness
