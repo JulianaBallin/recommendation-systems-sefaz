@@ -1,129 +1,143 @@
-# Generate/simulate client-product ratings
 import pandas as pd
 import numpy as np
-import os
 import random
+from backend.dataset import loader
 
-def create_purchase_simulator():
+class RatingSimulator:
     """
-    Gera um dataset de ratings (compras) simulando perfis de consumidores
-    para criar correlações lógicas entre produtos.
+    Simula a geração de avaliações de produtos por clientes para enriquecer o dataset.
     """
-    print("Iniciando a simulação de perfis de compra...")
 
-    # --- 1. Definir caminhos ---
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-    RAW_DATA_PATH = os.path.join(BASE_DIR, "data", "raw")
-    PROCESSED_DATA_PATH = os.path.join(BASE_DIR, "data", "processed")
-    OUTPUT_PATH = os.path.join(BASE_DIR, "data", "processed")
+    def __init__(self):
+        print("Iniciando o simulador...")
+        self.clients = loader.load_raw_clients()
+        self.products = loader.load_derived_products()
+        self.ratings = loader.load_ratings()
 
-    # --- 2. Carregar os datasets ---
-    try:
-        clients_path = os.path.join(RAW_DATA_PATH, 'clients.csv')
-        products_path = os.path.join(PROCESSED_DATA_PATH, 'products_unique.csv') # Usar a lista de produtos únicos
-        clients_df = pd.read_csv(clients_path)
-        products_df = pd.read_csv(products_path)
-    except FileNotFoundError as e:
-        print(f"Erro ao carregar arquivo: {e}. Verifique os caminhos e se os arquivos existem.")
-        return
+        if self.clients.empty or self.products.empty:
+            raise ValueError("Clientes e produtos precisam ser carregados para a simulação.")
 
-    # O products_unique.csv já é limpo e único, mas garantimos que não há descrições nulas.
-    products_df.dropna(subset=['PRODUCT_ID', 'DESCRICAO'], inplace=True)
+        # Garante que todos os CPFs tenham 11 dígitos, adicionando zeros à esquerda se necessário.
+        # Esta é uma camada de segurança para corrigir CPFs que perderam o zero inicial.
+        self.clients['CPF'] = self.clients['CPF'].astype(str).str.zfill(11)
 
-    # --- 3. Definir Perfis de Consumo (cestas de produtos) ---
-    # Mapeia palavras-chave na descrição dos produtos para um perfil
-    print("Definindo perfis de consumo...")
-    profiles = {
-        "churrasco": ["CARNE", "CERVEJA", "CARVAO", "LINGUICA", "FAROFA", "FRANGO", "REFRIGERANTE"],
-        "cafe_da_manha": ["CAFE", "PÃO", "LEITE", "MANTEIGA", "QUEIJO", "BISCOITO", "PRESUNTO", "IOGURTE"],
-        "limpeza": ["SABAO", "DETERGENTE", "AMACIANTE", "AGUA SANITARIA", "PAPEL HIGIENICO"],
-        "basicos": ["AGUA", "ARROZ", "FEIJAO", "ACUCAR", "SAL", "OLEO", "MACARRAO"],
-        "massa_molho": ["MACARRAO", "MOLHO DE TOMATE", "QUEIJO RALADO"],
-        "higiene": ["SHAMPOO", "SABONETE", "CREME DENTAL", "ESCOVA DENTAL"],
-    }
+        self.client_personas = self._create_client_personas()
+        print(f"Simulador pronto. {len(self.clients)} clientes e {len(self.products)} produtos carregados.")
 
-    product_to_profile = {}
-    for product_id, desc in zip(products_df['PRODUCT_ID'], products_df['DESCRICAO']):
-        for profile, keywords in profiles.items():
-            if any(keyword in desc.upper() for keyword in keywords):
-                if profile not in product_to_profile:
-                    product_to_profile[profile] = []
-                product_to_profile[profile].append(product_id)
-                break # Atribui ao primeiro perfil que encontrar
+    def _create_client_personas(self):
+        """
+        Cria 'personas' para cada cliente, atribuindo preferências aleatórias
+        por categorias e marcas para gerar avaliações mais coerentes.
+        """
+        print("Criando personas de clientes baseadas em perfis...")
+        personas = {}
+        available_categories = self.products['CATEGORIA'].dropna().unique().tolist()
+        available_brands = self.products['MARCA'].dropna().unique().tolist()
 
-    # --- 4. Atribuir Perfis aos Clientes ---
-    print("Atribuindo perfis de preferência aos clientes...")
-    client_cpfs = clients_df['CPF'].unique()
-    client_profiles = {}
-    available_profiles = [p for p in product_to_profile if product_to_profile[p]] # Apenas perfis que encontraram produtos
+        # Perfis de consumidor predefinidos
+        PERSONA_TEMPLATES = {
+            'familia': {'fav_cats': ['PADARIA', 'LATICINIOS', 'LIMPEZA'], 'dislike_cats': ['BEBIDAS ALCOOLICAS']},
+            'saudavel': {'fav_cats': ['HORTIFRUTI', 'CARNES'], 'dislike_cats': ['ALIMENTO INDUSTRIALIZADO']},
+            'jovem_pratico': {'fav_cats': ['ALIMENTO INDUSTRIALIZADO', 'BEBIDAS NAO ALCOOLICAS'], 'dislike_cats': ['HORTIFRUTI']},
+            'churrasqueiro': {'fav_cats': ['CARNES', 'BEBIDAS ALCOOLICAS'], 'dislike_cats': ['PADARIA']}
+        }
+        template_keys = list(PERSONA_TEMPLATES.keys())
 
-    if not available_profiles:
-        print("ERRO: Nenhum perfil de consumo encontrou produtos correspondentes. Verifique as palavras-chave e as descrições dos produtos.")
-        return
-
-    np.random.seed(25)
-    for cpf in client_cpfs:
-        # Cada cliente terá de 1 a 3 perfis de preferência
-        num_profiles = np.random.randint(1, 4)
-        client_profiles[cpf] = np.random.choice(available_profiles, size=num_profiles, replace=False).tolist()
-
-    # --- 5. Gerar as Compras (Ratings) ---
-    print("Gerando transações de compra com base nos perfis...")
-    all_ratings = []
-    num_transactions_per_client = 30 # Aumentando para gerar mais dados para o teste de acurácia
-
-    for cpf, preferred_profiles in client_profiles.items():
-        for _ in range(num_transactions_per_client):
-            # Escolhe um dos perfis preferidos para esta "ida ao mercado"
-            current_profile = np.random.choice(preferred_profiles)
+        for cpf in self.clients['CPF']:
+            # Atribui um perfil base para o cliente
+            template_key = random.choice(template_keys)
+            template = PERSONA_TEMPLATES[template_key]
             
-            # Pega os produtos daquele perfil
-            products_in_profile = product_to_profile.get(current_profile, [])
-            if not products_in_profile:
+            persona = {'categories': {}, 'brands': {}}
+
+            # Define afinidades com base no template
+            for cat in template['fav_cats']:
+                if cat in available_categories:
+                    persona['categories'][cat] = random.uniform(0.8, 1.5) # Gosta muito
+            for cat in template['dislike_cats']:
+                if cat in available_categories:
+                    persona['categories'][cat] = random.uniform(-1.5, -0.8) # Não gosta
+
+            # Adiciona uma preferência de marca aleatória para individualizar
+            if available_brands:
+                fav_brand = random.choice(available_brands)
+                persona['brands'][fav_brand] = random.uniform(0.5, 1.0)
+
+            personas[cpf] = persona
+        return personas
+
+    def _generate_single_rating(self, client_cpf, product_id):
+        """
+        Gera uma única avaliação com base na persona do cliente e no produto.
+        """
+        persona = self.client_personas.get(client_cpf)
+        product = self.products[self.products['ID'] == product_id].iloc[0]
+
+        base_rating = 3 # Ponto de partida neutro
+
+        # Ajusta a nota com base nas afinidades da persona
+        if persona:
+            base_rating += persona['categories'].get(product['CATEGORIA'], 0) * 1.5 # Aumenta o impacto da categoria
+            base_rating += persona['brands'].get(product['MARCA'], 0) * 1.2   # Aumenta o impacto da marca
+        
+        # Adiciona um pouco de ruído para não ser determinístico
+        # O ruído agora é menos frequente, para fortalecer o sinal da persona.
+        noise = random.choice([-1, 0, 0, 0, 1])
+        final_rating = round(base_rating) + noise
+
+        # Garante que a nota final esteja entre 1 e 5
+        return int(max(1, min(5, final_rating)))
+
+    def generate_new_ratings(self, num_ratings: int):
+        """
+        Gera um lote de novas avaliações e as salva no arquivo.
+        """
+        print(f"Gerando {num_ratings} novas avaliações...")
+        new_ratings = []
+        
+        # Cria um set de (cpf, produto_id) para checagem rápida de duplicatas
+        existing_pairs = set(
+            tuple(row) for row in self.ratings[['CPF_CLIENTE', 'ID_PRODUTO']].itertuples(index=False)
+        )
+
+        attempts = 0
+        while len(new_ratings) < num_ratings and attempts < num_ratings * 5:
+            attempts += 1
+            
+            client_cpf = random.choice(self.clients['CPF'].tolist())
+            product_id = random.choice(self.products['ID'].tolist())
+
+            # Evita gerar uma avaliação que já existe
+            if (client_cpf, str(product_id)) in existing_pairs:
                 continue
 
-            # Cliente compra entre 2 e 5 itens do perfil escolhido
-            num_items_to_buy = np.random.randint(2, min(7, len(products_in_profile) + 1))
-            products_bought_ids = np.random.choice(products_in_profile, size=num_items_to_buy, replace=False)
+            rating_value = self._generate_single_rating(client_cpf, product_id)
 
-            # Adiciona um "ruído": 20% de chance de comprar um item aleatório fora do perfil
-            if random.random() < 0.2:
-                all_product_ids = products_df['PRODUCT_ID'].tolist()
-                random_product = random.choice(all_product_ids)
-                products_bought_ids = np.append(products_bought_ids, random_product)
+            new_entry = {
+                "CPF_CLIENTE": client_cpf,
+                "ID_PRODUTO": product_id,
+                "RATING_DESCRICAO": rating_value,
+                "RATING_CATEGORIA": None, # Simulador foca na avaliação principal
+                "RATING_MARCA": None,
+            }
+            new_ratings.append(new_entry)
+            existing_pairs.add((client_cpf, str(product_id)))
 
-            for product_id in products_bought_ids:
-                # A quantidade (rating) será entre 1 e 5
-                quantity = np.random.randint(1, 6)
-                all_ratings.append({
-                    "CPF": cpf,
-                    "PRODUCT_ID": product_id,
-                    "RATING": quantity
-                })
+        if not new_ratings:
+            print("Nenhuma nova avaliação foi gerada. O dataset pode estar saturado.")
+            return 0
 
-    if not all_ratings:
-        print("Nenhum rating foi gerado. Verifique os perfis e descrições dos produtos.")
-        return
+        # Concatena as novas avaliações com as existentes e salva
+        new_ratings_df = pd.DataFrame(new_ratings)
+        updated_ratings = pd.concat([self.ratings, new_ratings_df], ignore_index=True)
+        
+        # Usa a função do loader para garantir a consistência e salvar
+        loader.save_ratings(updated_ratings)
 
-    # --- 6. Agregar e Salvar ---
-    print("Agregando e salvando o dataset de ratings...")
-    ratings_df = pd.DataFrame(all_ratings)
-
-    # Agrupa para somar as quantidades, simulando múltiplas compras do mesmo item
-    final_ratings_df = ratings_df.groupby(['CPF', 'PRODUCT_ID'])['RATING'].sum().reset_index()
-
-    # Salva o dataframe final
-    output_file = os.path.join(OUTPUT_PATH, 'ratings.csv')
-    final_ratings_df.to_csv(output_file, index=False)
-
-    print("\n" + "="*80)
-    print(f"Arquivo 'ratings.csv' gerado com sucesso em '{OUTPUT_PATH}'!")
-    print(f"Total de ratings (interações cliente-produto) criados: {len(final_ratings_df)}")
-    print("\nAmostra do novo dataset de ratings:")
-    print(final_ratings_df.head())
-    print("="*80 + "\n")
-
-if __name__ == "__main__":
-    # Para executar este script, use o comando:
-    # python backend/dataset/purchase_simulator.py
-    create_purchase_simulator()
+        added_count = len(new_ratings)
+        print("-" * 30)
+        print(f"✅ Simulação concluída!")
+        print(f"Adicionadas {added_count} novas avaliações.")
+        print(f"Total de avaliações agora: {len(updated_ratings)}")
+        print("-" * 30)
+        return added_count
