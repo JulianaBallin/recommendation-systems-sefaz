@@ -1,97 +1,58 @@
-import os
-import pandas as pd
-from fastapi import FastAPI, HTTPException
 from contextlib import asynccontextmanager
+from fastapi import FastAPI, HTTPException
+from backend.dataset import loader
+from backend.recommender.collaborative import CollaborativeFilteringRecommender
+import pandas as pd
 
-from backend.recommender.collaborative import CollaborativeRecommender
-
-# --- Configuração Inicial ---
-
-# Dicionário para armazenar objetos carregados (recommender, dataframes)
-ml_models = {}
+# --- Carregamento e Preparação do Modelo ---
+recommender_instance = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Função executada na inicialização da API para carregar os modelos e dados.
-    """
-    print("Carregando recursos da API...")
-    # Define os caminhos para os datasets
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    PROCESSED_DATA_PATH = os.path.join(BASE_DIR, "data", "processed")
-    
-    ratings_path = os.path.join(PROCESSED_DATA_PATH, 'ratings.csv')
-    products_path = os.path.join(PROCESSED_DATA_PATH, 'products_unique.csv')
-
-    # Verifica se os arquivos de dados existem e não estão vazios antes de carregar
-    ratings_ok = os.path.exists(ratings_path) and os.path.getsize(ratings_path) > 0
-    products_ok = os.path.exists(products_path) and os.path.getsize(products_path) > 0
-
-    if not ratings_ok or not products_ok:
-        print("\n" + "="*80)
-        print("ERRO: Arquivos de dados não encontrados!")
-        print(f"Verifique se '{os.path.basename(ratings_path)}' e '{os.path.basename(products_path)}' existem em 'data/processed/'.")
-        print("Para gerar os dados necessários, execute o seguinte comando no terminal:")
-        print("python backend/dataset/simulator.py")
-        print("="*80 + "\n")
-        # Impede a API de iniciar se os dados não estiverem prontos
-        raise FileNotFoundError("Arquivos de dados essenciais ausentes. Execute o simulador.")
-
-    # Carrega os dataframes com tratamento de erro para arquivos vazios
-    ratings_df = pd.read_csv(ratings_path, on_bad_lines='skip')
-    products_df = pd.read_csv(products_path, on_bad_lines='skip')
-    
-    # Instancia e prepara o recomendador
-    recommender = CollaborativeRecommender(ratings_df, products_df)
-    recommender.train() # "Treina" o modelo com os dados completos
-    ml_models["recommender"] = recommender
-    print("Recursos carregados com sucesso!")
+    """Carrega os dados e inicializa o recomendador na inicialização da API."""
+    global recommender_instance
+    print("🚀 Iniciando o serviço de recomendação...")
+    try:
+        ratings_df = loader.load_ratings()
+        if not ratings_df.empty:
+            recommender_instance = CollaborativeFilteringRecommender(ratings_df)
+            recommender_instance.train() # Chama o treinamento explicitamente
+            print("✅ Serviço de recomendação iniciado e modelo treinado.")
+        else:
+            print("⚠️ Aviso: Nenhum dado de avaliação encontrado. O serviço de recomendação está inativo.")
+    except Exception as e:
+        print(f"❌ Erro ao iniciar o serviço de recomendação: {e}")
     
     yield
-    
-    # Limpa os recursos ao finalizar a API (opcional)
-    ml_models.clear()
-    print("Recursos da API liberados.")
+    # Código para limpeza ao desligar a API (se necessário)
+    print("🛑 Serviço de recomendação finalizado.")
 
+app = FastAPI(
+    title="Recommendation Service API",
+    description="API para gerar recomendações de produtos com base em Filtragem Colaborativa.",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
-app = FastAPI(lifespan=lifespan)
-
-# --- Endpoints da API ---
-
-@app.get("/")
-def read_root():
-    return {"message": "API do Sistema de Recomendação no ar!"}
-
-@app.get("/recommend/products/{user_cpf}")
-def get_product_recommendations(user_cpf: str, n: int = 10):
+@app.get("/recommend/{cpf_cliente}", tags=["Recommendations"])
+def get_recommendations(cpf_cliente: str, n_items: int = 5):
     """
-    Endpoint para obter recomendações de produtos para um usuário.
+    Gera recomendações de produtos para um cliente específico e avalia a acurácia.
     """
-    recommender = ml_models.get("recommender")
-    if not recommender:
-        raise HTTPException(status_code=503, detail="Recomendador não está pronto.")
-    
-    recommendations = recommender.recommend_products_for_user(user_cpf, n)
-    
-    if recommendations.empty:
-        raise HTTPException(status_code=404, detail=f"Usuário com CPF {user_cpf} não encontrado ou sem recomendações possíveis.")
+    if recommender_instance is None:
+        raise HTTPException(status_code=503, detail="Serviço de recomendação indisponível (sem dados).")
+
+    try:
+        # Gera recomendações
+        recommended_ids = recommender_instance.recommend_items(cpf_cliente, n_items)
         
-    return recommendations.to_dict(orient="records")
+        # Avalia a acurácia
+        accuracy_report = recommender_instance.evaluate_accuracy(cpf_cliente)
 
-@app.get("/recommend/similar-products/{product_id}")
-def get_similar_product_recommendations(product_id: str, n: int = 5):
-    """
-    Endpoint para obter recomendações de produtos similares a um produto específico (Item-Item).
-    """
-    recommender = ml_models.get("recommender")
-    if not recommender:
-        raise HTTPException(status_code=503, detail="Recomendador não está pronto.")
-
-    # Converte product_id para o tipo correto se necessário (depende do dataset)
-    # No nosso caso, o PRODUCT_ID é numérico.
-    recommendations = recommender.recommend_similar_products(product_id, n)
-
-    if recommendations.empty:
-        raise HTTPException(status_code=404, detail=f"Produto com ID {product_id} não encontrado ou sem produtos similares.")
-
-    return recommendations.to_dict(orient="records")
+        return {
+            "cpf_cliente": cpf_cliente,
+            "recommendations": recommended_ids,
+            "accuracy_report": accuracy_report
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro interno ao processar a recomendação: {str(e)}")

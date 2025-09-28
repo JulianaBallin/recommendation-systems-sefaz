@@ -1,188 +1,163 @@
 import pandas as pd
-from sklearn.metrics.pairwise import pairwise_distances
+import numpy as np
+import os
+import json
+from sklearn.model_selection import train_test_split
+from surprise import Dataset, Reader, SVDpp
+from surprise.model_selection import GridSearchCV
+from backend.recommender.metrics import evaluate_precision_at_k
 
+PARAMS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'models', 'best_svd_params.json')
 
-class CollaborativeRecommender:
+class CollaborativeFilteringRecommender:
     """
-    Implementa a lógica de recomendação baseada em filtragem colaborativa
-    (User-Based e Item-Based) usando a Correlação de Pearson.
+    Implementa um sistema de recomendação com SVD++, uma evolução do SVD
+    que considera feedback implícito para maior acurácia.
     """
-
-    def __init__(self, ratings_df: pd.DataFrame, products_df: pd.DataFrame):
-        """
-        Inicializa o recomendador com os dataframes necessários.
-
-        Args:
-            ratings_df (pd.DataFrame): DataFrame com colunas ['CPF', 'PRODUCT_ID', 'RATING'].
-            products_df (pd.DataFrame): DataFrame com detalhes dos produtos, incluindo ['PRODUCT_ID', 'DESCRICAO'].
-        """
-        # Garante que os IDs sejam do tipo string para evitar problemas de junção (merge)
-        self.ratings_df = ratings_df.copy()
-        self.products_df = products_df.copy()
-
-        self.ratings_df['PRODUCT_ID'] = self.ratings_df['PRODUCT_ID'].astype(str)
-        self.products_df['PRODUCT_ID'] = self.products_df['PRODUCT_ID'].astype(str)
-
-        # Inicializa os dataframes como vazios. Serão preenchidos pelo método train().
-        self.user_item_matrix = pd.DataFrame()
-        self.user_similarity_df = pd.DataFrame()
-        self.item_similarity_df = pd.DataFrame()
+    def __init__(self, ratings_df: pd.DataFrame):
+        if ratings_df.empty:
+            raise ValueError("O DataFrame de avaliações não pode estar vazio.")
+        
+        self.ratings_df = ratings_df.copy() # Armazena os dados brutos
+        self.svd_model = None
+        self.best_params = {}
 
     def train(self):
         """
-        Prepara a matriz de utilidade (usuário-item) e a matriz de similaridade entre usuários.
-        Este método "treina" o modelo com os dados fornecidos no construtor.
+        Otimiza hiperparâmetros (se necessário) e treina o modelo SVD++ com os dados fornecidos.
         """
-        print("Criando a matriz usuário-item...")
-        # Cria a matriz de utilidade, onde linhas são usuários (CPF) e colunas são produtos (PRODUCT_ID)
-        self.user_item_matrix = self.ratings_df.pivot_table(
-            index='CPF',
-            columns='PRODUCT_ID',
-            values='RATING'
-        ).fillna(0)
+        # Garante que os tipos de dados estão corretos
+        self.ratings_df['RATING_DESCRICAO'] = pd.to_numeric(self.ratings_df['RATING_DESCRICAO'], errors='coerce')
+        self.ratings_df.dropna(subset=['CPF_CLIENTE', 'ID_PRODUTO', 'RATING_DESCRICAO'], inplace=True)
 
-        print("Calculando a similaridade entre usuários (Correlação de Pearson)...")
-        # Calcula a distância de correlação (1 - Pearson) e converte para similaridade
-        # Usamos pairwise_distances por ser computacionalmente eficiente
-        user_similarity_matrix = 1 - pairwise_distances(self.user_item_matrix.values, metric='correlation')
-
-        # Converte a matriz de similaridade para um DataFrame para fácil consulta
-        self.user_similarity_df = pd.DataFrame(
-            user_similarity_matrix,
-            index=self.user_item_matrix.index,
-            columns=self.user_item_matrix.index
-        )
+        # Prepara os dados para o formato da biblioteca Surprise
+        reader = Reader(rating_scale=(1, 5))
+        data = Dataset.load_from_df(self.ratings_df[['CPF_CLIENTE', 'ID_PRODUTO', 'RATING_DESCRICAO']], reader)
         
-        print("Calculando a similaridade entre itens (Similaridade de Cosseno)...")
-        # Para a similaridade de itens (Item-Item), usamos a Similaridade de Cosseno.
-        # Primeiro, binarizamos a matriz: 1 se o cliente comprou o produto, 0 caso contrário.
-        item_user_matrix_binary = (self.user_item_matrix.T > 0).astype(bool)
+        # 1. Otimiza os hiperparâmetros apenas se não estiverem em memória
+        if not self.best_params and not os.path.exists(PARAMS_FILE):
+            print("Otimizando hiperparâmetros do modelo SVD++ (pode demorar)...")
+            param_grid = {
+                'n_factors': [50, 80, 100],      # Testar mais fatores latentes
+                'n_epochs': [20, 30],           # Mais iterações para convergência
+                'lr_all': [0.005, 0.01],      # Taxas de aprendizado variadas
+                'reg_all': [0.02, 0.05, 0.1]  # Termos de regularização para evitar overfitting
+            }
+            gs = GridSearchCV(SVDpp, param_grid, measures=['rmse', 'mae'], cv=3, joblib_verbose=2)
+            gs.fit(data)
+
+            self.best_params = gs.best_params['rmse']
+            
+            # Salva os melhores parâmetros em um arquivo JSON
+            models_dir = os.path.dirname(PARAMS_FILE)
+            if not os.path.exists(models_dir):
+                os.makedirs(models_dir)
+            with open(PARAMS_FILE, 'w') as f:
+                json.dump(self.best_params, f)
+
+            print(f"Melhores parâmetros encontrados e salvos (RMSE: {gs.best_score['rmse']:.4f}):", self.best_params)
         
-        # A distância de Cosseno é 1 - similaridade. Então, para obter a similaridade, fazemos 1 - distância.
-        item_similarity_matrix = 1 - pairwise_distances(item_user_matrix_binary.values, metric='cosine')
+        elif not self.best_params:
+            print("Carregando hiperparâmetros otimizados de arquivo...")
+            with open(PARAMS_FILE, 'r') as f:
+                self.best_params = json.load(f)
+            print("Parâmetros carregados:", self.best_params)
 
-        self.item_similarity_df = pd.DataFrame(
-            item_similarity_matrix,
-            index=self.user_item_matrix.columns,
-            columns=self.user_item_matrix.columns
-        )
+        # 2. Treina o modelo final com os melhores parâmetros
+        print("Treinando o modelo com os melhores parâmetros...")
+        self.svd_model = SVDpp(**self.best_params, random_state=42)
+        
+        # Constrói o conjunto de treino com todos os dados
+        full_trainset = data.build_full_trainset()
+        self.svd_model.fit(full_trainset)
 
-    def get_similar_users(self, user_cpf: str, n: int = 5):
+    def _get_popular_items(self, n: int = 10):
+        """Retorna os N itens mais populares com base na média de avaliação."""
+        item_popularity = self.ratings_df.groupby('ID_PRODUTO')['RATING_DESCRICAO'].mean()
+        # Ordena pela nota média e pega os N melhores
+        popular_items = item_popularity.sort_values(ascending=False).head(n).index.tolist()
+        return popular_items
+
+    def recommend_items(self, user_cpf: str, n_recommendations: int = 5):
         """
-        Encontra os 'n' usuários mais similares a um usuário específico.
-
-        Args:
-            user_cpf (str): O CPF do usuário de referência.
-            n (int): O número de usuários similares a retornar.
-
-        Returns:
-            list: Uma lista de tuplas (cpf_similar, pontuacao_similaridade).
+        Gera recomendações para um usuário específico.
         """
-        if user_cpf not in self.user_similarity_df.index:
+        if self.svd_model is None:
             return []
 
-        # Obtém a série de similaridades para o usuário, remove o próprio usuário e ordena
-        similar_users = self.user_similarity_df[user_cpf].drop(user_cpf).sort_values(ascending=False)
+        # Pega todos os IDs de produtos
+        all_item_ids = self.ratings_df['ID_PRODUTO'].unique()
 
-        return list(similar_users.head(n).items())
+        # Itens que o usuário já viu (para não recomendar de novo)
+        seen_items = self.ratings_df[self.ratings_df['CPF_CLIENTE'] == user_cpf]['ID_PRODUTO'].unique()
 
-    def recommend_products_for_user(self, user_cpf: str, n: int = 10):
-        """
-        Recomenda 'n' produtos para um usuário com base nos gostos de usuários similares.
+        # Itens a serem previstos (todos menos os que o usuário já viu)
+        items_to_predict = np.setdiff1d(all_item_ids, seen_items)
 
-        Args:
-            user_cpf (str): O CPF do usuário para quem gerar recomendações.
-            n (int): O número de produtos a recomendar.
+        # Prevê a nota para cada item não visto
+        predictions = [self.svd_model.predict(user_cpf, item_id) for item_id in items_to_predict]
 
-        Returns:
-            pd.DataFrame: DataFrame com os produtos recomendados e seus detalhes.
-        """
-        if self.user_item_matrix.empty:
-            raise RuntimeError("O modelo não foi treinado. Chame o método `train()` primeiro.")
-
-        if user_cpf not in self.user_item_matrix.index:
-            return pd.DataFrame(columns=['PRODUCT_ID', 'DESCRICAO', 'predicted_rating'])
-
-        # 1. Encontra os usuários mais similares (vizinhos)
-        similar_users = self.user_similarity_df[user_cpf].drop(user_cpf).sort_values(ascending=False)
-        # Filtra apenas vizinhos com similaridade positiva
-        similar_users = similar_users[similar_users > 0]
-
-        if similar_users.empty:
-            return pd.DataFrame(columns=['PRODUCT_ID', 'DESCRICAO', 'predicted_rating'])
-
-        # 2. Identifica os produtos que o usuário alvo ainda não comprou
-        target_user_items = self.user_item_matrix.loc[user_cpf]
-        unrated_items = target_user_items[target_user_items == 0].index
-
-        # 3. Calcula a pontuação prevista para cada produto não comprado
-        # Ponderando as avaliações dos vizinhos pela similaridade
-        predicted_ratings = {}
-        for item in unrated_items:
-            # Pega as avaliações dos vizinhos para este item
-            neighbor_ratings = self.user_item_matrix.loc[similar_users.index, item]
-            # Pega a similaridade desses vizinhos
-            neighbor_similarities = similar_users
-            
-            # Numerador: soma(similaridade * rating do vizinho)
-            weighted_sum = (neighbor_similarities * neighbor_ratings).sum()
-            # Denominador: soma(similaridade dos vizinhos que avaliaram o item)
-            similarity_sum = neighbor_similarities[neighbor_ratings > 0].sum()
-            
-            if similarity_sum > 0:
-                predicted_ratings[item] = weighted_sum / similarity_sum
-
-        # 4. Formata e retorna o resultado
-        recommendations_df = pd.DataFrame.from_dict(predicted_ratings, orient='index', columns=['predicted_rating'])
-        recommendations_df = recommendations_df.sort_values('predicted_rating', ascending=False).head(n)
+        # Ordena as recomendações pela pontuação ponderada
+        predictions.sort(key=lambda x: x.est, reverse=True)
         
-        # Junta com os detalhes dos produtos
-        recommendations_df = recommendations_df.merge(
-            self.products_df,
-            left_index=True,
-            right_on='PRODUCT_ID'
+        recommended_items = [{'id': pred.iid, 'score': pred.est} for pred in predictions]
+
+        # --- MELHORIA: Fallback para itens populares ---
+        # Se não geramos recomendações suficientes, completamos com os mais populares
+        if len(recommended_items) < n_recommendations:
+            # Itens que o usuário já viu ou que já foram recomendados
+            exclude_items = set(seen_items) | {item['id'] for item in recommended_items}
+            
+            popular_items = self._get_popular_items(n=n_recommendations * 2) # Pega mais para ter margem
+            fallback_items = [item for item in popular_items if item not in exclude_items]
+            
+            needed = n_recommendations - len(recommended_items)
+            recommended_items.extend([{'id': item_id, 'score': 0} for item_id in fallback_items[:needed]]) # Score 0 para fallback
+        
+        # --- MELHORIA 2: Fallback para os itens favoritos do próprio usuário (Recompra) ---
+        # Se, mesmo após os fallbacks, não houver recomendações suficientes (cenário de saturação),
+        # preenchemos com os itens mais bem avaliados pelo próprio usuário.
+        if len(recommended_items) < n_recommendations:
+            user_ratings = self.ratings_df[self.ratings_df['CPF_CLIENTE'] == user_cpf]
+            user_top_rated = user_ratings.sort_values(by="RATING_DESCRICAO", ascending=False)
+            
+            current_rec_ids = {item['id'] for item in recommended_items}
+            fallback_favorites = [item for item in user_top_rated['ID_PRODUTO'].tolist() if item not in current_rec_ids]
+            needed = n_recommendations - len(recommended_items)
+            recommended_items.extend([{'id': item_id, 'score': 0} for item_id in fallback_favorites[:needed]])
+        
+        return recommended_items[:n_recommendations]
+
+    def evaluate_accuracy(self, user_cpf: str):
+        """
+        Avalia a acurácia das recomendações para um usuário, conforme a metodologia solicitada.
+        """
+        user_ratings = self.ratings_df[self.ratings_df['CPF_CLIENTE'] == user_cpf]
+
+        # Requer um número mínimo de avaliações para uma avaliação significativa
+        if len(user_ratings) < 4:
+            return {
+                "precision_at_k": 0, "hits": 0, "total_recommended": 10,
+                "message": "Avaliação de acurácia não disponível (poucas avaliações)."
+            }
+
+        # 1. Divide os dados do usuário em treino e teste (gabarito)
+        train_data, test_data = train_test_split(user_ratings, test_size=0.5, random_state=42)
+
+        # Extrai os IDs dos itens usados no conjunto de treino da simulação
+        training_item_ids = train_data['ID_PRODUTO'].tolist()
+
+        # Cria e treina um modelo temporário isolado, usando os melhores parâmetros já encontrados.
+        temp_ratings_df = pd.concat([self.ratings_df[self.ratings_df['CPF_CLIENTE'] != user_cpf], train_data])
+        temp_recommender = CollaborativeFilteringRecommender(temp_ratings_df)
+        temp_recommender.best_params = self.best_params # Garante que use os mesmos parâmetros
+        temp_recommender.train() # Treina o modelo temporário
+
+        # 2. Chama a função de avaliação modularizada
+        return evaluate_precision_at_k(
+            recommender=temp_recommender,
+            user_cpf=user_cpf,
+            test_data=test_data,
+            training_item_ids=training_item_ids,
+            n_evaluation_recs=10
         )
-
-        return recommendations_df[['PRODUCT_ID', 'DESCRICAO', 'predicted_rating']]
-
-    def recommend_similar_products(self, product_id: str, n: int = 10):
-        """
-        Encontra 'n' produtos mais similares a um produto específico (Item-Item).
-
-        Args:
-            product_id (int): O ID do produto de referência.
-            n (int): O número de produtos similares a retornar.
-
-        Returns:
-            pd.DataFrame: DataFrame com os produtos similares e seus detalhes.
-        """
-        if self.item_similarity_df.empty:
-            raise RuntimeError("O modelo não foi treinado. Chame o método `train()` primeiro.")
-
-        # Garante que o ID do produto seja string para a busca
-        product_id = str(product_id)
-
-        if product_id not in self.item_similarity_df.index:
-            return pd.DataFrame(columns=['PRODUCT_ID', 'DESCRICAO', 'similarity_score'])
-
-        # Obtém a série de similaridades para o produto, remove o próprio produto e ordena
-        similar_items = self.item_similarity_df[product_id].drop(product_id).sort_values(ascending=False)
-
-        # Pega os 'n' produtos mais similares
-        top_n_similar_items = similar_items.head(n)
-
-        # Formata o resultado em um DataFrame e renomeia as colunas
-        similar_products_df = pd.DataFrame(top_n_similar_items).reset_index()
-        similar_products_df.columns = ['PRODUCT_ID', 'similarity_score']
-
-        # Junta com os detalhes dos produtos para obter a descrição
-        recommendations = similar_products_df.merge(self.products_df[['PRODUCT_ID', 'DESCRICAO']], on='PRODUCT_ID')
-
-        # Filtra para remover qualquer produto que tenha a mesma descrição do produto original
-        original_product_description = self.products_df.loc[self.products_df['PRODUCT_ID'] == product_id, 'DESCRICAO'].iloc[0]
-        recommendations = recommendations[recommendations['DESCRICAO'] != original_product_description]
-
-        # Garante que o resultado final ainda tenha no máximo 'n' itens após a filtragem
-        recommendations = recommendations.head(n)
-
-        return recommendations[['PRODUCT_ID', 'DESCRICAO', 'similarity_score']]
