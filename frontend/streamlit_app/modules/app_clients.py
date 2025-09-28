@@ -61,11 +61,11 @@ def run():
                 ui.show_error("Você deve selecionar o gênero.")
             else:
                 cliente = {
-                    "Cpf": cpf.strip(),
-                    "Name": nome.strip(),
-                    "Birthdate": nascimento.strip(),
-                    "Cep": cep.strip(),
-                    "Gender": genero,
+                    "CPF": cpf.strip(),
+                    "NAME": nome.strip(),
+                    "BIRTHDATE": nascimento.strip(),
+                    "CEP": cep.strip(),
+                    "GENDER": genero,
                 }
                 ok, msg = client_loader.append_client(cliente)
 

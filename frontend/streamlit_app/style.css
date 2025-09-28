@@ -205,6 +205,16 @@ div[data-testid="stFileUploadDropzone"] button {
     background-color: #ffffff !important; /* branco */
 }
 
+div[data-testid="stMetricValue"] {
+    color: #2e453b !important; /* Verde escuro, cor do seu tema */
+    font-size: 2.5rem !important; /* Aumenta um pouco o tamanho do número */
+}
+
+/* Força a cor do rótulo (label) da métrica, se necessário */
+div[data-testid="stMetricLabel"] {
+    color: #362828 !important; /* Cor de texto padrão */
+}
+
 
 /* ===== Títulos ===== */
 h1 {
@@ -214,7 +224,7 @@ h1 {
     text-align: center !important;
     margin-bottom: 25px !important;
 }
-h2, h3, h4 {
+h2, h3, h4, h5 {
     color: #2e453b !important;
     font-weight: 700 !important;
     margin-top: 20px !important;
