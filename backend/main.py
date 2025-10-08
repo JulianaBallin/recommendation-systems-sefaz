@@ -56,3 +56,19 @@ def get_recommendations(cpf_cliente: str, n_items: int = 5):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno ao processar a recomendação: {str(e)}")
+
+@app.get("/evaluate_system", tags=["Evaluation"])
+def evaluate_system_performance():
+    """
+    Executa uma avaliação completa do sistema, calculando a acurácia média (Precision@k)
+    para todos os usuários elegíveis.
+    """
+    if recommender_instance is None:
+        raise HTTPException(status_code=503, detail="Serviço de recomendação indisponível (sem dados).")
+
+    try:
+        # Avalia a acurácia média do sistema
+        system_accuracy_report = recommender_instance.evaluate_system_accuracy()
+        return system_accuracy_report
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro interno ao avaliar o sistema: {str(e)}")

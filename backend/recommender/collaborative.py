@@ -161,3 +161,32 @@ class CollaborativeFilteringRecommender:
             training_item_ids=training_item_ids,
             n_evaluation_recs=10
         )
+
+    def evaluate_system_accuracy(self, min_ratings_for_eval: int = 4):
+        """
+        Avalia a acurácia média do sistema (Precision@k) para todos os usuários elegíveis.
+
+        Args:
+            min_ratings_for_eval (int): O número mínimo de avaliações que um usuário
+                                        deve ter para ser incluído na avaliação.
+
+        Returns:
+            Um dicionário com a acurácia média e o número de usuários avaliados.
+        """
+        user_counts = self.ratings_df['CPF_CLIENTE'].value_counts()
+        eligible_users = user_counts[user_counts >= min_ratings_for_eval].index.tolist()
+
+        if not eligible_users:
+            return {"average_precision": 0, "evaluated_users_count": 0, "message": "Nenhum usuário elegível para avaliação."}
+
+        total_precision = 0
+        evaluated_count = 0
+
+        for i, user_cpf in enumerate(eligible_users):
+            print(f"Avaliando usuário {i+1}/{len(eligible_users)}: {user_cpf}")
+            report = self.evaluate_accuracy(user_cpf)
+            total_precision += report.get("precision_at_k", 0)
+            evaluated_count += 1
+        
+        average_precision = (total_precision / evaluated_count) if evaluated_count > 0 else 0
+        return {"average_precision": average_precision, "evaluated_users_count": evaluated_count}
