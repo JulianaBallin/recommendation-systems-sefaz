@@ -7,6 +7,22 @@ body, .stApp {
     line-height: 1.6 !important;
 }
 
+/* ===== Estilização da Barra de Rolagem ===== */
+/* Para navegadores Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px !important;
+}
+/* Fundo da barra de rolagem (trilha) */
+::-webkit-scrollbar-track {
+    background: #efe3d4 !important; /* Um bege um pouco mais escuro que o fundo */
+}
+/* A parte que se move (polegar) */
+::-webkit-scrollbar-thumb {
+    background-color: #a69076 !important; /* Cor de borda/sombra, para bom contraste */
+    border-radius: 10px !important;
+    border: 3px solid #efe3d4 !important; /* Cria um preenchimento ao redor do polegar */
+}
+
 /* ===== Barra lateral ===== */
 section[data-testid="stSidebar"] {
     background-color: #2e453b !important; /* fundo verde escuro */

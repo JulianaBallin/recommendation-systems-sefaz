@@ -177,7 +177,7 @@ def run():
                     report = response.json()
                     avg_precision = report.get("average_precision", 0)
                     user_count = report.get("evaluated_users_count", 0)
-                    st.success(f"Avaliação concluída para todos os **{user_count}** usuários elegíveis e disponíveis na base de dados.")
+                    st.success(f"Avaliação concluída baseada nos **{user_count}** usuários elegíveis e disponíveis na base de dados.")
                     st.metric("Acurácia Média do Sistema", f"{avg_precision:.2%}")
                 else:
                     st.error(f"Erro ao avaliar o sistema: {response.text}")
