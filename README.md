@@ -37,59 +37,67 @@ Simulação do comportamento de **clientes locais** comprando em supermercados d
 
 ## 🗂️ Arquitetura & Estrutura de Pastas
 ```
-recommendation-systems-sefaz/
+yararec/
 │
-├── data/
-│ ├── raw/
-│ │ ├── receipt_nf.csv
-│ │ └── clients.csv
-│ ├── derived/
-│ │ ├── products.csv
-│ │ ├── supermarkets_dataset.csv
-│ │ └── ratings.csv
-│ ├── dictionaries/
-│ │ ├── bairros_zonas.csv
-│ │ ├── brand_map.csv
-│ │ └── category_map.csv
-│ └── models/
-│ └── best_svd_params.json
+├── dados/
+│   ├── derivados/                          # CSVs validados e prontos para inserção no banco
+│   │   ├── produtos.csv                    # Produtos (Id_Categoria, Id_Marca, Descricao_Produto)
+│   │   ├── categorias.csv                  # Categorias de produtos
+│   │   ├── marcas.csv                      # Marcas de produtos
+│   │   ├── clientes.csv                    # Clientes (Cpf, Nome, DataNasc, Genero, Cep)
+│   │   ├── supermercados.csv               # Supermercados (Cnpj, Nome, Endereço)
+│   │   ├── nfs.csv                         # Notas fiscais (Id_Produto, Id_Supermercado, Preco, DataHora)
+│   │   └── avaliacoes_busca.csv            # Avaliações e histórico de busca dos usuários
+│   │
+│   ├── modelos/                            # Modelos e parâmetros de recomendação treinados
+│   │   └── melhores_parametros_svd.json    # Parâmetros otimizados do modelo híbrido/SVD
+│   │
+│   └── yararec.db                          # Banco de dados SQLite (persistência final)
 │
 ├── backend/
-│ ├── dataset/
-│ │ ├── loader.py
-│ │ ├── generator.py
-│ │ ├── simulator.py
-│ │ └── init.py
-│ ├── utils/
-│ │ ├── product_loader.py
-│ │ ├── client_loader.py
-│ │ ├── supermarket_loader.py
-│ │ ├── preprocessing.py
-│ │ ├── dictionaries.py
-│ │ ├── ui_messages.py
-│ │ └── similarity.py
-│ ├── recommender/
-│ │ ├── collaborative.py
-│ │ ├── content.py
-│ │ ├── hybrid.py
-│ │ ├── metrics.py
-│ │ └── init.py
-│ ├── init.py
-│ └── main.py # API (FastAPI)
+│   ├── banco_dados/                        # Controle do banco e inicialização
+│   │   ├── conexao.py                      # Cria e gerencia a engine de conexão SQLite
+│   │   └── init_db.py                      # Criação das tabelas do sistema YaraRec
+│   │
+│   ├── dados/                              # Ingestão e persistência de dados validados
+│   │   ├── carregador_dados.py             # Lê CSVs, aplica validação e insere linhas válidas
+│   │   └── __init__.py
+│   │
+│   ├── utilitarios/                        # Funções auxiliares de validação e limpeza
+│   │   ├── validacao_dados.py              # Valida formato de CPF, CNPJ, CEP, datas, texto, etc.
+│   │   ├── limpeza_dados.py                # Remove registros inconsistentes e padroniza campos
+│   │   ├── mensagens_ui.py                 # Mensagens padronizadas (sucesso, erro, alerta)
+│   │   └── similaridade.py                 # Funções de cálculo de similaridade entre usuários/produtos
+│   │
+│   ├── recomendador/                       # Implementação do motor de recomendação
+│   │   ├── colaborativo.py                 # Filtragem colaborativa
+│   │   ├── conteudo.py                     # Recomendação baseada em conteúdo
+│   │   ├── hibrido.py                      # Combinação híbrida (colab + conteúdo)
+│   │   ├── metricas.py                     # Avaliação de desempenho (precision, recall, RMSE, MAE)
+│   │   └── __init__.py
+│   │
+│   ├── __init__.py
+│   └── main.py                             # API FastAPI opcional (se desejar expor endpoints)
 │
 ├── frontend/
-│ └── streamlit_app/
-│ ├── main.py
-│ └── modules/
-│ ├── app_products.py
-│ ├── app_clients.py
-│ ├── app_ratings.py
-│ ├── app_home.py
-│ └── init.py
+│   └── aplicacao_streamlit/                # Interface interativa (3 páginas)
+│       ├── main.py                         # Menu lateral e roteamento das páginas
+│       └── modulos/
+│           ├── app_home.py                 # Página 1 — Objetivo, autores, ferramentas
+│           ├── app_dataset.py              # Página 2 — Upload de CSVs, validação e persistência
+│           ├── app_avaliacoes_recomendacoes.py  # Página 3 — Avaliações, Recomendações, Acurácia
+│           └── __init__.py
 │
-├── requirements.txt
-├── README.md
-└── .gitignore
+├── tests/                                  # Testes automatizados (unitários e integração)
+│   ├── test_validacao_dados.py             # Testes para funções de validação e limpeza
+│   ├── test_recomendador_hibrido.py        # Testes para o modelo híbrido de recomendação
+│   └── __init__.py
+│
+├── README.md                               # Descrição geral do projeto
+├── CHECKLIST.md                            # Roteiro de implementação (etapas)
+├── requirements.txt                        # Dependências do Python
+└── .gitignore                              # Arquivos e pastas ignorados pelo Git
+
 ```
 ---
 
@@ -112,7 +120,7 @@ recommendation-systems-sefaz/
 ---
 
 ## ▶️ Como Executar
-> **Pré-requisitos**: Python 3.10+, `pip` (ou **Poetry**, se preferir), e os arquivos em `data/`.
+> **Pré-requisitos**: Python 3.10+, `pip` e os arquivos em `data/`.
 
 ### 1) Backend (FastAPI)
 ```bash

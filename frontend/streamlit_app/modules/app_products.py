@@ -7,6 +7,9 @@ Interface Streamlit para gerenciar produtos:
 3. Visualizar produtos raw
 4. Visualizar produtos derivados
 """
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+
 
 import streamlit as st
 import pandas as pd

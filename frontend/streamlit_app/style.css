@@ -1,275 +1,204 @@
-/* ===== Fundo geral ===== */
+/* =========================================================
+   AMAZIA - Estilo Global com Margens Fixas
+   ========================================================= */
+
+/* ===== MARGENS FIXAS PARA TODA A PÁGINA ===== */
+/* Container principal do Streamlit */
+.main .block-container {
+    padding-left: 160px !important;
+    padding-right: 160px !important;
+    max-width: 100% !important;
+}
+
+/* Header do Streamlit também precisa das margens */
+header .decoration {
+    padding-left: 120px !important;
+    padding-right: 120px !important;
+}
+
+/* ===== Layout geral ===== */
 body, .stApp {
     background-color: #fff9f1 !important;
-    color: #362828 !important;
+    color: #2e2727 !important;
     font-family: "Segoe UI", "Arial", sans-serif !important;
-    font-size: 16px !important;
+    font-size: 18px !important;
     line-height: 1.6 !important;
 }
 
-/* ===== Barra lateral ===== */
-section[data-testid="stSidebar"] {
-    background-color: #2e453b !important; /* fundo verde escuro */
-}
-section[data-testid="stSidebar"] * {
-    color: #ffffff !important; /* força texto branco */
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-}
-
-/* ===== Inputs e caixas de seleção ===== */
-.stTextInput > div > div > input,
-.stTextArea textarea,
-.stSelectbox div[data-baseweb="select"] > div,
-.stMultiSelect div[data-baseweb="select"] > div,
-.stNumberInput input,
-.stDateInput input {
-    background-color: #efe3d4 !important; /* bege */
-    color: #362828 !important;            /* texto escuro */
-    border-radius: 8px !important;
-    border: 1px solid #a69076 !important;
-    font-size: 16px !important;
-    padding: 8px 10px !important;
-    height: auto !important;
-    min-height: 40px !important;
-}
-
-/* ===== Botões (submissão e uploader) ===== */
-div[data-testid="stFormSubmitButton"] > button,
-div[data-testid="stButton"] > button,
-button[kind="formSubmit"],
-div[data-testid="stFileUploadDropzone"] button {
-    background-color: #2e453b !important;  /* verde escuro */
-    color: #ffffff !important;             /* texto branco */
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    border-radius: 8px !important;
-    padding: 10px 24px !important;
-    margin: 10px auto !important;          /* mesmo espaçamento em cima e embaixo */
-    border: none !important;
-    cursor: pointer !important;
-    display: flex !important;              /* força flexbox */
-    justify-content: center !important;    /* centraliza horizontalmente */
-    align-items: center !important;        /* centraliza verticalmente */
-    transition: all 0.2s ease-in-out !important;
-    text-align: center !important;
-}
-
-/* Hover unificado para todos os botões */
-div[data-testid="stFormSubmitButton"] > button:hover,
-div[data-testid="stButton"] > button:hover,
-button[kind="formSubmit"]:hover,
-div[data-testid="stFileUploadDropzone"] button:hover {
-    background-color: #5c913b !important;  /* verde claro */
-    color: #ffffff !important;             /* mantém branco */
-    transform: scale(1.02) !important;
-}
-
-/* ===== Forçar estilo de texto dos botões ===== */
-div[data-testid="stFormSubmitButton"] > button p,
-div[data-testid="stButton"] > button p,
-div[data-testid="stFileUploadDropzone"] button p {
-    color: #ffffff !important;   /* texto branco */
-    font-weight: 600 !important;
-    text-align: center !important;
-    margin: 0 auto !important;
-}
-
-/* ===== Ajustar tamanho e centralizar ===== */
-div[data-testid="stFormSubmitButton"] > button,
-div[data-testid="stButton"] > button,
-div[data-testid="stFileUploadDropzone"] button {
-    width: auto !important;              /* botão só do tamanho do texto */
-    min-width: 180px !important;         /* largura mínima */
-    max-width: 250px !important;         /* largura máxima */
-    margin: 10px auto !important;        /* centraliza horizontalmente */
-    display: block !important;           /* garante centralização */
-}
-
-/* ===== Corrigir apenas o botão "Browse files" ===== */
-.stFileUploader button {
-    background-color: #2e453b !important;  /* verde escuro */
-    color: #ffffff !important;             /* texto branco */
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    border-radius: 8px !important;
-    padding: 10px 24px !important;
-    margin: 10px auto !important;          /* centraliza */
-    border: none !important;
-    cursor: pointer !important;
-    display: block !important;
-    text-align: center !important;
-    transition: all 0.2s ease-in-out !important;
-}
-
-/* Hover do Browse files */
-.stFileUploader button:hover {
-    background-color: #5c913b !important;  /* verde claro */
-    color: #ffffff !important;
-    transform: scale(1.02) !important;
-}
-
-/* Forçar texto branco dentro do Browse files */
-.stFileUploader button span,
-.stFileUploader button p {
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    text-align: center !important;
-}
-
-/* ===== Label do File Uploader (texto acima) ===== */
-.stFileUploader label[data-testid="stWidgetLabel"] {
-    background: none !important;    /* sem fundo */
-    color: #362828 !important;      /* cor de parágrafo */
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    padding: 0 !important;
-    margin-bottom: 6px !important;
-    cursor: default !important;     /* não parece botão */
-}
-
-/* ===== Dropzone do File Uploader (Browse files) ===== */
-.stFileUploader div[data-testid="stFileUploaderDropzone"] {
-    background-color: #efe3d4 !important; /* bege */
-    border: 1px dashed #a69076 !important;
-    border-radius: 8px !important;
-    color: #362828 !important;
-    text-align: center !important;
-    padding: 12px !important;
-}
-.stFileUploader div[data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #5c913b !important; /* verde no hover */
-}
-
-/* ===== Tabelas personalizadas ===== */
-.stDataFrame, .stTable {
-    background-color: #efe3d4 !important; /* bege */
-    color: #362828 !important;            /* texto escuro */
-    border-radius: 8px !important;
-    padding: 8px !important;
-}
-
-/* Cabeçalho da tabela */
-.stDataFrame th, .stTable th {
-    background-color: #2e453b !important; /* verde escuro */
-    color: #ffffff !important;            /* branco */
-    font-weight: 700 !important;
-    text-align: center !important;
-    border: 1px solid #a69076 !important;
-}
-
-/* Células da tabela */
-.stDataFrame td, .stTable td {
-    background-color: #fff9f1 !important; /* fundo claro */
-    color: #362828 !important;            /* texto escuro */
-    border: 1px solid #a69076 !important;
-    padding: 6px 10px !important;
-}
-
-/* Hover nas linhas */
-.stDataFrame tbody tr:hover td, .stTable tbody tr:hover td {
-    background-color: #dcd3c3 !important; /* bege mais escuro no hover */
-    color: #000000 !important;
-    transition: background-color 0.2s ease-in-out;
-}
-
-/* ===== Forçar estilo do st.dataframe (AgGrid/Arrow) ===== */
-[data-testid="stDataFrame"] {
-    background-color: #fff9f1 !important; /* fundo bege */
-    color: #362828 !important;            /* texto escuro */
-    border-radius: 8px !important;
-    overflow: hidden !important;
-}
-
-/* Texto dentro do dataframe */
-[data-testid="stDataFrame"] div,
-[data-testid="stDataFrame"] span {
-    color: #362828 !important;  /* texto escuro */
-    font-size: 14px !important;
-}
-
-/* Cabeçalho do dataframe */
-[data-testid="stDataFrame"] thead tr th {
-    background-color: #2e453b !important; /* verde escuro */
-    color: #ffffff !important;            /* branco */
-    font-weight: 700 !important;
-    text-align: center !important;
-}
-
-/* Linhas "zebra" para contraste */
-[data-testid="stDataFrame"] tbody tr:nth-child(even) {
-    background-color: #efe3d4 !important; /* bege claro */
-}
-[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
-    background-color: #ffffff !important; /* branco */
-}
-
-div[data-testid="stMetricValue"] {
-    color: #2e453b !important; /* Verde escuro, cor do seu tema */
-    font-size: 2.5rem !important; /* Aumenta um pouco o tamanho do número */
-}
-
-/* Força a cor do rótulo (label) da métrica, se necessário */
-div[data-testid="stMetricLabel"] {
-    color: #362828 !important; /* Cor de texto padrão */
-}
-
-
 /* ===== Títulos ===== */
-h1 {
-    color: #3e721d !important;
+h1, h2, h3, h4 {
+    color: #235334 !important;
     font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+}
+
+h1 {
     font-size: 50px !important;
     text-align: center !important;
     margin-bottom: 25px !important;
 }
-h2, h3, h4, h5 {
-    color: #2e453b !important;
-    font-weight: 700 !important;
-    margin-top: 20px !important;
-    margin-bottom: 15px !important;
+
+h2.subtitle {
+    color: #1e472e !important;
+    font-size: 30px !important;
+    text-align: left !important;
+    margin-top: 40px !important;
+    margin-bottom: 30px !important;
 }
 
-/* ===== Parágrafos e descrições ===== */
+/* ===== Parágrafos - SEM MARGENS INDIVIDUAIS ===== */
+/* Agora as margens são aplicadas no container principal */
 p, .paragraph, .stMarkdown {
-    color: #362828 !important;
-    font-size: 23px !important; /* maior fonte */
-    line-height: 1.5 !important;
+    color: #2b2525 !important;
+    font-size: 22px !important;
     text-align: justify !important;
-    margin-bottom: 18px !important;
+    line-height: 1.6 !important;
+    /* REMOVE as margens individuais */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
-/* ===== Linhas divisórias ===== */
-hr {
-    border: 1px solid #a69076 !important; /* mais suave */
-    margin: 20px 0 !important;
+/* ===== Banners e imagens ===== */
+img {
+    max-width: 100% !important;
+    height: auto !important;
 }
 
-/* ===== Mensagens ===== */
-.success-box {
+.banner-img {
+    width: 75% !important;
+    max-width: 1000px !important;
+    margin: 10 auto 30px auto !important;
+    display: block !important;
+    border-radius: 10px !important;
+}
+
+/* ===== Seção de Ferramentas ===== */
+.card-tool {
+    background-color: #2e453b !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    text-align: center !important;
+    padding: 25px 10px !important;
+    width: 95% !important;
+    height: 160px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.card-tool:hover {
+    transform: scale(1.05) !important;
+}
+
+.card-tool img {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: contain !important;
+    margin-bottom: 0px !important;
+}
+
+.card-tool p {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+}
+
+/* ===== Cores individuais ===== */
+.card-tool.github { background-color: #2e453b !important; }
+.card-tool.streamlit { background-color: #c0b301 !important; }
+.card-tool.python { background-color: #518336 !important; }
+.card-tool.csv { background-color: #ccc01d !important; }
+
+/* ===== Seção Autores - ESTILO APRIMORADO ===== */
+.author-card {
+    background: linear-gradient(135deg, #efe3d4 0%, #e8d9c5 100%) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 6px 20px rgba(44, 43, 42, 0.15) !important;
+    text-align: center !important;
+    padding: 45px 35px !important;
+    margin: 0px 0 !important; /* Remove margens laterais, usa apenas vertical */
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 3px solid #fff9f1 !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.author-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 25px rgba(235, 234, 219, 0.2) !important;
+}
+
+.author-photo {
+    width: 250px !important;
+    height: 250px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid #f1e4d3 !important;
+    margin-bottom: 25px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.author-name {
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    color: #2e453b !important;
+    margin-bottom: 20px !important;
+    text-align: center !important;
+    letter-spacing: 0.5px !important;
+}
+
+.author-link {
+    text-align: center !important;
+    line-height: 2 !important;
+    width: 100% !important;
+}
+
+.author-link a {
+    color: #3e721d !important;
+    text-decoration: none !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+    padding: 5px 10px !important;
+    border-radius: 8px !important;
+}
+
+.author-link a:hover {
+    color: #ffffff !important;
+    background-color: #3e721d !important;
+    text-decoration: none !important;
+    transform: scale(1.05) !important;
+}
+
+/* ===== Divisores ===== */
+hr.divider {
+    border: 1px solid #a69076 !important;
+    margin: 30px 0 !important;
+}
+
+/* ===== Botões padrão ===== */
+div[data-testid="stButton"] > button {
+    background-color: #2e453b !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+div[data-testid="stButton"] > button:hover {
     background-color: #5c913b !important;
-    color: #fff !important;
-    padding: 12px !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    margin: 10px 0 !important;
-}
-.error-box {
-    background-color: #c1272d !important;
-    color: #fff !important;
-    padding: 12px !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    margin: 10px 0 !important;
-}
-.info-box {
-    background-color: #393839 !important;
-    color: #fff !important;
-    padding: 12px !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    margin: 10px 0 !important;
+    transform: scale(1.03) !important;
 }
 
 /* ===== Links ===== */
@@ -278,7 +207,30 @@ a {
     font-weight: 600 !important;
     text-decoration: none !important;
 }
+
 a:hover {
     color: #2e453b !important;
     text-decoration: underline !important;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 1200px) {
+    .main .block-container {
+        padding-left: 80px !important;
+        padding-right: 80px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .main .block-container {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .main .block-container {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
 }

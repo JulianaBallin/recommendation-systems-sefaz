@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from backend.dataset import loader
-from backend.recommender.collaborative import CollaborativeFilteringRecommender
+from backend.recomendador.colaborativo import CollaborativeFilteringRecommender
 import pandas as pd
 
 # --- Carregamento e Preparação do Modelo ---

@@ -1,13 +1,25 @@
-# frontend/streamlit_app/main.py
+"""
+main.py
+Ponto de entrada do frontend do sistema AmazIA (Streamlit).
+
+Versão simplificada para exibir apenas a página inicial (Home).
+Utiliza o CSS global e o módulo app_home para renderização da interface principal.
+"""
 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-
 import streamlit as st
-from modules import app_home, app_products, app_clients, app_ratings
+
+# === Configuração de caminho para importar backend e módulos ===
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if ROOT_DIR not in sys.path:
+    sys.path.append(ROOT_DIR)
+
+from modules import app_home  # apenas a Home ativa
+
 
 # === Função para carregar CSS global ===
 def load_css():
+    """Carrega o arquivo CSS principal do sistema."""
     css_path = os.path.join(os.path.dirname(__file__), "style.css")
     if os.path.exists(css_path):
         with open(css_path) as f:
@@ -15,47 +27,16 @@ def load_css():
     else:
         st.warning("⚠️ Arquivo style.css não encontrado. Verifique o caminho.")
 
+
 # === Configuração inicial do app ===
 st.set_page_config(
-    page_title="Sistema de Recomendação de Compras Locais",
-    page_icon="📊",
+    page_title="AmazIA — Sistema de Recomendação Local",
+    page_icon="frontend/assets/logo_verde.png",
     layout="wide"
 )
 
-# 🔹 Carregar CSS global
+# === Carregar CSS global ===
 load_css()
 
-# Inicializa página se não existir
-if "page" not in st.session_state:
-    st.session_state["page"] = "menu"
-
-# Dicionário de páginas
-pages = {
-    "menu": app_home,
-    "produtos": app_products,
-    "clientes": app_clients,
-    "avaliação": app_ratings,
-}
-
-# Sidebar estilizada
-st.sidebar.markdown(
-    """
-    <div style="background-color:#2e453b; padding:15px; border-radius:8px; text-align:center;">
-        <h2 style="color:white; font-size:20px; margin:0;"> Navegação </h2>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-choice = st.sidebar.radio(
-    "",
-    ["Menu", "Produtos", "Clientes", "Avaliação"],
-    label_visibility="collapsed"  # esconde label padrão feio
-)
-
-# Atualiza estado da página
-st.session_state["page"] = choice.lower() if choice != "Menu" else "menu"
-
-# Carrega a página atual
-current_page = st.session_state["page"]
-pages[current_page].run()
+# === Renderizar Home diretamente ===
+app_home.run()

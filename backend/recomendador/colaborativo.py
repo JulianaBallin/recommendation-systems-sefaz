@@ -5,7 +5,7 @@ import json
 from sklearn.model_selection import train_test_split
 from surprise import Dataset, Reader, SVDpp
 from surprise.model_selection import GridSearchCV
-from backend.recommender.metrics import evaluate_precision_at_k
+from backend.recomendador.metricas import evaluate_precision_at_k
 
 PARAMS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'models', 'best_svd_params.json')
 
