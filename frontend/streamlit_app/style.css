@@ -114,21 +114,22 @@ img {
 .card-tool.python { background-color: #518336 !important; }
 .card-tool.csv { background-color: #ccc01d !important; }
 
-/* ===== Seção Autores - ESTILO APRIMORADO ===== */
+/* ===== Seção Autores - LAYOUT RETANGULAR ===== */
 .author-card {
     background: linear-gradient(135deg, #efe3d4 0%, #e8d9c5 100%) !important;
     border-radius: 20px !important;
     box-shadow: 0 6px 20px rgba(44, 43, 42, 0.15) !important;
-    text-align: center !important;
-    padding: 45px 35px !important;
-    margin: 0px 0 !important; /* Remove margens laterais, usa apenas vertical */
+    padding: 30px 25px 30px 60px !important;
+    margin: 0px 0 !important;
     width: 100% !important;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important; /* Mudei de column para row */
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important; /* Alinha à esquerda */
     border: 3px solid #fff9f1 !important;
     transition: all 0.3s ease-in-out !important;
+    gap: 30px !important; /* Espaço entre foto e informações */
+    min-height: 200px !important; /* Altura mínima para o retângulo */
 }
 
 .author-card:hover {
@@ -137,48 +138,58 @@ img {
 }
 
 .author-photo {
-    width: 250px !important;
-    height: 250px !important;
+    width: 150px !important; /* Foto menor para caber no retângulo */
+    height: 150px !important;
     border-radius: 50% !important;
     object-fit: cover !important;
     border: 3px solid #f1e4d3 !important;
-    margin-bottom: 25px !important;
+    margin-bottom: 0 !important; /* Remove margem inferior */
     box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    flex-shrink: 0 !important; /* Impede que a foto encolha */
+}
+
+.author-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; /* Alinha informações à esquerda */
+    justify-content: center !important;
+    text-align: left !important;
+    flex: 1 !important; /* Ocupa o espaço restante */
 }
 
 .author-name {
-    font-size: 26px !important;
+    font-size: 24px !important;
     font-weight: 800 !important;
     color: #2e453b !important;
-    margin-bottom: 20px !important;
-    text-align: center !important;
+    margin-bottom: 15px !important;
+    text-align: left !important; /* Alinha à esquerda */
     letter-spacing: 0.5px !important;
 }
 
 .author-link {
-    text-align: center !important;
-    line-height: 2 !important;
+    text-align: left !important; /* Alinha à esquerda */
+    line-height: 1.8 !important;
     width: 100% !important;
 }
 
 .author-link a {
     color: #3e721d !important;
     text-decoration: none !important;
-    font-size: 20px !important;
+    font-size: 16px !important; /* Texto um pouco menor */
     font-weight: 600 !important;
     transition: all 0.3s ease !important;
-    display: inline-block !important;
-    padding: 5px 10px !important;
-    border-radius: 8px !important;
+    display: block !important; /* Cada link em linha separada */
+    padding: 2px 0 !important; /* Pequeno padding vertical */
+    border-radius: 5px !important;
 }
 
 .author-link a:hover {
     color: #ffffff !important;
     background-color: #3e721d !important;
     text-decoration: none !important;
-    transform: scale(1.05) !important;
+    transform: scale(1.02) !important;
+    padding: 2px 8px !important; /* Padding horizontal no hover */
 }
-
 /* ===== Divisores ===== */
 hr.divider {
     border: 1px solid #a69076 !important;

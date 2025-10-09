@@ -92,13 +92,12 @@ def run():
         ("Juliana Ballin Lima", foto_juliana, "jbl.snf23@uea.edu.br", "https://github.com/JulianaBallin"),
         ("Lucas Carvalho dos Santos", foto_lucas, "lcds.snf23@uea.edu.br", "https://github.com/lucas-carvalho-ds"),
     ]
-
+    
     for col, (nome, foto, email, github) in zip((col1, col2), autores):
         if foto.exists():
             try:
                 foto_base64 = image_to_base64(foto)
                 if foto_base64:
-                    # Determina o tipo MIME baseado na extensão do arquivo
                     if foto.suffix.lower() in ['.jpg', '.jpeg']:
                         foto_url = f"data:image/jpeg;base64,{foto_base64}"
                     else:
@@ -106,7 +105,6 @@ def run():
                 else:
                     foto_url = foto.as_uri()
             except Exception as e:
-                st.error(f"Erro ao carregar {foto}: {e}")
                 foto_url = "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
         else:
             foto_url = "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
@@ -115,11 +113,13 @@ def run():
             f"""
             <div class="author-card">
                 <img src="{foto_url}" class="author-photo">
-                <p class="author-name">{nome}</p>
-                <p class="author-link">
-                    <a href="mailto:{email}">{email}</a><br>
-                    <a href="{github}" target="_blank">{github}</a>
-                </p>
+                <div class="author-info">
+                    <p class="author-name">{nome}</p>
+                    <div class="author-link">
+                        <a href="mailto:{email}">{email}</a>
+                        <a href="{github}" target="_blank">{github}</a>
+                    </div>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
