@@ -37,66 +37,68 @@ Simulação do comportamento de **clientes locais** comprando em supermercados d
 
 ## 🗂️ Arquitetura & Estrutura de Pastas
 ```
-yararec/
-│
-├── dados/
-│   ├── derivados/                          # CSVs validados e prontos para inserção no banco
-│   │   ├── produtos.csv                    # Produtos (Id_Categoria, Id_Marca, Descricao_Produto)
-│   │   ├── categorias.csv                  # Categorias de produtos
-│   │   ├── marcas.csv                      # Marcas de produtos
-│   │   ├── clientes.csv                    # Clientes (Cpf, Nome, DataNasc, Genero, Cep)
-│   │   ├── supermercados.csv               # Supermercados (Cnpj, Nome, Endereço)
-│   │   ├── nfs.csv                         # Notas fiscais (Id_Produto, Id_Supermercado, Preco, DataHora)
-│   │   └── avaliacoes_busca.csv            # Avaliações e histórico de busca dos usuários
-│   │
-│   ├── modelos/                            # Modelos e parâmetros de recomendação treinados
-│   │   └── melhores_parametros_svd.json    # Parâmetros otimizados do modelo híbrido/SVD
-│   │
-│   └── yararec.db                          # Banco de dados SQLite (persistência final)
-│
+📁 Estrutura limpa do projeto:
+
+recommendation-systems-sefaz/
 ├── backend/
-│   ├── banco_dados/                        # Controle do banco e inicialização
-│   │   ├── conexao.py                      # Cria e gerencia a engine de conexão SQLite
-│   │   └── init_db.py                      # Criação das tabelas do sistema YaraRec
-│   │
-│   ├── dados/                              # Ingestão e persistência de dados validados
-│   │   ├── carregador_dados.py             # Lê CSVs, aplica validação e insere linhas válidas
-│   │   └── __init__.py
-│   │
-│   ├── utilitarios/                        # Funções auxiliares de validação e limpeza
-│   │   ├── validacao_dados.py              # Valida formato de CPF, CNPJ, CEP, datas, texto, etc.
-│   │   ├── limpeza_dados.py                # Remove registros inconsistentes e padroniza campos
-│   │   ├── mensagens_ui.py                 # Mensagens padronizadas (sucesso, erro, alerta)
-│   │   └── similaridade.py                 # Funções de cálculo de similaridade entre usuários/produtos
-│   │
-│   ├── recomendador/                       # Implementação do motor de recomendação
-│   │   ├── colaborativo.py                 # Filtragem colaborativa
-│   │   ├── conteudo.py                     # Recomendação baseada em conteúdo
-│   │   ├── hibrido.py                      # Combinação híbrida (colab + conteúdo)
-│   │   ├── metricas.py                     # Avaliação de desempenho (precision, recall, RMSE, MAE)
-│   │   └── __init__.py
-│   │
 │   ├── __init__.py
-│   └── main.py                             # API FastAPI opcional (se desejar expor endpoints)
+│   ├── main.py
+│   ├── recomendador/
+│   │   ├── base.py
+│   │   ├── colaborativo.py
+│   │   ├── conteudo.py
+│   │   ├── hibrido.py
+│   │   ├── __init__.py
+│   │   └── metricas.py
+│   ├── scripts/
+│   │   └── carregador_dados.py
+│   └── utilitarios/
+│       ├── limpeza_dados.py            # remove números, pesos, símbolos
+│       ├── processamento.py            # pipeline -> raw -> processado
+│       ├── utilitarios_dicionarios.py  # dicionário de marcas detectáveis
+│       └── validacao_dados.py
+│
+├── checklist.MD
+│
+├── dataset/
+│   ├── raw/
+│   │   └── nfs.csv                     # dados simulados: descricao, supermercado
+│   ├── processado/
+│   │   ├── nfs_processadas.csv         # descrições limpas, sem duplicatas
+│   │   └── usuarios.csv                # cpf, nome, datanasc
+│   ├── produtos_base/                  # documentos usados para TF-IDF
+│   │   └── (ex: frango_perdigao.txt)
+│   ├── standardized/
+│   │   └── produtos_padronizados.csv   # id, descricao, supermercado, marca
+│   └── ratings/
+│       └── avaliacoes.csv              # cpf_usuario, id_produto, rating_produto, rating_marca
 │
 ├── frontend/
-│   └── aplicacao_streamlit/                # Interface interativa (3 páginas)
-│       ├── main.py                         # Menu lateral e roteamento das páginas
-│       └── modulos/
-│           ├── app_home.py                 # Página 1 — Objetivo, autores, ferramentas
-│           ├── app_dataset.py              # Página 2 — Upload de CSVs, validação e persistência
-│           ├── app_avaliacoes_recomendacoes.py  # Página 3 — Avaliações, Recomendações, Acurácia
-│           └── __init__.py
+│   ├── assets/
+│   │   ├── banner_titulo.png
+│   │   ├── foto_juliana.png
+│   │   ├── foto_lucas.jpg
+│   │   ├── logo_amazia.png
+│   │   ├── logo_fundo_branco.png
+│   │   ├── logo_teste.png
+│   │   └── logo_verde.png
+│   └── streamlit_app/
+│       ├── __init__.py
+│       ├── main.py
+│       ├── modules/
+│       │   ├── app_dataset.py
+│       │   ├── app_home.py
+│       │   ├── app_ratings.py
+│       │   ├── __init__.py
+│       │   └── ui_messages.py
+│       └── style.css
 │
-├── tests/                                  # Testes automatizados (unitários e integração)
-│   ├── test_validacao_dados.py             # Testes para funções de validação e limpeza
-│   ├── test_recomendador_hibrido.py        # Testes para o modelo híbrido de recomendação
-│   └── __init__.py
-│
-├── README.md                               # Descrição geral do projeto
-├── CHECKLIST.md                            # Roteiro de implementação (etapas)
-├── requirements.txt                        # Dependências do Python
-└── .gitignore                              # Arquivos e pastas ignorados pelo Git
+├── __init__.py
+├── LICENSE
+├── Makefile
+├── README.md
+├── requirements.txt
+└── run_simulator.py
 
 ```
 ---

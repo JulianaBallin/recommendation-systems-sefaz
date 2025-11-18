@@ -1,236 +1,121 @@
-"""
-limpeza_dados.py
-Responsável por aplicar regras de validação e limpeza aos arquivos CSV
-antes da inserção no banco de dados SQLite do sistema AmazIA.
-
-Cada função de limpeza recebe um DataFrame e retorna uma versão validada
-com apenas os registros aceitos.
-"""
-
-import pandas as pd
+import re
 import unicodedata
+import pandas as pd
+from datetime import datetime
 
-from backend.utilitarios.validacao_dados import (
-    validar_cpf,
-    validar_nome,
-    validar_data_nascimento,
-    validar_genero,
-    validar_cep_manaus,
-    validar_cnpj,
-    validar_texto_simples,
-    validar_descricao,
-    validar_preco,
-    validar_timestamp,
-    validar_nota_avaliacao
-)
-from frontend.streamlit_app.modules.ui_messages import (
-    show_success,
-    show_error,
-    show_warning,
-)
 
-# ============================================================
-# 🔹 Funções auxiliares gerais
-# ============================================================
-
-def _normalizar_texto(texto: str) -> str:
-    """
-    Remove acentuação, converte para minúsculas e remove espaços extras.
-    Exemplo: 'Ypê' -> 'ype'
-    """
+def remover_acentos(texto: str) -> str:
     if not isinstance(texto, str):
         return ""
-    texto = texto.strip().lower()
-    texto = unicodedata.normalize("NFKD", texto)
-    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    texto_norm = unicodedata.normalize("NFKD", texto)
+    return "".join([c for c in texto_norm if not unicodedata.combining(c)])
+
+
+def limpar_descricao(descricao: str) -> str:
+    """
+    Limpa descrições de produtos com base nas regras definidas:
+    - Remover tudo após o primeiro número (peso, volume etc.)
+    - Remover números restantes (caso fiquem)
+    - Remover acentos
+    - Remover caracteres especiais
+    - Normalizar para minúsculas
+    - Remover múltiplos espaços
+    """
+    if not isinstance(descricao, str):
+        return ""
+
+    # 1 — remover tudo após o primeiro número (peso, volume etc.)
+    descricao = re.split(r"\d", descricao)[0]
+
+    # 2 — remover acentos
+    descricao = remover_acentos(descricao)
+
+    # 3 — manter apenas letras e espaços
+    descricao = re.sub(r"[^a-zA-Z\s]", " ", descricao)
+
+    # 4 — caixa baixa
+    descricao = descricao.lower()
+
+    # 5 — remover espaços duplicados
+    descricao = re.sub(r"\s+", " ", descricao).strip()
+
+    return descricao
+
+
+def limpar_supermercado(texto: str) -> str:
+    """Remove acentos e padroniza o nome+endereço do supermercado."""
+    if not isinstance(texto, str):
+        return ""
+    texto = remover_acentos(texto)
+    texto = re.sub(r"\s+", " ", texto).strip()
     return texto
 
 
-def _limpar_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+def descricao_base(descricao: str) -> str:
     """
-    Remove linhas totalmente vazias e espaços extras nas colunas.
+    Normalização mínima generalizada:
+    - Remove tokens irrelevantes (unidades, abreviações, ruído textual).
+    - Mantém apenas as palavras que realmente identificam o produto.
     """
-    df = df.dropna(how="all")
-    df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
-    return df
+    if not isinstance(descricao, str):
+        return ""
 
+    palavras = descricao.split()
 
-def _contar_invalidos(total: int, validos: int, nome_tabela: str):
-    """Exibe resumo visual no Streamlit após validação."""
-    if total == 0:
-        show_warning(f"Nenhum registro encontrado em {nome_tabela}.")
-    elif validos == total:
-        show_success(f"Todos os {total} registros de {nome_tabela} são válidos ✅")
-    elif validos == 0:
-        show_error(f"Nenhum registro válido encontrado em {nome_tabela}. 🚨")
-    else:
-        show_warning(
-            f"{validos}/{total} registros válidos em {nome_tabela}. "
-            f"As linhas inválidas foram descartadas ⚠️"
-        )
+    # Tokens irrelevantes (geral para QUALQUER produto)
+    stopwords = {
+        "cx","pct","pc","un","po","bar","tp","lt","ml","kg","g","und","emb",
+        "pack","promo","pct","ref","sab","liq"
+    }
 
-# ============================================================
-# 🔸 Limpeza e validação por tabela
-# ============================================================
-
-def limpar_clientes(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela CLIENTES:
-    - CPF válido e único
-    - Nome sem caracteres inválidos
-    - Data de nascimento válida
-    - Gênero (F, M ou O)
-    - CEP pertencente a Manaus-AM
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    df_validos = df[
-        df["Cpf"].apply(validar_cpf)
-        & df["Nome"].apply(validar_nome)
-        & df["DataNasc"].apply(validar_data_nascimento)
-        & df["Genero"].apply(validar_genero)
-        & df["Cep"].apply(validar_cep_manaus)
+    filtrado = [
+        p for p in palavras
+        if p not in stopwords and len(p) > 1
     ]
 
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "CLIENTES")
-    return df_validos
+    return " ".join(filtrado).strip()
 
 
-def limpar_supermercados(df: pd.DataFrame) -> pd.DataFrame:
+def limpar_cpf(cpf: str) -> str:
+    """Remove qualquer coisa que não seja número."""
+    if not isinstance(cpf, str):
+        return ""
+    return re.sub(r"[^0-9]", "", cpf)
+
+
+def limpar_nome(nome: str) -> str:
+    """Remove caracteres inválidos do nome e normaliza espaços."""
+    if not isinstance(nome, str):
+        return ""
+
+    nome = nome.strip()
+    nome = re.sub(r"[^a-zA-ZÀ-ÿ\s]", "", nome)
+    nome = re.sub(r"\s+", " ", nome)
+    return nome.title()
+
+
+def limpar_data(data: str) -> str:
     """
-    Valida os dados da tabela SUPERMERCADOS:
-    - CNPJ válido
-    - CEP válido para Manaus
-    - Nome não vazio
+    Aceita formatos dd/mm/yyyy ou yyyy-mm-dd.
+    Converte tudo para formato ISO: yyyy-mm-dd
     """
-    df = _limpar_dataframe(df)
-    total = len(df)
+    if not isinstance(data, str):
+        return ""
 
-    df_validos = df[
-        df["Cnpj"].apply(validar_cnpj)
-        & df["Cep"].apply(validar_cep_manaus)
-        & df["Nome"].apply(lambda x: isinstance(x, str) and len(x.strip()) > 0)
+    data = data.strip()
+
+    formatos = [
+        "%d/%m/%Y",
+        "%Y-%m-%d",
+        "%d-%m-%Y",
+        "%Y/%m/%d"
     ]
 
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "SUPERMERCADOS")
-    return df_validos
+    for fmt in formatos:
+        try:
+            dt = datetime.strptime(data, fmt)
+            return dt.strftime("%Y-%m-%d")
+        except:
+            pass
 
-
-def limpar_categorias(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela CATEGORIA:
-    - Descricao_Categoria apenas texto
-    - Remove duplicatas ignorando acentos e capitalização
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    # Normaliza texto
-    df["Descricao_Categoria_Normalizada"] = df["Descricao_Categoria"].apply(_normalizar_texto)
-
-    df_validos = (
-        df[df["Descricao_Categoria_Normalizada"].apply(validar_texto_simples)]
-        .drop_duplicates(subset=["Descricao_Categoria_Normalizada"], keep="first")
-        .drop(columns=["Descricao_Categoria_Normalizada"])
-    )
-
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "CATEGORIA")
-    return df_validos
-
-
-def limpar_marcas(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela MARCA:
-    - Descricao_Marca apenas texto
-    - Remove duplicatas ignorando acentos e capitalização
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    df["Descricao_Marca_Normalizada"] = df["Descricao_Marca"].apply(_normalizar_texto)
-
-    df_validos = (
-        df[df["Descricao_Marca_Normalizada"].apply(validar_texto_simples)]
-        .drop_duplicates(subset=["Descricao_Marca_Normalizada"], keep="first")
-        .drop(columns=["Descricao_Marca_Normalizada"])
-    )
-
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "MARCA")
-    return df_validos
-
-
-
-def limpar_produtos(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela PRODUTOS:
-    - Descricao_Produto válida (<= 150 caracteres)
-    - Remove duplicatas de descrição ignorando acentuação e capitalização
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    # Normaliza texto
-    df["Descricao_Normalizada"] = df["Descricao_Produto"].apply(_normalizar_texto)
-
-    df_validos = (
-        df[df["Descricao_Normalizada"].apply(validar_descricao)]
-        .drop_duplicates(subset=["Descricao_Normalizada"], keep="first")
-        .drop(columns=["Descricao_Normalizada"])
-    )
-
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "PRODUTOS")
-    return df_validos
-
-
-def limpar_nfs(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela NFS:
-    - Id_Supermercado e Id_Produto não nulos
-    - Preço real positivo
-    - Timestamp válido
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    df_validos = df[
-        df["Id_Supermercado"].notna()
-        & df["Id_Produto"].apply(lambda x: str(x).isdigit())
-        & df["Preco"].apply(validar_preco)
-        & df["TimeStamp_Registro"].apply(validar_timestamp)
-    ]
-
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "NFS")
-    return df_validos
-
-
-def limpar_avaliacoes_busca(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Valida os dados da tabela AVALIACOES_BUSCA:
-    - CPF do cliente válido
-    - Notas entre 0 e 5 ou None
-    """
-    df = _limpar_dataframe(df)
-    total = len(df)
-
-    colunas_nota = [
-        "Avaliacao_Categoria",
-        "Avaliacao_Marca",
-        "Avaliacao_Produto",
-        "Avaliacao_Supermercado",
-    ]
-
-    condicoes = df["Cpf_Cliente"].apply(validar_cpf)
-    for col in colunas_nota:
-        condicoes &= df[col].apply(validar_nota_avaliacao)
-
-    df_validos = df[condicoes]
-    validos = len(df_validos)
-    _contar_invalidos(total, validos, "AVALIACOES_BUSCA")
-    return df_validos
+    return ""  # inválido
