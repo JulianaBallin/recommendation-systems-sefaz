@@ -1,43 +1,38 @@
-# ============================================================
-# AMAZIA - Sistema Híbrido de Recomendação Baseado em Dados Fiscais
-# ============================================================
-
-# --- Núcleo Científico ---
+# Core
 numpy==1.26.4
 pandas==2.2.2
 scikit-learn==1.5.2
 scipy==1.14.1
 
-# --- Sistemas de Recomendação ---
+# Recommender Systems
 scikit-surprise==1.1.4
 lightfm==1.17
 
-# --- Visualização ---
+# Visualization
 altair==5.3.0
 matplotlib==3.9.2
 seaborn==0.13.2
 
-# --- Aplicação Interativa ---
+# Interactive App
 streamlit==1.38.0
 
-# --- Banco de Dados / ORM ---
-SQLAlchemy==2.0.34
-
-# --- API Backend ---
+# Backend API
 fastapi==0.111.1
 uvicorn==0.30.3
 
-# --- Ambiente Interativo ---
+# Jupyter / Notebooks
 jupyter==1.1.1
 notebook==7.2.2
 ipykernel==6.29.5
 
-# --- Utilitários ---
+# Utils
 tqdm==4.66.5
 joblib==1.4.2
+
+# Testing
+pytest==8.3.3
+
+# Other
 requests==2.32.3
 python-dotenv==1.0.1
 loguru==0.7.2
-
-# --- Testes ---
-pytest==8.3.3
