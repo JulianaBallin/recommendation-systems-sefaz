@@ -40,59 +40,49 @@ Simulação do comportamento de **clientes locais** comprando em supermercados d
 📁 Estrutura limpa do projeto:
 
 recommendation-systems-sefaz/
-├── backend/
+.
+├── backend
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── rotas_nfs.py
+│   │   └── rotas_usuarios.py
 │   ├── __init__.py
 │   ├── main.py
-│   ├── recomendador/
+│   ├── recomendador
 │   │   ├── base.py
 │   │   ├── colaborativo.py
 │   │   ├── conteudo.py
 │   │   ├── hibrido.py
 │   │   ├── __init__.py
 │   │   └── metricas.py
-│   ├── scripts/
-│   │   └── carregador_dados.py
-│   └── utilitarios/
-│       ├── limpeza_dados.py            # remove números, pesos, símbolos
-│       ├── processamento.py            # pipeline -> raw -> processado
-│       ├── utilitarios_dicionarios.py  # dicionário de marcas detectáveis
-│       └── validacao_dados.py
-│
-├── checklist.MD
-│
-├── dataset/
-│   ├── raw/
-│   │   └── nfs.csv                     # dados simulados: descricao, supermercado
-│   ├── processado/
-│   │   ├── nfs_processadas.csv         # descrições limpas, sem duplicatas
-│   │   └── usuarios.csv                # cpf, nome, datanasc
-│   ├── produtos_base/                  # documentos usados para TF-IDF
-│   │   └── (ex: frango_perdigao.txt)
-│   ├── standardized/
-│   │   └── produtos_padronizados.csv   # id, descricao, supermercado, marca
-│   └── ratings/
-│       └── avaliacoes.csv              # cpf_usuario, id_produto, rating_produto, rating_marca
-│
-├── frontend/
-│   ├── assets/
-│   │   ├── banner_titulo.png
-│   │   ├── foto_juliana.png
-│   │   ├── foto_lucas.jpg
-│   │   ├── logo_amazia.png
-│   │   ├── logo_fundo_branco.png
-│   │   ├── logo_teste.png
-│   │   └── logo_verde.png
-│   └── streamlit_app/
+│   └── utilitarios
+│       ├── limpeza_dados.py
+│       ├── processamento.py
+│       ├── processar_nfs.py
+│       ├── processar_usuarios.py
+│       ├── tfidf_produtos.py
+│       ├── utilitarios_dicionarios.py
+│       └── validadores.py
+├── dataset
+│   ├── processado
+│   │   └── nfs_processadas.csv
+│   ├── produtos_base
+│   ├── raw
+│   │   └── nfs.csv
+│   └── standardized
+│       └── produtos_padronizados.csv
+├── frontend
+│   ├── assets
+│   └── streamlit_app
 │       ├── __init__.py
 │       ├── main.py
-│       ├── modules/
+│       ├── modules
 │       │   ├── app_dataset.py
 │       │   ├── app_home.py
 │       │   ├── app_ratings.py
 │       │   ├── __init__.py
 │       │   └── ui_messages.py
 │       └── style.css
-│
 ├── __init__.py
 ├── LICENSE
 ├── Makefile
@@ -101,13 +91,6 @@ recommendation-systems-sefaz/
 └── run_simulator.py
 
 ```
----
-
-## 📊 Dados do Projeto
-- **receipt_nf.csv** → notas fiscais brutas  
-- **clients.csv** → cadastro de clientes  
-- **products.csv** → produtos processados a partir das NF-e  
-- **ratings.csv** → avaliações de produtos (feedback explícito)
 
 ---
 
