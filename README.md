@@ -37,67 +37,60 @@ Simulação do comportamento de **clientes locais** comprando em supermercados d
 
 ## 🗂️ Arquitetura & Estrutura de Pastas
 ```
-recommendation-systems-sefaz/
-│
-├── data/
-│ ├── raw/
-│ │ ├── receipt_nf.csv
-│ │ └── clients.csv
-│ ├── derived/
-│ │ ├── products.csv
-│ │ ├── supermarkets_dataset.csv
-│ │ └── ratings.csv
-│ ├── dictionaries/
-│ │ ├── bairros_zonas.csv
-│ │ ├── brand_map.csv
-│ │ └── category_map.csv
-│ └── models/
-│ └── best_svd_params.json
-│
-├── backend/
-│ ├── dataset/
-│ │ ├── loader.py
-│ │ ├── generator.py
-│ │ ├── simulator.py
-│ │ └── init.py
-│ ├── utils/
-│ │ ├── product_loader.py
-│ │ ├── client_loader.py
-│ │ ├── supermarket_loader.py
-│ │ ├── preprocessing.py
-│ │ ├── dictionaries.py
-│ │ ├── ui_messages.py
-│ │ └── similarity.py
-│ ├── recommender/
-│ │ ├── collaborative.py
-│ │ ├── content.py
-│ │ ├── hybrid.py
-│ │ ├── metrics.py
-│ │ └── init.py
-│ ├── init.py
-│ └── main.py # API (FastAPI)
-│
-├── frontend/
-│ └── streamlit_app/
-│ ├── main.py
-│ └── modules/
-│ ├── app_products.py
-│ ├── app_clients.py
-│ ├── app_ratings.py
-│ ├── app_home.py
-│ └── init.py
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
-```
----
+📁 Estrutura limpa do projeto:
 
-## 📊 Dados do Projeto
-- **receipt_nf.csv** → notas fiscais brutas  
-- **clients.csv** → cadastro de clientes  
-- **products.csv** → produtos processados a partir das NF-e  
-- **ratings.csv** → avaliações de produtos (feedback explícito)
+recommendation-systems-sefaz/
+.
+├── backend
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── rotas_nfs.py
+│   │   └── rotas_usuarios.py
+│   ├── __init__.py
+│   ├── main.py
+│   ├── recomendador
+│   │   ├── base.py
+│   │   ├── colaborativo.py
+│   │   ├── conteudo.py
+│   │   ├── hibrido.py
+│   │   ├── __init__.py
+│   │   └── metricas.py
+│   └── utilitarios
+│       ├── limpeza_dados.py
+│       ├── processamento.py
+│       ├── processar_nfs.py
+│       ├── processar_usuarios.py
+│       ├── tfidf_produtos.py
+│       ├── utilitarios_dicionarios.py
+│       └── validadores.py
+├── dataset
+│   ├── processado
+│   │   └── nfs_processadas.csv
+│   ├── produtos_base
+│   ├── raw
+│   │   └── nfs.csv
+│   └── standardized
+│       └── produtos_padronizados.csv
+├── frontend
+│   ├── assets
+│   └── streamlit_app
+│       ├── __init__.py
+│       ├── main.py
+│       ├── modules
+│       │   ├── app_dataset.py
+│       │   ├── app_home.py
+│       │   ├── app_ratings.py
+│       │   ├── __init__.py
+│       │   └── ui_messages.py
+│       └── style.css
+├── __init__.py
+├── LICENSE
+├── Makefile
+├── README.md
+├── requirements.txt
+└── run_simulator.py
+
+```
 
 ---
 
@@ -112,7 +105,7 @@ recommendation-systems-sefaz/
 ---
 
 ## ▶️ Como Executar
-> **Pré-requisitos**: Python 3.10+, `pip` (ou **Poetry**, se preferir), e os arquivos em `data/`.
+> **Pré-requisitos**: Python 3.10+, `pip` e os arquivos em `data/`.
 
 ### 1) Backend (FastAPI)
 ```bash
