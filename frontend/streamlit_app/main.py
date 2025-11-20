@@ -4,7 +4,7 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 import streamlit as st
-from modules import app_home, app_products, app_clients, app_ratings
+from modules import app_home, app_products, app_clients, app_ratings, app_recomendation, app_accuracy
 
 # === Função para carregar CSS global ===
 def load_css():
@@ -35,6 +35,8 @@ pages = {
     "produtos": app_products,
     "clientes": app_clients,
     "avaliação": app_ratings,
+    "recomendação": app_recomendation,
+    "acurácia": app_accuracy,
 }
 
 # Sidebar estilizada
@@ -49,7 +51,7 @@ st.sidebar.markdown(
 
 choice = st.sidebar.radio(
     "",
-    ["Menu", "Produtos", "Clientes", "Avaliação"],
+    ["Menu", "Produtos", "Clientes", "Avaliação", "Recomendação", "Acurácia"],
     label_visibility="collapsed"  # esconde label padrão feio
 )
 

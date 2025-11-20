@@ -23,7 +23,7 @@ def calculate_age(birthdate_str):
         return "N/A"
 
 def run():
-    st.title("⭐ Avaliação e Recomendação")
+    st.title("⭐ Avaliação")
     st.markdown("---")
     st.markdown(
         """
@@ -161,225 +161,73 @@ def run():
         show_table(ratings)
         st.markdown(f"**Total de avaliações:** {len(ratings)}")
 
-    # =======================
-    # SEÇÃO 2: AVALIAÇÃO GERAL DO SISTEMA
-    # =======================
-    st.markdown("---")
-    st.subheader("⚙️ Avaliação Geral da Acurácia do Sistema")
-    st.markdown("Calcule a acurácia média do sistema de recomendação, considerando todos os usuários com um número mínimo de avaliações.")
 
-    if st.button("Calcular Acurácia"):
-        API_URL = "http://127.0.0.1:8000/evaluate_system"
-        with st.spinner("Calculando a acurácia média para todos os usuários elegíveis... Isso pode levar alguns minutos."):
-            try:
-                response = requests.get(API_URL)
-                if response.status_code == 200:
-                    report = response.json()
-                    avg_precision = report.get("average_precision", 0)
-                    user_count = report.get("evaluated_users_count", 0)
-                    st.success(f"Avaliação concluída baseada nos **{user_count}** usuários elegíveis e disponíveis na base de dados.")
-                    st.metric("Acurácia Média do Sistema", f"{avg_precision:.2%}")
-                else:
-                    st.error(f"Erro ao avaliar o sistema: {response.text}")
-            except requests.exceptions.ConnectionError:
-                st.error("Não foi possível conectar ao serviço de recomendação. Verifique se o backend está em execução.")
 
 
 
     # =======================
     # SEÇÃO 3: OVERVIEW DO USUÁRIO
     # =======================
+    # =======================
+    # SEÇÃO 3: OVERVIEW DO USUÁRIO
+    # =======================
+    st.markdown("---")
+    st.subheader("👤 Overview do Usuário Consultado")
+
     if selected_client:
+        # 1. Filtrar avaliações do usuário
+        user_ratings = ratings[ratings["CPF_CLIENTE"].astype(str) == str(selected_client["CPF"])]
+        total_avaliacoes = len(user_ratings)
+
+        # 2. Calcular idade
+        idade = calculate_age(selected_client.get("DATA_NASC"))
+
+        # 3. Obter produtos favoritos
+        top_produtos = pd.DataFrame()
+        if not user_ratings.empty:
+            user_ratings_local = user_ratings.copy()
+            user_ratings_local["ID_PRODUTO"] = user_ratings_local["ID_PRODUTO"].astype(str)
+            products["ID"] = products["ID"].astype(str)
+            user_ratings_details = pd.merge(user_ratings_local, products, left_on="ID_PRODUTO", right_on="ID", how="left")
+            if not user_ratings_details.empty:
+                user_ratings_details['RATING_DESCRICAO'] = pd.to_numeric(user_ratings_details['RATING_DESCRICAO'], errors='coerce')
+                favorite_products = user_ratings_details[user_ratings_details['RATING_DESCRICAO'] >= 4]
+                top_produtos = favorite_products.sort_values(by="RATING_DESCRICAO", ascending=False)
+
+        # 4. Exibir informações básicas
+        full_name_parts = selected_client.get("NOME", "N/A").split()
+        display_name = f"{full_name_parts[0]} {full_name_parts[-1]}" if len(full_name_parts) > 1 else full_name_parts[0]
+        st.metric("Nome do Usuário", display_name)
+        
         st.markdown("---")
+        st.markdown("#### 💖 Produtos Favoritos")
+        if top_produtos is not None and not top_produtos.empty:
+            # Exibir como tabela (DataFrame)
+            fav_cols = ["DESCRICAO", "RATING_DESCRICAO"]
+            df_display = top_produtos[fav_cols].rename(columns={"DESCRICAO": "Produto", "RATING_DESCRICAO": "Nota"})
+            # Converter para string para alinhar à esquerda
+            df_display["Nota"] = df_display["Nota"].astype(str)
+            
+            st.dataframe(
+                df_display,
+                hide_index=True
+            )
+        else:
+            st.info("Este usuário não possui produtos favoritos (avaliados com nota 4 ou superior).")
 
-        # --- LÓGICA DE CONTROLE DE ESTADO ---
-        # Reseta a exibição do overview se o cliente mudar
-        if 'last_cpf' not in st.session_state or st.session_state.last_cpf != selected_client.get("CPF"):
-            st.session_state.show_overview = False
-            st.session_state.last_cpf = selected_client.get("CPF")
+        st.markdown("---")
+        st.markdown("#### 📜 Histórico de Avaliações")
+        if not user_ratings.empty:
+            user_ratings_with_desc = pd.merge(user_ratings, products, left_on="ID_PRODUTO", right_on="ID", how="left")
+            cols_to_show = ["DESCRICAO", "RATING_DESCRICAO", "RATING_CATEGORIA", "RATING_MARCA"]
+            st.dataframe(
+                user_ratings_with_desc[cols_to_show],
+                hide_index=True
+            )
+            st.markdown(f"**Total de avaliações:** {total_avaliacoes}")
+        else:
+            st.warning("Este usuário ainda não possui avaliações. Para ver o histórico, avalie um produto.")
 
-        if st.button("Consultar Usuário"):
-            st.session_state.show_overview = True
+    else:
+        st.info("Selecione um usuário acima para visualizar o overview.")
 
-        # --- BLOCO DE EXIBIÇÃO PERSISTENTE ---
-        if st.session_state.get('show_overview', False):
-            with st.container():
-                st.subheader(f"👤 Overview do Usuário Consultado")
-
-                # 1. Filtrar avaliações do usuário
-                user_ratings = ratings[ratings["CPF_CLIENTE"].astype(str) == str(selected_client["CPF"])]
-                total_avaliacoes = len(user_ratings)
-
-                # 2. Calcular idade
-                idade = calculate_age(selected_client.get("DATA_NASC"))
-
-                # 3. Obter produtos favoritos
-                top_produtos = pd.DataFrame()
-                if not user_ratings.empty:
-                    user_ratings_local = user_ratings.copy()
-                    user_ratings_local["ID_PRODUTO"] = user_ratings_local["ID_PRODUTO"].astype(str)
-                    products["ID"] = products["ID"].astype(str)
-                    user_ratings_details = pd.merge(user_ratings_local, products, left_on="ID_PRODUTO", right_on="ID", how="left")
-                    if not user_ratings_details.empty:
-                        user_ratings_details['RATING_DESCRICAO'] = pd.to_numeric(user_ratings_details['RATING_DESCRICAO'], errors='coerce')
-                        favorite_products = user_ratings_details[user_ratings_details['RATING_DESCRICAO'] >= 4]
-                        top_produtos = favorite_products.sort_values(by="RATING_DESCRICAO", ascending=False)
-
-                # 4. Exibir informações
-                col1, col2, col3 = st.columns([2, 4, 1])
-                full_name_parts = selected_client.get("NOME", "N/A").split()
-                display_name = f"{full_name_parts[0]} {full_name_parts[-1]}" if len(full_name_parts) > 1 else full_name_parts[0]
-                col1.metric("Totais de Avaliação", total_avaliacoes)
-                col2.metric("Nome do Usuário", display_name)
-                col3.metric("Idade", idade)
-                
-                st.markdown("---")
-                st.markdown("##### 💖 Produtos Favoritos")
-                if top_produtos is not None and not top_produtos.empty:
-                    for index, row in top_produtos.iterrows():
-                        descricao = row.get('DESCRICAO', 'Produto sem descrição')
-                        rating = row.get('RATING_DESCRICAO', 'N/A')
-                        st.markdown(f"- **{descricao}** (Nota: {int(rating)})")
-                else:
-                    st.info("Este usuário não possui produtos favoritos (avaliados com nota 4 ou superior).")
-
-                st.markdown("---")
-                st.markdown("#####  Histórico de Avaliações do Usuário")
-                if not user_ratings.empty:
-                    user_ratings_with_desc = pd.merge(user_ratings, products, left_on="ID_PRODUTO", right_on="ID", how="left")
-                    cols_to_show = ["DESCRICAO", "RATING_DESCRICAO", "RATING_CATEGORIA", "RATING_MARCA"]
-                    st.dataframe(user_ratings_with_desc[cols_to_show], use_container_width=True)
-                else:
-                    st.warning("Este usuário ainda não possui avaliações. Para ver o histórico, avalie um produto.")
-
-                # =======================
-                # SEÇÃO 4: GERAR RECOMENDAÇÕES
-                # =======================
-                st.markdown("---")
-                st.markdown("##### 🚀 Gerar Recomendações para o Usuário")
-                
-                n_recs = st.slider("Número de recomendações a gerar:", min_value=1, max_value=10, value=5, key="n_recs_slider")
-
-                if st.button("Gerar Recomendações"):
-                    API_URL = "http://127.0.0.1:8000/recommend"
-                    cpf = selected_client["CPF"]
-
-                    with st.spinner("Buscando recomendações personalizadas..."):
-                        try:
-                            response = requests.get(f"{API_URL}/{cpf}?n_items={n_recs}")
-
-                            if response.status_code == 200:
-                                data = response.json()
-                                recommended_items_data = data.get("recommendations", [])
-                                accuracy_report = data.get("accuracy_report", {})
-
-                                # Extrai IDs e scores
-                                recommended_ids = [item['id'] for item in recommended_items_data]
-                                recommended_scores = {str(item['id']): item['score'] for item in recommended_items_data}
-
-                                st.subheader("🎁 Produtos Recomendados para o Usuário")
-                                if recommended_ids:
-                                    # Filtra os produtos recomendados
-                                    recommended_products_df = products[products["ID"].isin([str(i) for i in recommended_ids])].copy()
-                                    # Adiciona o score ao DataFrame para poder ordenar
-                                    recommended_products_df['SCORE'] = recommended_products_df['ID'].apply(lambda x: recommended_scores.get(str(x), 0))
-                                    # Ordena o DataFrame pelo score em ordem decrescente
-                                    sorted_recommended_products = recommended_products_df.sort_values(by='SCORE', ascending=False)
-
-                                    for index, row in sorted_recommended_products.iterrows():
-                                        score = row['SCORE']
-                                        # Formata o score para exibir com 2 casas decimais
-                                        st.markdown(f"- **{row['DESCRICAO']}** (Score: {score:.2f})")
-                                else:
-                                    st.info("Não foi possível gerar novas recomendações no momento.")
-
-                                st.markdown("---")
-                                st.subheader("🎯 Relatório de Acurácia do Modelo")
-                                st.markdown(
-                                    "<p style='font-size: 14px;'>A acurácia é calculada através de uma simulação. O sistema esconde metade do histórico de avaliações do usuário (o gabarito) e tenta prever esses itens usando a outra metade. A métrica representa a porcentagem de acertos dentro das 10 previsões feitas durante este teste.</p>",
-                                    unsafe_allow_html=True
-                                )
-                                
-                                if accuracy_report.get("message") != "Acurácia calculada com sucesso.":
-                                    st.warning(accuracy_report.get("message", "Não foi possível calcular a acurácia."))
-                                else:
-                                    hits = accuracy_report.get("hits", 0)
-                                    total = accuracy_report.get("total_recommended", 0)
-                                    accuracy = accuracy_report.get("precision_at_k", 0.0)
-                                    misses = total - hits
-
-                                    col1_acc, col2_acc, _ = st.columns([1, 1, 2])
-                                    col1_acc.metric("Acertos", f"{hits}/{total}")
-                                    col2_acc.metric("Acurácia", f"{accuracy:.0%}", help="Dos 10 itens recomendados na simulação, quantos foram acertos? Mede a eficiência do espaço.")
-                                    
-                                    chart_data = pd.DataFrame({
-                                        'Tipo': ['Acertos', 'Erros'],
-                                        'Quantidade': [hits, misses],
-                                        'Cor': ['#3e721d', '#a69076']
-                                    })
-
-                                    chart = alt.Chart(chart_data).mark_arc(innerRadius=50).encode(
-                                        theta=alt.Theta(field="Quantidade", type="quantitative"),
-                                        color=alt.Color(field="Cor", type="nominal", scale=None),
-                                        tooltip=['Tipo', 'Quantidade']
-                                    ).properties(title='Distribuição de Acertos vs. Erros')
-                                    st.altair_chart(chart, use_container_width=True)
-
-                                # --- SEÇÃO DE RECOMENDAÇÕES DA SIMULAÇÃO ---
-                                st.markdown("---")
-                                st.subheader("🔬 Recomendações da Simulação (para Acurácia)")
-                                st.markdown("Esta é a lista de itens que o modelo previu durante a simulação de acurácia. É comparando esta lista com o 'Gabarito' que obtemos a métrica.")
-
-                                simulated_rec_ids = accuracy_report.get("simulated_recommendations", [])
-                                hit_item_ids = accuracy_report.get("hit_items", [])
-
-                                if simulated_rec_ids:
-                                    simulated_rec_products = products[products["ID"].isin([str(i) for i in simulated_rec_ids])]
-                                    for index, row in simulated_rec_products.iterrows():
-                                        if row["ID"] in [str(i) for i in hit_item_ids]:
-                                            st.markdown(f"- ✅ **{row['DESCRICAO']}**: <span style='color:green;'>**Acerto!**</span>", unsafe_allow_html=True)
-                                        else:
-                                            st.markdown(f"- ❌ **{row['DESCRICAO']}**: <span style='color:red;'>**Erro** (Recomendado, mas não estava no gabarito)</span>", unsafe_allow_html=True)
-                                else:
-                                    st.info("Não foi possível gerar recomendações na simulação.")
-
-
-                                # --- SEÇÃO DE GABARITO ---
-                                st.markdown("---")
-                                st.subheader("🔍 Detalhes do Gabarito")
-                                st.markdown("Itens que o usuário gostou (com nota ≥ 3) no conjunto de teste e que foram usados para medir a acurácia.")
-
-                                ground_truth_ids = accuracy_report.get("ground_truth_liked_items", [])
-                                if ground_truth_ids:
-                                    ground_truth_products = products[products["ID"].isin([str(i) for i in ground_truth_ids])]
-
-                                    # A comparação deve ser com as recomendações da SIMULAÇÃO
-                                    simulated_rec_ids_str = [str(i) for i in accuracy_report.get("simulated_recommendations", [])]
-
-                                    for index, row in ground_truth_products.iterrows():
-                                        if row["ID"] in simulated_rec_ids_str:
-                                            st.markdown(f"- ✅ **{row['DESCRICAO']}**: <span style='color:green;'>**Acerto!** (Recomendado corretamente)</span>", unsafe_allow_html=True)
-                                        else:
-                                            st.markdown(f"- ❌ **{row['DESCRICAO']}**: <span style='color:orange;'>**Não recomendado** (Era uma boa sugestão, mas não foi prevista)</span>", unsafe_allow_html=True)
-                                else:
-                                    st.info("Não havia itens com nota positiva no conjunto de teste para compor o gabarito.")
-
-                                # --- SEÇÃO DE DADOS DE TREINO ---
-                                st.markdown("---")
-                                st.subheader("📚 Itens Usados para Treino (na Simulação)")
-                                st.markdown("Itens do histórico do usuário que foram usados para treinar o modelo temporário que gerou as recomendações para o cálculo de acurácia.")
-
-                                training_ids = accuracy_report.get("training_items", [])
-                                if training_ids:
-                                    training_products = products[products["ID"].isin([str(i) for i in training_ids])]
-                                    for index, row in training_products.iterrows():
-                                        st.markdown(f"- {row['DESCRICAO']}")
-                                else:
-                                    st.info("Não foi possível identificar os itens de treino.")
-
-
-                            else:
-                                st.error(f"Erro ao contatar o serviço de recomendação: {response.text}")
-
-                        except requests.exceptions.ConnectionError:
-                            st.error("Não foi possível conectar ao serviço de recomendação. Verifique se o backend está em execução.")
