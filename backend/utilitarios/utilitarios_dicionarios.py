@@ -13,10 +13,10 @@ DICIONARIO_MARCAS = {
     # Alimentos
     "perdigao": ["perdigao", "perdi", "perd", "perdg"],
     "sadia": ["sadia", "sad", "sdia"],
-    "pilao": ["pilao", "pil", "pila"],
+    "pilao": ["pilao", "pil", "pila", "pilão"],
     "nescau": ["nescau", "nesc", "nscau"],
     "nestle": ["nestle", "nestl", "nstl", "nest"],
-    "tio joao": ["tio joao", "tjoao", "t joao", "tjoa", "t.joao"],
+    "tio joão": ["tio", "tio joao", "tjoao", "t joao", "tjoa", "t.joao"],
     "soya": ["soya", "soia", "soi"],
     "renata": ["renata", "renat", "rnt"],
     "união": ["uniao", "unia", "uni"],
@@ -31,9 +31,9 @@ DICIONARIO_MARCAS = {
     "galo": ["galo", "gal"],
     "campi": ["campi", "camp"],
     "nissin": ["nissin", "niss"],
-    "freegells": ["freegells", "freeg", "freege"],
+    "freegells": ["freegells", "freeg", "freege", "freegels"],
     "toya": ["toya", "toy"],
-    "jo alimentos": ["jo alimentos", "joalimentos", "jo alim"],
+    "jo": ["jo alimentos", "joalimentos", "jo alim"],
     "big bom": ["big bom", "bigbom", "big b"],
     "tirol": ["tirol", "tiro", "tir"],
 
@@ -47,7 +47,7 @@ DICIONARIO_MARCAS = {
     # Bebidas
     "coca cola": ["coca cola", "cocacola", "coca", "cola"],
     "guarana antartica": ["guarana", "antartica", "guara", "guaraná"],
-    "laranjinha": ["laranjinha", "laranja", "laranjainha"],
+    "laranjinha": ["laranjinha"],
     "kapo": ["kapo", "kap"],
     "dafruta": ["dafruta", "daf"],
     "grapette": ["grapette", "grap"],

@@ -3,17 +3,18 @@ import pandas as pd
 import requests
 import altair as alt
 from datetime import datetime
+import time
 from backend.dataset import loader
 
 
 def run():
     st.title("⭐ Avaliação")
-    st.markdown("---")
+    st.markdown("<hr class='divider'>", unsafe_allow_html=True)
     st.markdown(
         """
         <p style="text-align: center; margin-bottom: 25px;">
             Ajude-nos a melhorar suas recomendações de compras!  
-            <strong>Avalie os produtos</strong> cadastrados informando a <strong>marca</strong> ou a <strong>categoria</strong>.  
+            <strong>Avalie os produtos</strong> cadastrados atribuindo uma nota para a <strong>descrição</strong> e a <strong>marca</strong>.  
             Esse passo é opcional, mas quanto mais detalhes você fornecer, mais precisas serão as sugestões futuras.  
             Assim, você ganha recomendações relevantes e apoio na hora de decidir suas próximas compras.
         </p>
@@ -62,6 +63,12 @@ def run():
     if selected_client:
         st.markdown("### 🛍️ Avaliar Novo Produto")
         
+        # Mostrar mensagem de sucesso se acabou de salvar
+        if st.session_state.get("show_success"):
+            st.success("✅ Avaliação salva com sucesso!")
+            # A mensagem desaparecerá na próxima interação do usuário
+            st.session_state["show_success"] = False
+        
         # Filtrar produtos já avaliados pelo usuário
         user_ratings = ratings[ratings["cpf"].astype(str) == str(selected_client["cpf"])]
         rated_products = user_ratings["descricao_produto"].unique()
@@ -108,7 +115,8 @@ def run():
                     # Salvar
                     loader.save_ratings(ratings)
                     
-                    st.success("✅ Avaliação salva com sucesso!")
+                    # Marcar que acabou de salvar para mostrar mensagem após rerun
+                    st.session_state["show_success"] = True
                     
                     # Refresh para atualizar a lista de produtos disponíveis
                     if hasattr(st, "rerun"):
@@ -127,7 +135,7 @@ def run():
         if not user_ratings.empty:
             # Mostrar colunas relevantes
             cols_to_show = ["descricao_produto", "avaliacao_descricao", "marca_produto", "avaliacao_marca"]
-            st.dataframe(user_ratings[cols_to_show], hide_index=True)
+            st.dataframe(user_ratings[cols_to_show], hide_index=True, use_container_width=True)
             st.markdown(f"**Total de avaliações:** {len(user_ratings)}")
         else:
             st.info("Nenhuma avaliação registrada para este usuário.")

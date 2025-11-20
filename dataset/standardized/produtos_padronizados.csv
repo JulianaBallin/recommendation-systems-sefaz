@@ -1,50 +1,305 @@
 id,descricao,marca
-979aeb86-75cf-4a3f-a0e3-f6dff5e8e2cf,sabonete dove,dove
-d266dfdc-60e3-40ed-a6ea-44695fa4cc8b,cafe pilao,pilao
-c5f2619c-2032-4b43-93d6-71e313f50fe9,arroz tio joao,generico
-fe1c2a57-8d1d-4b35-9b9b-d3667b54f840,achoc po nescau,nescau
-64a9d8a3-b956-44a1-8d7d-65ab825c7629,oleo soja soya,soya
-0fef48a8-81af-4f72-8979-d90c735ea449,papel higienico neve 12 rolos,neve
-99e2380e-c16b-43fb-aed0-a4172a960210,queijo muss fatiado,generico
-db02a08b-5055-484c-a71b-8555f0cee865,manteiga aviacao,aviacao
-ced1f1fe-6ad4-40c5-b019-5c5bbd6a87fc,iogurte nestle morango,nestle
-979f40d7-4d30-4ef1-8fde-e80d64e5641a,feijao carioca,generico
-30ba87e4-d203-4713-b69b-d9bf61f5f39c,creme dental colgate,colgate
-b3b69ee1-42e6-49dd-9ef9-fcfadd164b34,macarrao renata espaguete,renata
-6f98176f-d195-40ae-a84f-4643ba472751,frango perdigao cong,perdigao
-d7f34686-095d-4a6f-aaa6-15cd844992db,acucar refinado uniao,união
-e10e38a8-9198-4d65-b93b-9fef35c04edf,farinha lactea nestle,nestle
-fa0ae69d-855d-4ae5-a020-23537333608e,guarana classic 2lt,guarana antartica
-7658e175-2473-4f9f-90c3-dde7fa741b25,oleo sj concord,concord
-91fb12ec-4e8b-4a68-bfdc-d01d6d0e7f8c,chocolate po dubom,dubom
-583b2932-e3de-4e46-a824-8691ce033796,refrigerante laranjinha,laranjinha
-f6f62e84-7a47-4b46-8cfa-83ec655d5298,batata palha scrush,scrush
-f74fd95f-c46d-4186-afe9-b221a78d2193,leite cond mococa,mococa
-12324065-6256-40cd-be25-45e82dcf2986,salsicha ht dog seara,seara
-74908305-b50a-4b5d-8cb1-52bf9b5eb21f,pao int rap10,rap10
-892f87b0-c710-4257-88fc-3ac39aad151e,suco kapo uva,kapo
-fda590f6-51e9-45b0-bc73-7b7aa1b32a87,biscoito trigolino brig,trigolino
-3f9f22d7-2ea0-4970-bf4c-e6db8c52cfdb,mini waffer trigolino brig,trigolino
-6d4ba842-0db1-460c-a20e-6a18802c92ff,rosquinha galo coco,galo
-bcb74a10-2257-4b88-8b94-b0a0a55a4a63,suco laranja dafruta,dafruta
-0cc456f0-05f5-417a-84c3-25f47fafd551,milho pipoca campi,campi
-976d3b15-ef94-4771-a07e-df81949c7e50,refrigerante grapette,grapette
-23e3b62e-16d9-44ad-92ea-7eaff3d25f37,nissin tomate turm mon,nissin
-edd7bc65-2477-4140-a450-58725bc6286a,bala freeg eucalpito,freegells
-979aeb86-75cf-4a3f-a0e3-f6dff5e8e2cf,sabonete dove,palmolive
-e83c2803-7b44-4d46-a2db-b94d2ea51bf6,calabresa perdigao,perdigao
-a9290dac-0dae-49e1-85ac-df0c571334b2,sorvete toya chocolate,toya
-21e2ece0-9dd2-44d6-a0e0-516e829e992d,refrigerante coca cola,coca cola
-1293a6e2-a914-4242-aba4-e8261e328fba,goma tapioca jo alimentos,generico
-892f87b0-c710-4257-88fc-3ac39aad151e,suco kapo uva,kapo
-e5b2268c-e967-4812-b5ea-637fd799c888,suco kapo maracuja,kapo
-bcb74a10-2257-4b88-8b94-b0a0a55a4a63,suco laranja dafruta,laranjinha
-c0fa3fc3-e179-4f5e-b51e-564c20571167,melancia kg,generico
-21e2ece0-9dd2-44d6-a0e0-516e829e992d,refrigerante coca cola,bare
-c6ba8342-768f-4968-b679-7cbed6419e96,papel higienico flor lotus perfurmado 4un,flor de lotus
-196c42fa-d7c6-45f2-b9e6-0eb1ab525d9b,pao frances,generico
-9e9a2bc9-2323-4862-a94a-6822678d75ab,cheiro verde misto,generico
-a3ed68d5-bf69-48e7-847a-bde1fdd3a4fa,pao de forma,generico
-4c8168f2-06b2-4943-8435-c79b9c9557b2,presunto cozido bigbom,big bom
-99e2380e-c16b-43fb-aed0-a4172a960210,queijo muss fatiado,generico
-60a4090c-04a5-4b35-aa25-ab4c25cc3ed4,leite condensado semidesnatado tirol,tirol
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+76611c93-157f-4fa0-a4bb-50384dd073b8,nescau po,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+eaaa80fe-d651-4140-a38b-0b5c6441110d,papel h neve c12,neve
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+0aa836cf-682d-49ca-828e-f3eab5597071,acuc uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+539ab553-c33c-4517-86ed-39110c0109ed,guarana classic 2lt,guarana antartica
+e2302ae6-3980-4c1b-9431-ba78674c16a9,oleo soja concord,concord
+46774425-d8a4-4885-a612-856cd703efe6,chocolate po dubom,dubom
+a8f53c15-365d-4711-828c-502216baef34,refrigerante laranjinha,laranjinha
+9851bbf2-f171-4fb6-a9d7-72517af275c4,batata palha scrush,scrush
+bd6a215e-57c1-43ff-b6d6-52bc2b300792,leite condensado mococa,mococa
+414ac82d-e4e7-43ac-869a-9c4b063c2e4a,salsicha hot dog seara,seara
+8acfd416-10c5-4674-877a-0d8cebab1301,pao integral rap10,rap10
+18b04edd-341d-451e-b8e5-75bee4147ae9,suco uva kapo,kapo
+31e2279c-ef97-43fd-991f-dd0772afbe06,biscoito brig trigolino,trigolino
+d2dac2cd-24b6-4942-9447-d6c1ce871ded,mini waffer brig trigolino,trigolino
+f7a4ec29-8037-4acf-a02b-f1c6bebbb970,rosquinha coco galo,galo
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+e5073b0c-5859-4e06-be24-1b246768ea9e,milho pipoca campi,campi
+37b78bde-1925-4b49-b231-cd5ba416b73a,refrigerante grapette,grapette
+ee9f3209-746e-4613-bf61-e863b8ecb969,nissin tomate turma monica,nissin
+082c3052-f646-442e-af38-571f3cdf31c9,bala eucalipto freegels,generico
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,palmolive
+22e2515a-b262-4674-a64b-06a9fa40b14f,calabresa perdigao,perdigao
+57ec1ec3-e9aa-4935-a1e9-07d637418132,sorvete chocolate toya,toya
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,coca cola
+a36a7194-8ac7-4624-8d6a-9fed6c2dc1d1,goma tapioca jo alimentos,generico
+0880a33f-7bdb-4984-8cea-6f64e27f83fa,suco morango kapo,kapo
+9a134169-d08b-4702-98b2-6d77fabb22cc,suco maracuja kapo,kapo
+dbf7aff1-1f9f-4db8-82cf-4aca778010f9,suco laranja kapo,kapo
+97f8cf36-1484-4803-a685-d588f04430de,melancia,generico
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,bare
+530ef5a4-98d7-44c4-a0ba-7c9e517e5d30,papel higienico perfurmado flor lotus,flor de lotus
+3a14720a-dd50-45cb-bcaa-012eedecebb2,pao frances,generico
+3bce8cbc-fba2-4cb0-b5fa-704271ec13f9,cheiro verde misto,generico
+a7899dda-5b71-4b1a-931c-c0289c5a4aae,pao de forma,generico
+b9f6de43-25a2-4a45-951d-69d0dded0b7e,presunto cozido bigbom,big bom
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+d383bec5-f451-4de0-85f6-5fb7e02ee3ea,leite condensado semidesnatado tirol,tirol
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+76611c93-157f-4fa0-a4bb-50384dd073b8,nescau po,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+eaaa80fe-d651-4140-a38b-0b5c6441110d,papel h neve c12,neve
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+0aa836cf-682d-49ca-828e-f3eab5597071,acuc uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+539ab553-c33c-4517-86ed-39110c0109ed,guarana classic 2lt,guarana antartica
+e2302ae6-3980-4c1b-9431-ba78674c16a9,oleo soja concord,concord
+46774425-d8a4-4885-a612-856cd703efe6,chocolate po dubom,dubom
+a8f53c15-365d-4711-828c-502216baef34,refrigerante laranjinha,laranjinha
+9851bbf2-f171-4fb6-a9d7-72517af275c4,batata palha scrush,scrush
+bd6a215e-57c1-43ff-b6d6-52bc2b300792,leite condensado mococa,mococa
+414ac82d-e4e7-43ac-869a-9c4b063c2e4a,salsicha hot dog seara,seara
+8acfd416-10c5-4674-877a-0d8cebab1301,pao integral rap10,rap10
+18b04edd-341d-451e-b8e5-75bee4147ae9,suco uva kapo,kapo
+31e2279c-ef97-43fd-991f-dd0772afbe06,biscoito brig trigolino,trigolino
+d2dac2cd-24b6-4942-9447-d6c1ce871ded,mini waffer brig trigolino,trigolino
+f7a4ec29-8037-4acf-a02b-f1c6bebbb970,rosquinha coco galo,galo
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+e5073b0c-5859-4e06-be24-1b246768ea9e,milho pipoca campi,campi
+37b78bde-1925-4b49-b231-cd5ba416b73a,refrigerante grapette,grapette
+ee9f3209-746e-4613-bf61-e863b8ecb969,nissin tomate turma monica,nissin
+082c3052-f646-442e-af38-571f3cdf31c9,bala eucalipto freegels,generico
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,palmolive
+22e2515a-b262-4674-a64b-06a9fa40b14f,calabresa perdigao,perdigao
+57ec1ec3-e9aa-4935-a1e9-07d637418132,sorvete chocolate toya,toya
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,coca cola
+a36a7194-8ac7-4624-8d6a-9fed6c2dc1d1,goma tapioca jo alimentos,generico
+0880a33f-7bdb-4984-8cea-6f64e27f83fa,suco morango kapo,kapo
+9a134169-d08b-4702-98b2-6d77fabb22cc,suco maracuja kapo,kapo
+dbf7aff1-1f9f-4db8-82cf-4aca778010f9,suco laranja kapo,kapo
+97f8cf36-1484-4803-a685-d588f04430de,melancia,generico
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,bare
+530ef5a4-98d7-44c4-a0ba-7c9e517e5d30,papel higienico perfurmado flor lotus,flor de lotus
+3a14720a-dd50-45cb-bcaa-012eedecebb2,pao frances,generico
+3bce8cbc-fba2-4cb0-b5fa-704271ec13f9,cheiro verde misto,generico
+a7899dda-5b71-4b1a-931c-c0289c5a4aae,pao de forma,generico
+b9f6de43-25a2-4a45-951d-69d0dded0b7e,presunto cozido bigbom,big bom
+d383bec5-f451-4de0-85f6-5fb7e02ee3ea,leite condensado semidesnatado tirol,tirol
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,dove
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+ec18d03e-985d-46d2-a0a7-8d2548ecd261,cafe pilao,pilao
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,tio joão
+6aa9b351-0f61-4b37-ba75-7208c3a7bd53,arroz tio joao,generico
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+76611c93-157f-4fa0-a4bb-50384dd073b8,nescau po,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+a62b3a1f-8e45-448e-bb25-6b43513e814f,achocolatado po nescau,nescau
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+2b4c263d-8679-4716-91eb-d9be8b29a69c,oleo soja soya,soya
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+732c4038-e184-44f8-87bf-67d1b90b2521,papel higienico neve,neve
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+2f48a40e-4b9c-4551-b196-02dbf879bc9e,queijo mussarela fatiado,generico
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+99c489a2-3912-4e39-b975-774a69e050cf,manteiga aviacao,aviacao
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+395bd399-10bc-4370-97ae-b79326875853,iogurte nestle morango,nestle
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+2e9dde75-69d7-480b-9108-092b59eac14b,feijao carioca,generico
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+81c0da82-35ef-44c1-828d-3deaf13f8734,creme dental colgate,colgate
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+ee7accd2-38c7-4cc2-a6dd-359e55f758b4,macarrao renata espaguete,renata
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+81839d3f-ee26-40a2-ada5-72f5d53a5089,frango perdigao congelado,perdigao
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+260e0de5-d7c2-4fd7-a664-9cfafaa501a0,acucar refinado uniao,união
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+d294f73e-b513-425c-8717-4071d3e65aa9,farinha lactea nestle,nestle
+539ab553-c33c-4517-86ed-39110c0109ed,guarana classic 2lt,guarana antartica
+e2302ae6-3980-4c1b-9431-ba78674c16a9,oleo soja concord,concord
+46774425-d8a4-4885-a612-856cd703efe6,chocolate po dubom,dubom
+a8f53c15-365d-4711-828c-502216baef34,refrigerante laranjinha,laranjinha
+9851bbf2-f171-4fb6-a9d7-72517af275c4,batata palha scrush,scrush
+bd6a215e-57c1-43ff-b6d6-52bc2b300792,leite condensado mococa,mococa
+414ac82d-e4e7-43ac-869a-9c4b063c2e4a,salsicha hot dog seara,seara
+8acfd416-10c5-4674-877a-0d8cebab1301,pao integral rap10,rap10
+18b04edd-341d-451e-b8e5-75bee4147ae9,suco uva kapo,kapo
+31e2279c-ef97-43fd-991f-dd0772afbe06,biscoito brig trigolino,trigolino
+d2dac2cd-24b6-4942-9447-d6c1ce871ded,mini waffer brig trigolino,trigolino
+f7a4ec29-8037-4acf-a02b-f1c6bebbb970,rosquinha coco galo,galo
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+76dfa0f5-36c2-4543-8063-b789bfb693ff,suco laranja dafruta,dafruta
+e5073b0c-5859-4e06-be24-1b246768ea9e,milho pipoca campi,campi
+37b78bde-1925-4b49-b231-cd5ba416b73a,refrigerante grapette,grapette
+ee9f3209-746e-4613-bf61-e863b8ecb969,nissin tomate turma monica,nissin
+9494046c-a5ad-4114-abdb-b6604ebbc714,bala eucalipto freegells,freegells
+562bc407-ebbf-49f4-9978-367b0b7143ff,sabonete dove,palmolive
+22e2515a-b262-4674-a64b-06a9fa40b14f,calabresa perdigao,perdigao
+57ec1ec3-e9aa-4935-a1e9-07d637418132,sorvete chocolate toya,toya
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,coca cola
+a36a7194-8ac7-4624-8d6a-9fed6c2dc1d1,goma tapioca jo alimentos,generico
+0880a33f-7bdb-4984-8cea-6f64e27f83fa,suco morango kapo,kapo
+9a134169-d08b-4702-98b2-6d77fabb22cc,suco maracuja kapo,kapo
+dbf7aff1-1f9f-4db8-82cf-4aca778010f9,suco laranja kapo,kapo
+97f8cf36-1484-4803-a685-d588f04430de,melancia,generico
+4d29c4f7-9567-4936-9065-9f6ee5288ee2,refrigerante coca cola,bare
+530ef5a4-98d7-44c4-a0ba-7c9e517e5d30,papel higienico perfurmado flor lotus,flor de lotus
+3a14720a-dd50-45cb-bcaa-012eedecebb2,pao frances,generico
+3bce8cbc-fba2-4cb0-b5fa-704271ec13f9,cheiro verde misto,generico
+a7899dda-5b71-4b1a-931c-c0289c5a4aae,pao de forma,generico
+b9f6de43-25a2-4a45-951d-69d0dded0b7e,presunto cozido bigbom,big bom
+d383bec5-f451-4de0-85f6-5fb7e02ee3ea,leite condensado semidesnatado tirol,tirol

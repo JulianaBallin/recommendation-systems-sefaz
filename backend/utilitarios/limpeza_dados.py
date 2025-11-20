@@ -34,10 +34,10 @@ def limpar_descricao(descricao: str) -> str:
 
     # 3. Remover medidas (ex: 500g, 1kg, 2l, 900ml)
     # \b garante que é palavra inteira ou final de palavra
-    descricao = re.sub(r'\b\d+\s*(g|kg|ml|l|gr)\b', '', descricao)
+    descricao = re.sub(r'\b\d+\s*(g|kg|ml|l|gr|un|rl)\b', '', descricao)
 
     # 4. Remover palavras de ruído
-    noise_words = ["vacuo", "trad", "pet", "cx", "un", "bar", "original", "tp", "emb", "promo", "pct", "ref", "liq"]
+    noise_words = ["vacuo", "trad", "pet", "cx", "un", "bar", "original", "tp", "emb", "promo", "pct", "ref", "liq", "rl", "rolos", "embal", "gr", "g", "ml", "l", "kg", "un", "rl"]
     for word in noise_words:
         descricao = re.sub(r'\b' + word + r'\b', '', descricao)
 
@@ -47,7 +47,61 @@ def limpar_descricao(descricao: str) -> str:
     # 6. Remover espaços duplicados
     descricao = re.sub(r"\s+", " ", descricao).strip()
 
+    # 7. Expandir abreviações
+    descricao = expandir_abreviacoes(descricao)
+
     return descricao
+
+
+def expandir_abreviacoes(texto: str) -> str:
+    """Expande abreviações comuns de supermercado."""
+    if not isinstance(texto, str):
+        return ""
+
+    abrevs = {
+        "far": "farinha",
+        "lac": "lactea",
+        "lact": "lactea",
+        "frang": "frango",
+        "perd": "perdigao",
+        "cong": "congelado",
+        "iog": "iogurte",
+        "nestl": "nestle",
+        "mor": "morango",
+        "morang": "morango",
+        "mac": "macarrao",
+        "rnt": "renata",
+        "esp": "espaguete",
+        "ph": "papel higienico",
+        "hig": "higienico",
+        "sab": "sabonete",
+        "dov": "dove",
+        "p": "po",
+        "po": "po",
+        "choc": "chocolate",
+        "achoc": "achocolatado",
+        "cond": "condensado",
+        "qjo": "queijo",
+        "mus": "mussarela",
+        "muss": "mussarela",
+        "fat": "fatiado",
+        "int": "integral",
+        "bisc": "biscoito",
+        "waff": "waffer",
+        "rosq": "rosquinha",
+        "lar": "laranja",
+        "lim": "limao",
+        "ref": "refrigerante",
+        "refrig": "refrigerante",
+        "calab": "calabresa",
+        "acuc": "acucar",
+        "h": "higienico"
+    }
+    
+    palavras = texto.split()
+    # Preserva a palavra original se não estiver no dicionário
+    palavras_expandidas = [abrevs.get(p, p) for p in palavras]
+    return " ".join(palavras_expandidas)
 
 
 def limpar_supermercado(texto: str) -> str:
