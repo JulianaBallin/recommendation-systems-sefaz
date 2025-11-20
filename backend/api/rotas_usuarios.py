@@ -6,12 +6,34 @@ from backend.utilitarios.processar_usuarios import processar_csv_usuarios
 router = APIRouter(prefix="/usuarios", tags=["Usuários"])
 
 
+import os
+
+CLIENTES_CSV = "dataset/processed/clientes.csv"
+
 def obter_cpfs_existentes():
+    if not os.path.exists(CLIENTES_CSV):
+        return set()
+    
+    try:
+        df = pd.read_csv(CLIENTES_CSV)
+        if "cpf" in df.columns:
+            return set(df["cpf"].astype(str))
+    except Exception:
+        pass
+        
     return set()
 
 
 def inserir_usuarios_banco(df):
-    pass
+    if df.empty:
+        return
+
+    os.makedirs(os.path.dirname(CLIENTES_CSV), exist_ok=True)
+    
+    if not os.path.exists(CLIENTES_CSV):
+        df.to_csv(CLIENTES_CSV, index=False)
+    else:
+        df.to_csv(CLIENTES_CSV, mode="a", header=False, index=False)
 
 
 @router.post("/upload")

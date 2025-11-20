@@ -20,7 +20,7 @@ def run():
 
 
 def upload_usuarios():
-    st.subheader("👤 Upload de Usuários (cpf, nome, datanasc)")
+    st.subheader("👤 Upload de Usuários (cpf e nome)")
     file = st.file_uploader("Selecione o arquivo CSV", type=["csv"])
     if file:
         df_preview = pd.read_csv(file)
@@ -28,6 +28,7 @@ def upload_usuarios():
         st.dataframe(df_preview.head())
 
         if st.button("Enviar"):
+            file.seek(0)
             resp = requests.post(
                 f"{API_URL}/usuarios/upload",
                 files={"file": file}
@@ -46,6 +47,7 @@ def upload_nfs():
         st.dataframe(df_preview.head())
 
         if st.button("Enviar para API"):
+            file.seek(0)
             resp = requests.post(
                 f"{API_URL}/nfs/upload",
                 files={"file": file}

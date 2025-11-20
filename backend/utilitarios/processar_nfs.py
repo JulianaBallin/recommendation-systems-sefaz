@@ -15,6 +15,9 @@ def limpar_texto(txt: str) -> str:
     return txt.strip().lower()
 
 
+from backend.utilitarios.limpeza_dados import limpar_descricao
+from backend.utilitarios.utilitarios_dicionarios import detectar_marca
+
 def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
     erros = []
     validos = []
@@ -27,17 +30,19 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
         raw_desc = row["DESCRICAO"]
         raw_super = row["SUPERMERCADO"]
 
-        desc = limpar_texto(str(raw_desc))
-        superm = limpar_texto(str(raw_super))
+        # 1. Limpeza
+        desc = limpar_descricao(str(raw_desc))
+        superm = str(raw_super).strip().upper() # Supermercado mantemos raw mas limpo de espaços
+
+        # 2. Detectar marca
+        marca = detectar_marca(desc)
 
         linha_erros = []
 
         if len(desc) < 3:
-            linha_erros.append("Descrição inválida")
+            linha_erros.append("Descrição inválida (muito curta)")
 
-        if len(superm) < 3:
-            linha_erros.append("Supermercado inválido")
-
+        # chave única simples para evitar duplicatas exatas
         chave_ident = desc + "|" + superm
 
         if chave_ident in nfs_existentes:
@@ -52,7 +57,8 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
         else:
             validos.append({
                 "descricao": desc,
-                "supermercado": superm
+                "supermercado": superm,
+                "marca": marca
             })
 
     return pd.DataFrame(validos), pd.DataFrame(erros)
