@@ -4,7 +4,7 @@ import unicodedata
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from backend.utilitarios.limpeza_dados import descricao_base
+from backend.utilitarios.limpeza_dados import limpar_descricao
 
 PRODUTOS_BASE_DIR = "dataset/produtos_base"
 STANDARDIZED_PATH = "dataset/standardized/produtos_padronizados.csv"
@@ -38,13 +38,13 @@ def carregar_documentos_base():
             caminho = os.path.join(PRODUTOS_BASE_DIR, arquivo)
             with open(caminho, "r", encoding="utf-8") as f:
                 textos.append(f.read())
-                nomes.append(arquivo.replace(".txt", ""))
+                nomes.append(arquivo.replace(".txt", "").replace("_", " "))
 
     return nomes, textos
 
 
 def salvar_documento_base(descricao_padronizada):
-    base = descricao_base(descricao_padronizada)
+    base = limpar_descricao(descricao_padronizada)
     nome_arquivo = normalizar_nome_arquivo(base)
     caminho = os.path.join(PRODUTOS_BASE_DIR, nome_arquivo)
 
@@ -73,7 +73,7 @@ def comparar_tf_idf(descricao: str):
 
     corpus = textos + [descricao]
 
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(analyzer='char_wb', ngram_range=(2, 4))
     tfidf_matrix = vectorizer.fit_transform(corpus)
 
     # Último elemento é a descrição nova
@@ -147,14 +147,17 @@ def processar_comparacao_tf_idf(df):
         descricao = row["descricao"]
         marca = row["marca"]
 
+        # 0. Limpeza avançada antes de comparar
+        descricao = limpar_descricao(descricao)
+
         nome_existente, similaridade = comparar_tf_idf(descricao)
 
-        if similaridade >= 0.95:
+        if similaridade >= 0.6:
             # Produto reconhecido
             descricao_padronizada = nome_existente
         else:
             # Produto novo ➝ criar documento base
-            base = descricao_base(descricao)
+            base = limpar_descricao(descricao)
             descricao_padronizada = base
             salvar_documento_base(base)
 

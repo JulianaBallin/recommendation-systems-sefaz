@@ -1,19 +1,19 @@
 descricao,marca
 sabonete dove,dove
 sabonete dove,dove
-sabonete dove bar,dove
+sabonete dove,dove
 sab dov,dove
-sabonete dove cx c,dove
-sab dove original,dove
+sabonete dove c 3,dove
+sab dove,dove
 cafe pilao,pilao
 caf pilao,pilao
-cafe pilao vacuo,pilao
 cafe pilao,pilao
-cafe pilao trad,pilao
+cafe pilao,pilao
+cafe pilao,pilao
 arroz tio joao,generico
 arroz t joao,generico
-arroz tio joao tp,generico
-arroz t joao,generico
+arroz tio joao tp5kg,generico
+arroz t joao 5k,generico
 achoc po nescau,nescau
 nescau po,nescau
 achoc p nescau,nescau
@@ -21,11 +21,11 @@ nescau achocolatado,nescau
 oleo soja soya,soya
 oleo soya,soya
 oleo s soya,soya
-oleo soya pet,soya
-papel hig neve,neve
-papel higienico neve,neve
-ph neve,neve
-papel h neve c,neve
+oleo soya,soya
+papel hig neve 12rl,neve
+papel higienico neve 12 rolos,neve
+ph neve 12rl,neve
+papel h neve c12,neve
 queijo muss fatiado,generico
 queijo muss,generico
 qjo mus fatiado,generico
@@ -41,7 +41,7 @@ iogurte nestle mor,nestle
 feijao carioca,generico
 feij carioca,generico
 feijao carc,generico
-feij carioca tp,generico
+feij carioca,generico
 creme dental colgate,colgate
 creme dent colgate,colgate
 creme dent colg,colgate
@@ -57,7 +57,7 @@ frango perdigao,perdigao
 frango perdigao,perdigao
 frang perd,perdigao
 frango perd,perdigao
-frango perdigao cx,perdigao
+frango perdigao,perdigao
 acucar refinado uniao,união
 acucar uniao,união
 acuc uniao,união
@@ -66,14 +66,14 @@ farinha lactea nestle,nestle
 far lac nestle,nestle
 far lact nestl,nestle
 far lactea nest,nestle
-guarana classic,guarana antartica
+guarana classic 2lt,guarana antartica
 oleo sj concord,concord
 chocolate po dubom,dubom
 refrigerante laranjinha,laranjinha
 batata palha scrush,scrush
 leite cond mococa,mococa
 salsicha ht dog seara,seara
-pao int rap,rap10
+pao int rap10,rap10
 suco kapo uva,kapo
 biscoito trigolino brig,trigolino
 mini waffer trigolino brig,trigolino
@@ -94,7 +94,7 @@ suco kapo maracuja,kapo
 suco kapo laranja,laranjinha
 melancia kg,generico
 refrigerante bare,bare
-papel higienico flor lotus perfurmado,flor de lotus
+papel higienico flor lotus perfurmado 4un,flor de lotus
 pao frances,generico
 cheiro verde misto,generico
 pao de forma,generico

@@ -14,29 +14,37 @@ def remover_acentos(texto: str) -> str:
 def limpar_descricao(descricao: str) -> str:
     """
     Limpa descrições de produtos com base nas regras definidas:
-    - Remover tudo após o primeiro número (peso, volume etc.)
-    - Remover números restantes (caso fiquem)
+    - Remover medidas (g, kg, ml, l)
+    - Remover palavras de ruído (vacuo, trad, pet, etc)
     - Remover acentos
-    - Remover caracteres especiais
+    - Substituir underscores por espaços
     - Normalizar para minúsculas
-    - Remover múltiplos espaços
     """
     if not isinstance(descricao, str):
         return ""
 
-    # 1 — remover tudo após o primeiro número (peso, volume etc.)
-    descricao = re.split(r"\d", descricao)[0]
-
-    # 2 — remover acentos
-    descricao = remover_acentos(descricao)
-
-    # 3 — manter apenas letras e espaços
-    descricao = re.sub(r"[^a-zA-Z\s]", " ", descricao)
-
-    # 4 — caixa baixa
+    # 0. Lowercase
     descricao = descricao.lower()
 
-    # 5 — remover espaços duplicados
+    # 1. Remover acentos
+    descricao = remover_acentos(descricao)
+
+    # 2. Substituir underscores e hifens por espaços
+    descricao = descricao.replace("_", " ").replace("-", " ")
+
+    # 3. Remover medidas (ex: 500g, 1kg, 2l, 900ml)
+    # \b garante que é palavra inteira ou final de palavra
+    descricao = re.sub(r'\b\d+\s*(g|kg|ml|l|gr)\b', '', descricao)
+
+    # 4. Remover palavras de ruído
+    noise_words = ["vacuo", "trad", "pet", "cx", "un", "bar", "original", "tp", "emb", "promo", "pct", "ref", "liq"]
+    for word in noise_words:
+        descricao = re.sub(r'\b' + word + r'\b', '', descricao)
+
+    # 5. Manter apenas letras, números e espaços
+    descricao = re.sub(r"[^a-z0-9\s]", " ", descricao)
+
+    # 6. Remover espaços duplicados
     descricao = re.sub(r"\s+", " ", descricao).strip()
 
     return descricao
