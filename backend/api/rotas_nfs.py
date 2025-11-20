@@ -16,8 +16,8 @@ def obter_nfs_existentes():
     try:
         df = pd.read_csv(NFS_CSV)
         # Cria chave composta para verificação
-        if "descricao" in df.columns and "supermercado" in df.columns:
-            return set(df["descricao"] + "|" + df["supermercado"])
+        if "descricao" in df.columns:
+            return set(df["descricao"])
     except Exception:
         pass
         

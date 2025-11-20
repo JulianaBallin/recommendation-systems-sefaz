@@ -37,7 +37,7 @@ def upload_usuarios():
 
 
 def upload_nfs():
-    st.subheader("🧾 Upload de Notas Fiscais (DESCRICAO, SUPERMERCADO)")
+    st.subheader("🧾 Upload de Notas Fiscais (DESCRICAO)")
 
     file = st.file_uploader("Selecione o arquivo CSV", type=["csv"])
 

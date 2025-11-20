@@ -1,102 +1,103 @@
-id,descricao,supermercado,marca
-303dfb1b-d4da-48e1-9e3b-582b23b2e9d0,sabonete dove,"BARATAO DA CARNE - PD, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",dove
-c1a74f62-71b6-4b82-bd9a-6af2724d6e83,sabonete_dove,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",dove
-c82fb830-cb58-4e75-a6f5-1692e1bca026,sabonete dove,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",dove
-6f7ef52d-850d-4966-a5b6-23d6d67d7938,dov,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",dove
-22df9509-e422-47d7-8c90-61f3182e1981,sabonete dove,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",dove
-5c4ba776-6837-4c84-8bd0-862479a351e1,dove original,"ATACK MANIA, AV. AUTAZES 550, DISTRITO INDUSTRIAL, MANAUS-AM",dove
-2f93a4be-1f63-4c61-b2a6-418bd8c1a1ff,cafe pilao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",pilao
-2b27c058-75be-427b-ad51-7a7f421fa707,caf pilao,"SUPERMERCADO VENZ, AV. DJALMA BATISTA 3000, CHAPADA, MANAUS-AM",pilao
-00232244-8d8b-4624-af16-b5364362fa00,cafe pilao vacuo,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",pilao
-e1af6ade-1a46-460d-83cc-2434be35ca19,cafe_pilao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",pilao
-0eabfa71-fba5-4169-acbb-45ae656c7f4a,cafe pilao trad,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",pilao
-38f1e176-52ac-41f9-a006-0aed10341796,arroz tio joao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-4581ee39-2777-4cd6-b06e-e552d7c0a523,arroz joao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-0bcff45b-20ac-4b40-9ebb-62f6a572cfab,arroz tio joao,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",generico
-e5d627ce-1e79-4795-a01d-854ed45825ba,arroz_joao,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-b38bf552-87d5-425b-842b-686ae20fbc34,achoc nescau,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nescau
-e57a9e58-6a06-404d-b181-3e86b0860f47,nescau,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nescau
-40cd07c4-ba73-4021-9ae7-6fde3d50df61,achoc_nescau,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nescau
-66968f7e-0cbc-4ee9-95c2-437840f55012,nescau achocolatado,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nescau
-117bb7d1-2e74-451d-bada-4c46d8b607db,oleo soja soya,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",soya
-cd2231eb-4278-447a-be67-a34742b0824c,oleo soya,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",soya
-ba54b88e-eed2-430d-b938-bc7c5be1be12,oleo_soya,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",soya
-66b81235-9a57-479f-9863-f75c7569383e,oleo soya pet,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",soya
-44e2a5a6-2928-403a-97e8-38f8c80c40b9,papel hig neve,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",neve
-2c02107f-7069-42b4-a069-9ce4fbc14f71,papel higienico neve,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",neve
-a545586d-4bf9-479e-9641-55f41b40d614,ph neve,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",neve
-5745bc0c-ee8e-48c0-840d-7f73dcbeb0de,papel neve,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",neve
-4ddd18e2-d37d-4e40-9704-a8f75407ae65,queijo muss fatiado,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-f4cb739f-bb2d-494f-89c9-2fd2a83cc2a5,queijo muss,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-99795b0d-3003-4cd9-987c-d8ee5d479ef8,qjo mus fatiado,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",generico
-48235d5d-d5d1-4c52-bdee-efe8a2670d03,queijo_muss_fatiado,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-7298add4-11d0-4d9d-a726-aeb7b3587750,manteiga aviacao,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",aviacao
-8b23eb52-af53-4a47-9936-b380d591e566,mant aviacao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",aviacao
-83d4acd5-60be-4e2d-92f9-3c219db661a1,manteiga_aviacao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",aviacao
-82141cae-2191-4585-b0ab-6250e09a036f,manteiga_aviacao,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",aviacao
-e61c83df-7e92-42e1-b273-11c1055c978e,iogurte nestle morango,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nestle
-11e8fa03-b4ef-4b55-b5ad-ae72afb55122,iog nestl mor,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nestle
-0c67a1bb-aab1-49a5-bcdb-3284bbeb0a3b,iog nest morang,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nestle
-bb937a92-9dbd-4261-85ce-f2f103db8f64,iogurte nestle mor,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nestle
-247a09e9-b549-43c4-8722-cd90750c91dd,feijao carioca,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-6bcf9bc3-a7d6-46c5-8ea5-224e5d265055,feij carioca,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-2196e3ad-2ae9-4f8f-b3f1-72e035fa74fd,feijao carc,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-7d0bfdbc-b77b-4bdb-8de7-63d7fc7d9a04,feij carioca,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",generico
-1a34b9de-9a93-4cc6-98ff-9efc9deb40c7,creme dental colgate,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",colgate
-6da0b21c-dfa7-41d6-a9e2-cdcd1a70e741,creme dent colgate,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",colgate
-9732343e-c6a2-43ca-b1b1-8bcda60f5bd9,creme dent colg,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",colgate
-f594fce9-d11b-4602-a3de-6c41cc43fd62,colgate creme den,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",colgate
-719c3ced-0de8-414c-bb4a-5717fe08ef9d,macarrao renata espaguete,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",renata
-c32c00c8-eec0-4708-95d9-9d0476f99fdd,mac renata esp,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",renata
-7c636fad-a093-4698-be15-52d97a8b7b70,macarrao rnt esp,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-a6de9351-f318-46be-a00e-74c35839fdf9,espaguete renata,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",renata
-db685b24-85ec-45e2-9d4c-73c5d050df44,frango perdigao cong,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",perdigao
-cf9914c2-6667-4cda-bb17-bc1f9ffca889,frang perd,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",perdigao
-86e0b86d-bced-44ff-8215-deddf1c13f73,frango perd,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",perdigao
-9d5dc65d-f04c-455c-a06b-1b3c272ccba9,frango perdigao,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",perdigao
-c204b8ed-703a-4033-9df8-64b0d1a70d16,frango_perdigao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",perdigao
-c3f7d202-ca2e-475a-b3fb-03acb88278e4,frang_perd,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",perdigao
-b9ea00cf-98a7-48aa-913e-1a3c353b473f,frango perdigao,"ATACK, AV. AUTAZES 550, DISTRITO INDUSTRIAL, MANAUS-AM",perdigao
-72ca13b7-9fa5-4818-bb79-bc54d683efb6,acucar refinado uniao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",união
-fb6dcf9c-e191-4e26-8259-b3192771d4eb,acucar uniao,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",união
-af939711-c568-460e-9675-498e7755ed4d,acuc uniao,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",união
-ef10ff22-cc19-416e-a992-180cc2f462cc,acucar refi uniao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",união
-852f7131-6477-49df-9107-3f7e6974b5c5,farinha lactea nestle,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nestle
-69b0a1cd-2a40-4629-86aa-97096c141183,far lac nestle,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nestle
-4d3d0161-427e-4db9-b2b9-8e8fecbfffc1,far lact nestl,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nestle
-c4c9fbba-8407-4a75-9356-4100ab85f4c0,far lactea nest,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nestle
-681ff35e-1d33-4860-baac-c942aade5064,guarana classic,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",guarana antartica
-fbb9fad4-92cc-4c4d-abc7-42839814a69c,oleo sj concord,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",concord
-e27e56d8-68e1-467a-b6ed-7c6f4f24beac,chocolate dubom,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",dubom
-2f9cf203-9b05-40de-80d8-c96c7106bdb8,refrigerante laranjinha,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",laranjinha
-648e5d88-83d0-463d-aedb-5f1051f2ab26,batata palha scrush,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",scrush
-44b55fcf-79f8-4f3f-9e18-3aa72ae5e796,leite cond mococa,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",mococa
-54eabf43-d5fd-4cd1-ae59-cc9fd9b5e5bc,salsicha ht dog seara,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",seara
-a95fd3f7-bb4b-4c10-9ef5-919d2a70c4e5,pao int rap,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",rap10
-98d235f3-d6cd-4575-8369-6397d73e0076,suco kapo uva,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",kapo
-4b71c399-2ad7-4c0a-95be-0ca713039e31,biscoito trigolino brig,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",trigolino
-49612cc8-d8f4-4614-882a-294c14b264e8,mini waffer trigolino brig,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",trigolino
-2be82152-c55e-44a9-a369-5e31037e7552,rosquinha galo coco,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",galo
-3c3bfbbe-3c99-458e-86e3-f819ca279612,suco laranja dafruta,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",laranjinha
-eccd7d24-8242-496e-8d0f-674584c6e40d,suco uva dafruta,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",dafruta
-8ed89c97-0e5e-49dc-9789-8203ce8edfa6,milho pipoca campi,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",campi
-a71e8f95-022d-4926-a836-17e4ec66214d,refrigerante grapette,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",grapette
-fc178d79-4d15-4762-a6d7-411ba012c7ae,nissin tomate turm mon,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",nissin
-528d9c9a-5217-4b1d-a2ca-8b865429089f,bala freeg eucalpito,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",freegells
-be7e247d-2864-4c6b-8c4f-647d1aa828ed,sabonete palm,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",palmolive
-2ffc71ca-b108-4624-b3f0-56453e89b756,calabresa perdigao,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",perdigao
-41df4654-b6d7-4c63-9512-feab7fe84987,sorvete toya chocolate,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",toya
-6760ffa3-874f-4994-96e2-6bd38692fb47,refrigerante coca cola,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",coca cola
-f51c6768-13e1-434b-b977-65b2c0ad0093,goma tapioca jo alimentos,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",generico
-f82f6e55-24ef-4793-b2b6-a86514e8d6ce,suco kapo morango,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",kapo
-3249c09c-5c35-40e7-ab42-2b4ff3459d3d,suco kapo maracuja,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",kapo
-1f6a9949-0f84-46d0-bc97-bd473fef549d,suco kapo laranja,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",laranjinha
-5549a4e1-88b3-4fd9-a4ed-623bfe8955fd,melancia,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-00f1b88d-2579-4bff-bf8e-6762aef68775,refrigerante bare,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",bare
-9fb6e610-fdf4-4570-89dc-e440f07737a7,papel higienico flor lotus perfurmado,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",flor de lotus
-0e05b6bb-7598-4f40-8082-989e2e68a1d6,pao frances,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-c890d604-2769-4c00-9750-1bcb62c1096f,cheiro verde misto,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-c81ae2f0-1507-46e1-ad75-43f545302953,pao de forma,"AFS COMERCIO VAREJISTA DE GENEROS ALIMENTICIOS, RUA ALFREDO VALOIS 004, REDENÇÃO, MANAUS-AM",generico
-8e93e156-7d3d-4e66-b290-1cdcd95703b0,presunto cozido bigbom,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",big bom
-9cd992f4-f0bf-4f85-a5bd-f42a3667b1f7,queijo mussarela fatiado,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",generico
-0934734a-03ce-477d-a63d-3f5be4730702,leite condensado semidesnatado tirol,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",tirol
+id,descricao,marca
+e2908b5a-9869-40ec-b966-2116e55cfcf4,sabonete dove,dove
+8dddeb02-124b-4c24-b836-c24d365f6115,sabonete_dove,dove
+e2908b5a-9869-40ec-b966-2116e55cfcf4,sabonete dove,dove
+a561b224-77ec-46ad-bd46-e5a02b5db955,dov,dove
+e2908b5a-9869-40ec-b966-2116e55cfcf4,sabonete dove,dove
+c7844bcc-73f8-444a-9d53-4d68235a5e8e,dove original,dove
+79c57ffb-a63d-4840-81b5-a6757ceb9f61,cafe pilao,pilao
+77b7baef-6099-4a5a-bc78-2f38ab556ff1,caf pilao,pilao
+bcce07b9-4044-4457-89b5-5d113035bd38,cafe pilao vacuo,pilao
+a450926a-c6b4-4dff-9a23-83ce0aaa42aa,cafe_pilao,pilao
+102070fa-4b85-4b9a-9c64-011272106b49,cafe pilao trad,pilao
+0fa6f902-3e2a-476c-abdd-a9ffcdbeaddd,arroz tio joao,generico
+040160e5-825b-413a-b0b6-9c86a22dad23,arroz joao,generico
+0fa6f902-3e2a-476c-abdd-a9ffcdbeaddd,arroz tio joao,generico
+00456ea1-d773-4062-94aa-46b4046801ac,arroz_joao,generico
+cd168ad1-1768-4751-965a-917bc3052e0d,achoc nescau,nescau
+03c73f01-910e-4cd2-b71c-0a386768b9d0,nescau,nescau
+148ad388-84a5-48c5-ad2c-6fdca7bce57d,achoc_nescau,nescau
+46f2be3a-9cb8-41f1-8d0f-ed35e78d1f14,nescau achocolatado,nescau
+2d8d3987-1d54-461d-aac7-59b5a09e97b8,oleo soja soya,soya
+a8862426-f588-49a2-b0b0-cccc3b31a498,oleo soya,soya
+f7d18351-ba26-485b-99a7-59ad3fcc8226,oleo_soya,soya
+e108acd2-5c15-4fb6-9382-0eb2bdc89899,oleo soya pet,soya
+f7cd2399-7cb5-46ff-a292-ccdf6f2b08ee,papel hig neve,neve
+4398c18f-de8d-4c33-a095-295d48d7c79e,papel higienico neve,neve
+257613de-6def-407e-a945-62e3c1025261,ph neve,neve
+d664c164-dacb-47f6-868a-8aea23d993e9,papel neve,neve
+353fd29e-3444-48de-8745-66928afcc91b,queijo muss fatiado,generico
+53e71aca-ddb4-4364-be48-3ae67c9b2f22,queijo muss,generico
+abfed97c-2a2f-4259-ae29-005f1cbb9074,qjo mus fatiado,generico
+28cf82a4-b89d-4803-ae5e-a3c1921df69c,queijo_muss_fatiado,generico
+4cded976-6dbc-4f11-8779-3b52152623c3,manteiga aviacao,aviacao
+74bf8abf-4390-4f25-b2ff-c0befa065f22,mant aviacao,aviacao
+719d8b2a-3cbb-44df-b0f0-e362b5986fdf,manteiga_aviacao,aviacao
+719d8b2a-3cbb-44df-b0f0-e362b5986fdf,manteiga_aviacao,aviacao
+1abf0728-3e0d-4b5a-923e-ceffe9a6a30f,iogurte nestle morango,nestle
+0b0985f6-cace-4959-9ccc-26852789322f,iog nestl mor,nestle
+9fbbda2d-85ef-43b7-9f26-295a4c0d5d42,iog nest morang,nestle
+87c12e02-88a4-4135-a144-3b640d0bde52,iogurte nestle mor,nestle
+2452d798-38d5-4a53-aa0a-755246c7f401,feijao carioca,generico
+77b66adb-4141-43d3-96ed-b551dd4b6c1e,feij carioca,generico
+cdbf0c31-4f80-4348-85e5-424ce91e6c4d,feijao carc,generico
+77b66adb-4141-43d3-96ed-b551dd4b6c1e,feij carioca,generico
+ea82984b-3ad6-4ffd-a0ce-a685a8a0cb47,creme dental colgate,colgate
+1e6d1bb5-06c0-42f1-9109-323d9190869f,creme dent colgate,colgate
+11d23a74-c3e3-48fd-b654-e6c4da0f854c,creme dent colg,colgate
+1eabe124-f030-4d88-9837-dff9b1518221,colgate creme den,colgate
+02decabc-b897-4f92-b5be-9775f6e70da2,macarrao renata espaguete,renata
+77ddbdae-cf95-4eb0-b47b-edbd74ea35d9,mac renata esp,renata
+5d4a04a0-c648-4655-99e7-c5a20862350a,macarrao rnt esp,renata
+19e6e923-9f79-4ad1-9154-2f6cd3837664,espaguete renata,renata
+6b3a3e55-3838-49e2-8936-db4de376dead,frango perdigao cong,perdigao
+903a92fb-2c95-48c9-8799-9a8c62aae9a1,frang perd,perdigao
+2fbbc7e8-508e-4e21-bc0b-aa3c4d5d5a63,frango perd,perdigao
+2e3765df-53de-425f-b394-233a89df9735,frango perdigao,perdigao
+5ace0c59-aebb-4826-b403-f3e479c2b7a5,frango_perdigao,perdigao
+2aedb142-10c6-478e-b2f4-c48bc4b13726,frang_perd,perdigao
+93c90960-af43-4104-8e3e-c1252a0730f1,frango_perd,perdigao
+2e3765df-53de-425f-b394-233a89df9735,frango perdigao,perdigao
+be5d8f00-9229-4845-8268-9cba0a0ea0bd,acucar refinado uniao,união
+7e5b29e5-1067-418c-89db-fb4f138be0ae,acucar uniao,união
+7a3a250f-824a-480a-bf3d-a4861232fb3a,acuc uniao,união
+37796e97-9cf9-49d2-b199-e91417aecd8f,acucar refi uniao,união
+7ea39df0-6d9f-4ab2-b061-cf22d69f1369,farinha lactea nestle,nestle
+d543b480-44de-4d97-bb9a-2307eb96212a,far lac nestle,nestle
+a8073321-c3b9-494f-8e1a-5a90c6e559c8,far lact nestl,nestle
+1a7ec829-3733-46c8-ba7a-163e4699cf0d,far lactea nest,nestle
+5422fe23-d65f-4b60-bef1-2d98d8f90e7d,guarana classic,guarana antartica
+f75e7467-76a3-4ae9-a296-81b021180547,oleo sj concord,concord
+df67f6a5-fc1a-4c69-ad5c-2d51f6909a30,chocolate dubom,dubom
+94cc5d1a-d01e-4257-9676-11be3c12bd89,refrigerante laranjinha,laranjinha
+e74db92d-0941-4054-9f14-38603cbe8942,batata palha scrush,scrush
+04ccec3c-03b5-4e3b-8338-5e2d5254e788,leite cond mococa,mococa
+d88637be-31c7-4ea4-83be-2e1271fba0b5,salsicha ht dog seara,seara
+8081188c-d5e5-4dad-b0ae-75883ac9e4c6,pao int rap,rap10
+b4c5a7f9-cd44-430e-bc21-a1c514dcf2f6,suco kapo uva,kapo
+ee48c9d4-5a9d-4634-b782-c4766e9d4f5b,biscoito trigolino brig,trigolino
+60f15fe0-ecf7-4c31-bc89-661bfd0fe03f,mini waffer trigolino brig,trigolino
+73b5a26f-f396-4c70-8248-f8582b607938,rosquinha galo coco,galo
+79558256-ac0f-4930-a0e0-b9c1b6955273,suco laranja dafruta,laranjinha
+60f7dbc6-ec84-4e79-abb6-7ebc256b26d6,suco uva dafruta,dafruta
+2b9a0454-df52-499d-a606-4d60e4accb22,milho pipoca campi,campi
+101c6585-e7d9-4e41-b086-bb4674049d73,refrigerante grapette,grapette
+5c5685a5-3913-48ba-bbcb-36b3b8d94b41,nissin tomate turm mon,nissin
+3849124a-031b-492a-ba92-73b4d375ae0b,bala freeg eucalpito,freegells
+5b77d9d6-ae77-4fd3-9d9c-330b66c6a13d,sabonete palm,palmolive
+585773a0-f15a-4e39-9679-d098caf92773,calabresa perdigao,perdigao
+d53d31cc-906a-4fb4-9f64-200968bcea69,sorvete toya chocolate,toya
+0393a72f-3afe-4033-aaf6-db236129a71a,refrigerante coca cola,coca cola
+d14c6250-9065-4daa-a814-4c18da968103,goma tapioca jo alimentos,generico
+5fe799fd-3256-452d-9150-da3b56dcb64c,suco kapo morango,kapo
+c80eb0dd-9294-45f5-a3ce-8c15f109d7bb,suco kapo maracuja,kapo
+e46f09c9-bf1e-405e-a875-fc7a1ddaf38a,suco kapo laranja,laranjinha
+fe9fe264-52ba-4fc6-abee-1be87190342d,melancia,generico
+c5fba534-b93b-4842-9d4a-067d3935203e,refrigerante bare,bare
+f9c9a3ea-6225-42e2-8aba-862d78c71ddd,papel higienico flor lotus perfurmado,flor de lotus
+5a4c8ab5-ed54-41e5-a8f8-c571afd417e0,pao frances,generico
+7d649127-e5b2-4c2c-ac49-0bac742492c6,cheiro verde misto,generico
+a19481fa-108e-4490-8a27-def1ff2595e8,pao de forma,generico
+537bd746-beb6-4ca6-bff1-aac5d8312012,presunto cozido bigbom,big bom
+72509cb3-776a-42c1-a2aa-87f6bd365a55,queijo mussarela fatiado,generico
+b039dc68-4f6c-4c89-9247-a4791324e92c,leite condensado semidesnatado tirol,tirol

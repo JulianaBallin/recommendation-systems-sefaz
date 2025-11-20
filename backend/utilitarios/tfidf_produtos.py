@@ -90,7 +90,7 @@ def comparar_tf_idf(descricao: str):
     return nome_produto, sim
 
 
-def registrar_standardized(id_produto, descricao_pad, supermercado, marca):
+def registrar_standardized(id_produto, descricao_pad, marca):
     """
     Salva em dataset/standardized/produtos_padronizados.csv
     """
@@ -98,7 +98,7 @@ def registrar_standardized(id_produto, descricao_pad, supermercado, marca):
 
     # Se arquivo ainda não existe, cria com cabeçalho
     if not os.path.exists(STANDARDIZED_PATH):
-        df = pd.DataFrame(columns=["id", "descricao", "supermercado", "marca"])
+        df = pd.DataFrame(columns=["id", "descricao", "marca"])
         df.to_csv(STANDARDIZED_PATH, index=False)
 
     df = pd.read_csv(STANDARDIZED_PATH)
@@ -106,7 +106,6 @@ def registrar_standardized(id_produto, descricao_pad, supermercado, marca):
     nova_linha = {
         "id": id_produto,
         "descricao": descricao_pad,
-        "supermercado": supermercado,
         "marca": marca
     }
 
@@ -114,15 +113,38 @@ def registrar_standardized(id_produto, descricao_pad, supermercado, marca):
     df.to_csv(STANDARDIZED_PATH, index=False, encoding="utf-8")
 
 
+def carregar_mapa_ids():
+    """
+    Carrega um dicionário {descricao_padronizada: id_produto}
+    do arquivo standardized.
+    """
+    if not os.path.exists(STANDARDIZED_PATH):
+        return {}
+    
+    try:
+        df = pd.read_csv(STANDARDIZED_PATH)
+        if "descricao" in df.columns and "id" in df.columns:
+            # Cria mapa descricao -> id
+            # Se houver duplicatas, pega o primeiro (ou último), tanto faz, desde que seja consistente
+            return dict(zip(df["descricao"], df["id"]))
+    except Exception:
+        pass
+        
+    return {}
+
+
 def processar_comparacao_tf_idf(df):
     """
     df é o DataFrame vindo de nfs_processadas.csv
-    Colunas esperadas: descricao, supermercado, marca
+    Colunas esperadas: descricao, marca
     """
+    
+    # 1. Carregar mapa de IDs existentes para evitar duplicar IDs para o mesmo produto
+    mapa_ids = carregar_mapa_ids()
+    
     for _, row in df.iterrows():
 
         descricao = row["descricao"]
-        supermercado = row["supermercado"]
         marca = row["marca"]
 
         nome_existente, similaridade = comparar_tf_idf(descricao)
@@ -136,14 +158,18 @@ def processar_comparacao_tf_idf(df):
             descricao_padronizada = base
             salvar_documento_base(base)
 
-        # Gerar ID único
-        id_produto = str(uuid.uuid4())
+        # Verificar se já existe ID para essa descrição padronizada
+        if descricao_padronizada in mapa_ids:
+            id_produto = str(mapa_ids[descricao_padronizada])
+        else:
+            # Gerar NOVO ID único
+            id_produto = str(uuid.uuid4())
+            mapa_ids[descricao_padronizada] = id_produto
 
         # Registrar no standardized
         registrar_standardized(
             id_produto=id_produto,
             descricao_pad=descricao_padronizada,
-            supermercado=supermercado,
             marca=marca
         )
 

@@ -8,19 +8,7 @@ from backend.utils.preprocessing import validate_cpf, normalize_text, normalize_
 from backend.utils.ui_messages import show_table 
 
 
-def calculate_age(birthdate_str):
-    """Calcula a idade a partir de uma data de nascimento no formato 'dd/mm/yyyy'."""
-    try:
-        # Tenta múltiplos formatos: com barras e com espaços
-        try:
-            birthdate = datetime.strptime(birthdate_str, "%d/%m/%Y")
-        except ValueError:
-            birthdate = datetime.strptime(birthdate_str, "%d %m %Y")
 
-        today = datetime.today()
-        return today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-    except (ValueError, TypeError):
-        return "N/A"
 
 def run():
     st.title("⭐ Avaliação")
@@ -179,8 +167,7 @@ def run():
         user_ratings = ratings[ratings["CPF_CLIENTE"].astype(str) == str(selected_client["CPF"])]
         total_avaliacoes = len(user_ratings)
 
-        # 2. Calcular idade
-        idade = calculate_age(selected_client.get("DATA_NASC"))
+
 
         # 3. Obter produtos favoritos
         top_produtos = pd.DataFrame()

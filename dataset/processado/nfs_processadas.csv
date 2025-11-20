@@ -1,102 +1,103 @@
-descricao,supermercado,marca
-sabonete dove,"BARATAO DA CARNE - PD, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",dove
-sabonete dove,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",dove
-sabonete dove bar,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",dove
-sab dov,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",dove
-sabonete dove cx c,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",dove
-sab dove original,"ATACK MANIA, AV. AUTAZES 550, DISTRITO INDUSTRIAL, MANAUS-AM",dove
-cafe pilao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",pilao
-caf pilao,"SUPERMERCADO VENZ, AV. DJALMA BATISTA 3000, CHAPADA, MANAUS-AM",pilao
-cafe pilao vacuo,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",pilao
-cafe pilao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",pilao
-cafe pilao trad,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",pilao
-arroz tio joao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-arroz t joao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-arroz tio joao tp,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",generico
-arroz t joao,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-achoc po nescau,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nescau
-nescau po,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nescau
-achoc p nescau,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nescau
-nescau achocolatado,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nescau
-oleo soja soya,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",soya
-oleo soya,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",soya
-oleo s soya,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",soya
-oleo soya pet,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",soya
-papel hig neve,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",neve
-papel higienico neve,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",neve
-ph neve,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",neve
-papel h neve c,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",neve
-queijo muss fatiado,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-queijo muss,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-qjo mus fatiado,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",generico
-queijo muss fatiado,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-manteiga aviacao,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",aviacao
-mant aviacao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",aviacao
-manteiga aviacao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",aviacao
-aviacao manteiga,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",aviacao
-iogurte nestle morango,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nestle
-iog nestl mor,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nestle
-iog nest morang,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nestle
-iogurte nestle mor,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nestle
-feijao carioca,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",generico
-feij carioca,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-feijao carc,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",generico
-feij carioca tp,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",generico
-creme dental colgate,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",colgate
-creme dent colgate,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",colgate
-creme dent colg,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",colgate
-colgate creme den,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",colgate
-macarrao renata espaguete,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",renata
-mac renata esp,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",renata
-macarrao rnt esp,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",generico
-espaguete renata,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",renata
-frango perdigao cong,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",perdigao
-frang perd,"BARATAO DA CARNE, AV. TANCREDO NEVES 1760, PARQUE 10, MANAUS-AM",perdigao
-frango perd,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",perdigao
-frango perdigao,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",perdigao
-frango perdigao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",perdigao
-frang perd,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",perdigao
-frango perdigao cx,"ATACK, AV. AUTAZES 550, DISTRITO INDUSTRIAL, MANAUS-AM",perdigao
-acucar refinado uniao,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",união
-acucar uniao,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",união
-acuc uniao,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",união
-acucar refi uniao,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",união
-farinha lactea nestle,"SUPERMERCADO NOVA ERA, AV. CONSTANTINO NERY 3000, CHAPADA, MANAUS-AM",nestle
-far lac nestle,"SUPERMERCADO DB LTDA, RUA BARAO DO RIO BRANCO 974, FLORES, MANAUS-AM",nestle
-far lact nestl,"CARREFOUR MANAUS, AV. EFIGENIO SALES 1230, ALEIXO, MANAUS-AM",nestle
-far lactea nest,"ASSAI ATACADISTA, AV. TORQUATO TAPAJOS 8800, COLONIA SANTO ANTONIO, MANAUS-AM",nestle
-guarana classic,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",guarana antartica
-oleo sj concord,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",concord
-chocolate po dubom,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",dubom
-refrigerante laranjinha,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",laranjinha
-batata palha scrush,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",scrush
-leite cond mococa,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",mococa
-salsicha ht dog seara,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",seara
-pao int rap,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",rap10
-suco kapo uva,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",kapo
-biscoito trigolino brig,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",trigolino
-mini waffer trigolino brig,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",trigolino
-rosquinha galo coco,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",galo
-suco laranja dafruta,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",laranjinha
-suco uva dafruta,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",dafruta
-milho pipoca campi,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",campi
-refrigerante grapette,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",grapette
-nissin tomate turm mon,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",nissin
-bala freeg eucalpito,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",freegells
-sabonete palm,"ASSAI ATACADISTA, AV. TORQUATO TAPAJÓS 2200, FLORES, MANAUS-AM",palmolive
-calabresa perdigao,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",perdigao
-sorvete toya chocolate,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",toya
-refrigerante coca cola,"J O XAVIER COMERCIAL, RUA GURUPI 2331, REDENÇÃO, MANAUS-AM",coca cola
-goma tapioca jo alimentos,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",generico
-suco kapo morango,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",kapo
-suco kapo maracuja,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",kapo
-suco kapo laranja,"MEDEIROS COMERCIAL DE ALIMENTOS LTDA, AVENIDA TORQUATO TAJAPOS 5200 FLORES MANAUS-AM",laranjinha
-melancia kg,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-refrigerante bare,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",bare
-papel higienico flor lotus perfurmado,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",flor de lotus
-pao frances kg,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-cheiro verde misto,"CASA DA CARNE OTAVIO LTDA, RUA CAMPOS GRAVOS 1868, REDENÇÃO, MANAUS-AM",generico
-pao de forma,"AFS COMERCIO VAREJISTA DE GENEROS ALIMENTICIOS, RUA ALFREDO VALOIS 004, REDENÇÃO, MANAUS-AM",generico
-presunto cozido bigbom,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",big bom
-queijo mussarela fatiado,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",generico
-leite condensado semidesnatado tirol,"MILHOMENS E CIA LTDA, RUA CAMPOS BRAVOS 462, REDENÇÃO, MANAUS-AM",tirol
+descricao,marca
+sabonete dove,dove
+sabonete dove,dove
+sabonete dove bar,dove
+sab dov,dove
+sabonete dove cx c,dove
+sab dove original,dove
+cafe pilao,pilao
+caf pilao,pilao
+cafe pilao vacuo,pilao
+cafe pilao,pilao
+cafe pilao trad,pilao
+arroz tio joao,generico
+arroz t joao,generico
+arroz tio joao tp,generico
+arroz t joao,generico
+achoc po nescau,nescau
+nescau po,nescau
+achoc p nescau,nescau
+nescau achocolatado,nescau
+oleo soja soya,soya
+oleo soya,soya
+oleo s soya,soya
+oleo soya pet,soya
+papel hig neve,neve
+papel higienico neve,neve
+ph neve,neve
+papel h neve c,neve
+queijo muss fatiado,generico
+queijo muss,generico
+qjo mus fatiado,generico
+queijo muss fatiado,generico
+manteiga aviacao,aviacao
+mant aviacao,aviacao
+manteiga aviacao,aviacao
+aviacao manteiga,aviacao
+iogurte nestle morango,nestle
+iog nestl mor,nestle
+iog nest morang,nestle
+iogurte nestle mor,nestle
+feijao carioca,generico
+feij carioca,generico
+feijao carc,generico
+feij carioca tp,generico
+creme dental colgate,colgate
+creme dent colgate,colgate
+creme dent colg,colgate
+colgate creme den,colgate
+macarrao renata espaguete,renata
+mac renata esp,renata
+macarrao rnt esp,renata
+espaguete renata,renata
+frango perdigao cong,perdigao
+frang perd,perdigao
+frango perd,perdigao
+frango perdigao,perdigao
+frango perdigao,perdigao
+frang perd,perdigao
+frango perd,perdigao
+frango perdigao cx,perdigao
+acucar refinado uniao,união
+acucar uniao,união
+acuc uniao,união
+acucar refi uniao,união
+farinha lactea nestle,nestle
+far lac nestle,nestle
+far lact nestl,nestle
+far lactea nest,nestle
+guarana classic,guarana antartica
+oleo sj concord,concord
+chocolate po dubom,dubom
+refrigerante laranjinha,laranjinha
+batata palha scrush,scrush
+leite cond mococa,mococa
+salsicha ht dog seara,seara
+pao int rap,rap10
+suco kapo uva,kapo
+biscoito trigolino brig,trigolino
+mini waffer trigolino brig,trigolino
+rosquinha galo coco,galo
+suco laranja dafruta,laranjinha
+suco uva dafruta,dafruta
+milho pipoca campi,campi
+refrigerante grapette,grapette
+nissin tomate turm mon,nissin
+bala freeg eucalpito,freegells
+sabonete palm,palmolive
+calabresa perdigao,perdigao
+sorvete toya chocolate,toya
+refrigerante coca cola,coca cola
+goma tapioca jo alimentos,generico
+suco kapo morango,kapo
+suco kapo maracuja,kapo
+suco kapo laranja,laranjinha
+melancia kg,generico
+refrigerante bare,bare
+papel higienico flor lotus perfurmado,flor de lotus
+pao frances,generico
+cheiro verde misto,generico
+pao de forma,generico
+presunto cozido bigbom,big bom
+queijo mussarela fatiado,generico
+leite condensado semidesnatado tirol,tirol

@@ -23,16 +23,14 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
     validos = []
 
     # verificar se tem as colunas certas
-    if "DESCRICAO" not in df.columns or "SUPERMERCADO" not in df.columns:
-        raise ValueError("CSV deve conter as colunas: DESCRICAO e SUPERMERCADO")
+    if "DESCRICAO" not in df.columns:
+        raise ValueError("CSV deve conter a coluna: DESCRICAO")
 
     for _, row in df.iterrows():
         raw_desc = row["DESCRICAO"]
-        raw_super = row["SUPERMERCADO"]
 
         # 1. Limpeza
         desc = limpar_descricao(str(raw_desc))
-        superm = str(raw_super).strip().upper() # Supermercado mantemos raw mas limpo de espaços
 
         # 2. Detectar marca
         marca = detectar_marca(desc)
@@ -43,7 +41,7 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
             linha_erros.append("Descrição inválida (muito curta)")
 
         # chave única simples para evitar duplicatas exatas
-        chave_ident = desc + "|" + superm
+        chave_ident = desc
 
         if chave_ident in nfs_existentes:
             linha_erros.append("Linha já existe no banco")
@@ -51,13 +49,11 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
         if linha_erros:
             erros.append({
                 "descricao": raw_desc,
-                "supermercado": raw_super,
                 "erros": "; ".join(linha_erros)
             })
         else:
             validos.append({
                 "descricao": desc,
-                "supermercado": superm,
                 "marca": marca
             })
 
