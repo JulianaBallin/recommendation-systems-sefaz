@@ -24,7 +24,7 @@ class FeedbackRequest(BaseModel):
     item_id: Any
     feedback_type: str
 
-@router.post("/gerar")
+@router.post("/recomendar")
 def gerar_recomendacoes(request: RecommendationRequest):
     try:
         if request.algo_type == "content":

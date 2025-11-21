@@ -83,7 +83,7 @@ def run():
                         "algo_type": algo_map[algo_type]
                     }
                     
-                    response = requests.post(f"{API_URL}/recomendacao/gerar", json=payload)
+                    response = requests.post(f"{API_URL}/recomendacao/recomendar", json=payload)
                     
                     if response.status_code == 200:
                         recommendations = response.json()
