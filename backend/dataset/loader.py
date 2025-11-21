@@ -25,7 +25,7 @@ def load_derived_products():
 def load_ratings():
     if os.path.exists(RATINGS_PATH):
         return pd.read_csv(RATINGS_PATH)
-    return pd.DataFrame(columns=["nome_usuario", "cpf", "descricao_produto", "avaliacao_descricao", "marca_produto", "avaliacao_marca"])
+    return pd.DataFrame(columns=["nome_usuario", "cpf", "descricao_produto", "avaliacao_descricao", "marca_produto", "avaliacao_marca", "product_id"])
 
 def save_ratings(df):
     os.makedirs(os.path.dirname(RATINGS_PATH), exist_ok=True)

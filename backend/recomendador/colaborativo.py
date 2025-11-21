@@ -22,25 +22,16 @@ class CollaborativeFilteringRecommender:
         if 'cpf' in self.ratings_df.columns:
             self.ratings_df['cpf'] = self.ratings_df['cpf'].astype(str)
         
-        # Verificar se já tem ID ou precisa fazer merge
+        # Adaptação para o novo dataset com product_id
+        if 'product_id' in self.ratings_df.columns:
+            self.ratings_df.rename(columns={'product_id': 'id'}, inplace=True)
+        
+        # Verificar se tem ID
         if 'id' not in self.ratings_df.columns:
-            # Carregar produtos para obter IDs
-            products_df = loader.load_derived_products()
+            raise ValueError("O DataFrame de avaliações deve conter a coluna 'product_id' ou 'id'.")
             
-            # Normalizar descrições
-            self.ratings_df["descricao_produto"] = self.ratings_df["descricao_produto"].astype(str).str.strip()
-            products_df["descricao"] = products_df["descricao"].astype(str).str.strip()
-            
-            # Merge para adicionar ID do produto
-            self.ratings_df = self.ratings_df.merge(
-                products_df[["id", "descricao"]], 
-                left_on="descricao_produto", 
-                right_on="descricao", 
-                how="left"
-            )
-            
-            # Remover linhas sem ID
-            self.ratings_df.dropna(subset=["id"], inplace=True)
+        # Remover linhas sem ID
+        self.ratings_df.dropna(subset=["id"], inplace=True)
 
         self.model = None
         self.algo_type = "svd"

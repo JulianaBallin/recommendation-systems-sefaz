@@ -62,7 +62,8 @@ def main():
             "descricao_produto": produto["descricao"],
             "avaliacao_descricao": avaliacao_desc,
             "marca_produto": produto["marca"],
-            "avaliacao_marca": avaliacao_marca
+            "avaliacao_marca": avaliacao_marca,
+            "product_id": produto["id"]
         })
         
     df_avaliacoes = pd.DataFrame(avaliacoes)
