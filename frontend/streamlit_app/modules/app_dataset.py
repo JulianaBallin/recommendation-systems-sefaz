@@ -20,7 +20,7 @@ def run():
 
 
 def upload_usuarios():
-    st.subheader("👤 Upload de Usuários (cpf e nome)")
+    st.subheader("👤 Upload de Usuários (Cpf e Nome)")
     file = st.file_uploader("Selecione o arquivo CSV", type=["csv"])
     if file:
         df_preview = pd.read_csv(file)

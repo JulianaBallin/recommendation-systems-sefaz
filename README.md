@@ -1,170 +1,266 @@
-# 🛒 Sistema de Recomendação de Compras Locais (Manaus-AM)
+# 🛒 AmazIA - Sistema de Recomendação de Compras (Manaus-AM)
 
-Repositório dedicado ao **desenvolvimento e treinamento** de um sistema de recomendação baseado em **notas fiscais eletrônicas (NF-e)** da região de Manaus-AM. O projeto aplica **Filtragem Híbrida** (Colaborativa + Baseada em Conteúdo) para explorar comportamento de consumo e gerar recomendações relevantes de produtos.
+Sistema completo para **processamento de notas fiscais**, **padronização de produtos**, **agrupamento inteligente (TF-IDF + Fuzzy)** e **recomendação híbrida** de itens comprados em supermercados.  
+O projeto foi desenvolvido para refletir o contexto real de consumo da cidade de **Manaus-AM**.
 
 ---
 
 ## 📌 Sumário
-1. [Objetivos](#-objetivos)
-2. [Cenário de Uso](#cenário-de-uso)
-3. [Arquitetura & Estrutura de Pastas](#arquitetura--estrutura-de-pastas)
-4. [Dados do Projeto](#dados-do-projeto)
-5. [Tecnologias](#tecnologias)
-6. [Como Executar](#como-executar)
-7. [Lógica de Recomendação](#lógica-de-recomendação)
-8. [Métricas de Avaliação](#métricas-de-avaliação)
-9. [Equipe](#equipe)
-10. [Próximos Passos](#próximos-passos)
-11. [Licença](#licença)
+1. Objetivos  
+2. Cenário de Uso  
+3. Pipeline Completa (TF-IDF + Fuzzy + Standardização)  
+4. Arquitetura & Estrutura de Pastas  
+5. Dados do Projeto  
+6. Tecnologias  
+7. Como Executar  
+8. Lógica de Recomendação  
+9. Métricas  
+10. Equipe  
+11. Licença  
 
 ---
 
 ## 🎯 Objetivos
-- Extrair padrões de compra a partir de **NF-e**.
-- Desenvolver e treinar um **sistema de recomendação híbrido**.
-- Avaliar desempenho com **Precision, Recall, RMSE/MAE e NDCG**.
-- Entregar uma solução ajustada ao **contexto local de Manaus-AM**.
+
+- Extrair padrões de compra a partir de **notas fiscais reais**.  
+- Criar um processo confiável para **padronizar e identificar produtos iguais**, mesmo quando descritos de formas diferentes.  
+- Unificar produtos em pastas `produtos_base/` e em `produtos_padronizados.csv`.  
+- Treinar um **sistema híbrido de recomendação** (Colaborativo + Conteúdo).  
+- Avaliar desempenho usando métricas clássicas de Recommender Systems.  
 
 ---
 
 ## 🏙️ Cenário de Uso
-Simulação do comportamento de **clientes locais** comprando em supermercados de Manaus. O motor de recomendação aprende com históricos para:
-- Sugerir **produtos similares** aos já adquiridos.
-- Encontrar **clientes semelhantes** com interesses próximos.
-- Gerar **insights** por **bairro** e **categoria**.
+
+No ambiente real de Manaus, supermercados escrevem produtos de formas diferentes:
+
+- “CAFÉ PILÃO 500G”  
+- “CAF PILAO”  
+- “CAFE PILAO TP 500G”
+
+O objetivo do sistema é:  
+**descobrir automaticamente que todas essas linhas são o MESMO produto**.
+
+A partir disso:
+
+- gerar recomendações mais corretas,  
+- manter histórico limpo,  
+- permitir dashboard confiável,  
+- e organizar produtos de forma incremental conforme novas NFs chegam.
+
+---
+
+## 🔗 Pipeline Completa (do RAW → Standardizado)
+
+A pipeline automática executada é composta por **4 etapas principais**:
+
+### **1) Etapa de Limpeza (dataset/raw → dataset/processado)**
+- Remove números de peso/volumetria (g, kg, ml etc.).  
+- Expande abreviações (“caf” → “cafe”, “pil” → “pilao”).  
+- Remove ruído e normaliza acentos.  
+- Extrai marca usando `utilitarios_dicionarios.py`.  
+- Remove duplicatas.  
+- Salva em:  
+  `dataset/processado/nfs_processadas.csv`
+
+---
+
+### **2) Etapa de Padronização de Marcas**
+A limpeza gera a coluna `marca`, que permite:
+
+- agrupar produtos de forma mais precisa,  
+- priorizar combinações TF-IDF entre itens da mesma marca,  
+- melhorar similaridade sem depender apenas do texto.
+
+---
+
+### **3) Etapa TF-IDF + Fuzzy (agrupamento incremental)**
+
+A etapa mais importante do sistema.
+
+#### **Por que TF-IDF?**
+TF-IDF transforma cada descrição em um vetor que considera:
+- frequência de caracteres relevantes  
+- desambiguação entre palavras  
+- comparação via **cosine similarity**
+
+Melhora muito a identificação entre:
+- “nescau po”  
+- “achocolatado po nescau”  
+- “nescau achoc”  
+
+#### **Por que RapidFuzz/Fuzzy?**
+Algumas descrições curtas perdem poder discriminante no TF-IDF.  
+Exemplo: “sab dove”, “sab dov”, “sab”.  
+
+O Fuzzy Matching calcula similaridade textual pura via:
+- token_sort_ratio  
+- partial_ratio  
+
+E garante que descrições muito pequenas ou abreviadas não se percam.
+
+#### **Como funciona o agrupamento?**
+Para cada descrição nova:
+
+1. Compara com **todas as linhas de todos os arquivos** em `produtos_base/`.  
+2. Usa **TF-IDF + Cosine Similarity** como filtro principal.  
+3. Usa **RapidFuzz** como desempate quando a similaridade é ambígua.  
+4. Se achar linha com similaridade acima do limiar (ex.: 65%),  
+   → adiciona essa nova descrição no mesmo arquivo `.txt`.  
+5. Senão:  
+   → cria um novo arquivo `.txt` com o nome da descrição base.
+
+Esse mecanismo é **incremental**: cada nova NF melhora a base sem recriar tudo.
+
+---
+
+### **4) Etapa de Standardização Final**
+Para cada grupo de `produtos_base/` é criado ou atualizado:
+
+- **um único ID único (UUID)**  
+- **uma linha final no CSV**:  
+  `dataset/standardized/produtos_padronizados.csv`
+
+Garantias:
+- produtos iguais sempre compartilham o **mesmo ID**  
+- novos produtos recebem IDs novos  
+- nenhum produto é duplicado  
+
+Esse CSV é a base usada pelo motor de recomendação.
 
 ---
 
 ## 🗂️ Arquitetura & Estrutura de Pastas
-```
-📁 Estrutura limpa do projeto:
 
 recommendation-systems-sefaz/
 .
-├── backend
-│   ├── api
-│   │   ├── __init__.py
-│   │   ├── rotas_nfs.py
-│   │   └── rotas_usuarios.py
-│   ├── __init__.py
-│   ├── main.py
-│   ├── recomendador
-│   │   ├── base.py
-│   │   ├── colaborativo.py
-│   │   ├── conteudo.py
-│   │   ├── hibrido.py
-│   │   ├── __init__.py
-│   │   └── metricas.py
-│   └── utilitarios
-│       ├── limpeza_dados.py
-│       ├── processamento.py
-│       ├── processar_nfs.py
-│       ├── processar_usuarios.py
-│       ├── tfidf_produtos.py
-│       ├── utilitarios_dicionarios.py
-│       └── validadores.py
-├── dataset
-│   ├── processado
-│   │   └── nfs_processadas.csv
-│   ├── produtos_base
-│   ├── raw
-│   │   └── nfs.csv
-│   └── standardized
-│       └── produtos_padronizados.csv
-├── frontend
-│   ├── assets
-│   └── streamlit_app
-│       ├── __init__.py
-│       ├── main.py
-│       ├── modules
-│       │   ├── app_dataset.py
-│       │   ├── app_home.py
-│       │   ├── app_ratings.py
-│       │   ├── __init__.py
-│       │   └── ui_messages.py
-│       └── style.css
-├── __init__.py
-├── LICENSE
-├── Makefile
-├── README.md
-├── requirements.txt
-└── run_simulator.py
-
-```
+├── backend  
+│   ├── api  
+│   │   ├── rotas_nfs.py  
+│   │   └── rotas_usuarios.py  
+│   ├── main.py  
+│   ├── pipeline  
+│   │   ├── etapa_limpeza.py  
+│   │   ├── etapa_padronizacao.py  
+│   │   ├── etapa_tfidf_clustering.py  
+│   │   ├── etapa_standardizacao.py  
+│   │   └── rodar_pipeline.py  
+│   ├── recomendador  
+│   │   ├── colaborativo.py  
+│   │   ├── conteudo.py  
+│   │   ├── hibrido.py  
+│   └── utilitarios  
+│       ├── limpeza_dados.py  
+│       ├── tfidf_produtos.py  
+│       ├── utilitarios_dicionarios.py  
+│       └── validadores.py  
+├── dataset  
+│   ├── raw  
+│   │   └── nfs.csv  
+│   ├── processado  
+│   │   └── nfs_processadas.csv  
+│   ├── produtos_base  
+│   └── standardized  
+│       └── produtos_padronizados.csv  
+├── frontend  
+│   ├── assets  
+│   └── streamlit_app  
+├── scripts  
+│   ├── gerar_usuarios.py  
+│   ├── gerar_nfs.py  
+│   ├── gerar_avaliacoes.py  
+│   └── reprocessar_tudo.py  
+└── README.md  
 
 ---
 
 ## 🛠️ Tecnologias
-- **Python 3.10+**
-- **Pandas / NumPy** (pré-processamento)
-- **scikit-learn** (modelagem/avaliação)
-- **FastAPI** (API do backend)
-- **Streamlit** (interface web)
-- **Matplotlib / Seaborn** (visualização)
+
+### Backend
+- Python 3.10+
+- FastAPI
+- Pandas / NumPy
+
+### Processamento & Recomendação
+- Scikit-learn (TF-IDF, métricas, modelos)
+- RapidFuzz (similaridade)
+- Cosine Similarity
+- SVD++ / Filtragem Colaborativa
+
+### Frontend
+- Streamlit  
+- CSS customizado  
+- Components reutilizáveis  
 
 ---
 
 ## ▶️ Como Executar
-> **Pré-requisitos**: Python 3.10+, `pip` e os arquivos em `data/`.
 
 ### 1) Backend (FastAPI)
-```bash
-# Na raiz do projeto
-pip install -r requirements.txt
+uvicorn backend.main:app --reload --port 8000
 
-# Iniciar a API
-uvicorn backend.main:app --reload
-# Servidor disponível em http://127.0.0.1:8000
-```
+A API sobe em:
+http://127.0.0.1:8000
 
-### 2) Frontend (Streamlit)
-```bash
-# Em um segundo terminal, na raiz do projeto
-pip install -r requirements.txt
+### 2) Pipeline manual (opcional)
+python -m backend.pipeline.rodar_pipeline
 
-# Iniciar a interface
+### 3) Reprocessar tudo (reset completo)
+python scripts/reprocessar_tudo.py
+
+### 4) Frontend (Streamlit)
 streamlit run frontend/streamlit_app/main.py
-```
-> A primeira execução pode levar mais tempo se houver busca/ajuste de hiperparâmetros. Nas próximas, o carregamento usa artefatos salvos em `data/models/`.
+
 ---
 
 ## 🧠 Lógica de Recomendação
 
-Abordagem **Híbrida** com ênfase em **Filtragem Colaborativa** por Fatoração de Matrizes (**SVD++**):  
-- **Fatores latentes** capturam “gostos” ocultos de usuários e itens.  
-- Considera **feedback explícito** (notas 1–5) e implícito (interações/consumo).  
-- Gera predições combinando **vetores latentes** de usuário × item.  
-- **Vantagens**: lida bem com esparsidade, generaliza para pares sem histórico direto e captura padrões complexos além de similaridades simples (cosseno/Pearson).
+O sistema utiliza um modelo **Híbrido**, combinando:
+
+### **1) Filtragem Colaborativa**
+- Matriz usuários × produtos  
+- SVD++ ou KNN-based filtering  
+- Similaridade de preferências entre usuários  
+
+### **2) Conteúdo (TF-IDF de descrições padronizadas)**
+- semelhança entre produtos a partir do texto processado  
+- funciona mesmo para usuários com pouca interação (Cold Start)
+
+### **3) Abordagem Híbrida**
+- Combinação ponderada:  
+  recomendação = α * colaborativa + (1 − α) * conteúdo  
+
 ---
 
-## 📏 Métricas de Avaliação
+## 📏 Métricas
 
-- **Precision & Recall** → relevância das recomendações.  
-- **RMSE & MAE** → precisão das notas previstas.  
-- **NDCG** → qualidade do ranqueamento.  
-- **Acc@K (ex.: @10)** → proporção de acertos no top-K.
+- **Precision@K**  
+- **Recall@K**  
+- **NDCG@K**  
+- **RMSE / MAE**  
+- **Coverage**  
+- **Acurácia@K** principal para avaliação prática.  
 
-**Metodologia (exemplo Acc@10):**  
-- **Hold-out** por usuário (treino/teste do histórico).  
-- Recomenda-se **K=10** itens usando apenas o conjunto de treino.  
-- **Acurácia@10** = acertos / 10, comparando com itens relevantes do gabarito (notas ≥ 3).
 ---
+
 ## 👩‍🎓 Equipe
 
 - **Juliana Ballin Lima** – Universidade do Estado do Amazonas (UEA-EST)  
 - **Lucas Carvalho dos Santos** – Universidade do Estado do Amazonas (UEA-EST)
+
 ---
+
 ## 🗺️ Próximos Passos
 
-- Ajuste fino de hiperparâmetros e validação cruzada.  
-- Expansão de features de conteúdo (marca, categoria, preço, sazonalidade).  
-- Métricas online (CTR/conversão) e testes A/B.  
-- Dashboard de insights por bairro/categoria.
+- Expandir dicionário de marcas e categorias.  
+- Adicionar detecção de categorias automáticas (LLMs).  
+- Melhorar clusterização usando embeddings (Sentence-BERT).  
+- Integrar fatores de preço, sazonalidade e perfil do usuário.  
+- Criar dashboard avançado com ranking de consumo por bairro.
 
 ---
+
 ## 📄 Licença
 
-Este projeto é distribuído sob a **MIT License**.  
-Consulte o arquivo [LICENSE](./LICENSE) para o texto completo da licença.
-
+Projeto distribuído sob MIT License.  
 © 2025 Juliana Ballin Lima · Lucas Carvalho dos Santos

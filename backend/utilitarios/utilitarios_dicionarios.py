@@ -59,8 +59,6 @@ DICIONARIO_MARCAS = {
 }
 
 
-# backend/utilitarios/utilitarios_dicionarios.py
-
 def detectar_marca(descricao_limpa: str) -> str:
     """
     Detecta marca com base no DICIONARIO_MARCAS.
