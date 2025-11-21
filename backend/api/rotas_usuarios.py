@@ -1,14 +1,12 @@
 from fastapi import APIRouter, UploadFile, File
 import pandas as pd
+import os
 
 from backend.utilitarios.processar_usuarios import processar_csv_usuarios
 
 router = APIRouter(prefix="/usuarios", tags=["Usuários"])
 
-
-import os
-
-CLIENTES_CSV = "dataset/processed/clientes.csv"
+CLIENTES_CSV = "dataset/processado/usuarios.csv"
 
 def obter_cpfs_existentes():
     if not os.path.exists(CLIENTES_CSV):
@@ -39,6 +37,14 @@ def inserir_usuarios_banco(df):
 @router.post("/upload")
 async def upload_usuarios(file: UploadFile = File(...)):
     df = pd.read_csv(file.file)
+    
+    COLUNAS_OBRIGATORIAS = {"cpf", "nome"}
+
+    if not COLUNAS_OBRIGATORIAS.issubset(df.columns.str.lower()):
+        return {
+            "status": "erro",
+            "mensagem": f"Colunas obrigatórias ausentes. Esperado: {COLUNAS_OBRIGATORIAS}"
+        }
 
     cpfs_existentes = obter_cpfs_existentes()
 

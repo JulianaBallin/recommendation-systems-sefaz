@@ -1,11 +1,5 @@
 import pandas as pd
-
-from backend.utilitarios.validadores import (
-    limpar_cpf,
-    limpar_nome,
-    validar_cpf,
-)
-
+from backend.utilitarios.validadores import limpar_cpf, limpar_nome, validar_cpf
 
 def processar_csv_usuarios(df: pd.DataFrame, cpfs_existentes: set):
     erros = []
@@ -40,10 +34,7 @@ def processar_csv_usuarios(df: pd.DataFrame, cpfs_existentes: set):
                 "erros": "; ".join(linha_erros)
             })
         else:
-            validos.append({
-                "cpf": cpf,
-                "nome": nome,
-            })
+            validos.append({"cpf": cpf, "nome": nome})
             cpfs_arquivo.add(cpf)
 
     return pd.DataFrame(validos), pd.DataFrame(erros)

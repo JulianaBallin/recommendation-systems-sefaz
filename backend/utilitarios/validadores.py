@@ -33,8 +33,6 @@ def limpar_nome(nome: str) -> str:
 
 
 def limpar_data(data: str) -> str:
-    from datetime import datetime
-
     formatos = [
         "%d/%m/%Y",
         "%Y-%m-%d",
