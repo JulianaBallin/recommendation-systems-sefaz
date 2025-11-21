@@ -21,7 +21,7 @@ class ContentBasedRecommender:
         # Preencher valores nulos
         self.products_df["descricao"] = self.products_df["descricao"].fillna("")
         
-        self.vectorizer = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), min_df=2)
+        self.vectorizer = TfidfVectorizer(analyzer='word', ngram_range=(1, 2), min_df=1)
         self.tfidf_matrix = self.vectorizer.fit_transform(self.products_df["descricao"])
 
     def recommend(self, user_cpf: str, n_recommendations: int = 5):

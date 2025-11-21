@@ -5,7 +5,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="Gerar dataset simulado de avaliações.")
-    parser.add_argument("--qtd", type=int, default=100, help="Quantidade de avaliações a gerar (padrão: 20)")
+    parser.add_argument("--qtd", type=int, default=300, help="Quantidade de avaliações a gerar")
     args = parser.parse_args()
     
     qtd = args.qtd
