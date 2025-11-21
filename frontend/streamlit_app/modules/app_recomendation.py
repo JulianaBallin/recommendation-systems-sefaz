@@ -86,7 +86,14 @@ def run():
                     response = requests.post(f"{API_URL}/recomendacao/recomendar", json=payload)
                     
                     if response.status_code == 200:
-                        recommendations = response.json()
+                        response_data = response.json()
+                        
+                        # Extrair recomendações da nova estrutura de resposta
+                        if "data" in response_data and "recommendations" in response_data["data"]:
+                            recommendations = response_data["data"]["recommendations"]
+                        else:
+                            # Fallback para estrutura antiga
+                            recommendations = response_data
                         
                         # Salvar no session state
                         st.session_state["last_recommendations"] = recommendations
@@ -189,7 +196,14 @@ def run():
                             response = requests.post(f"{API_URL}/recomendacao/metricas", json=payload)
                             
                             if response.status_code == 200:
-                                metrics = response.json()
+                                response_data = response.json()
+                                
+                                # Extrair métricas da nova estrutura de resposta
+                                if "data" in response_data:
+                                    metrics = response_data["data"]
+                                else:
+                                    # Fallback para estrutura antiga
+                                    metrics = response_data
                                 
                                 # Exibir métricas
                                 if "message" in metrics:

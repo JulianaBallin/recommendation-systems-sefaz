@@ -1,8 +1,18 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, HTTPException, UploadFile, File
 import pandas as pd
 import os
+import time
 
 from backend.utilitarios.processar_usuarios import processar_csv_usuarios
+from backend.utilitarios.validadores import (
+    validate_file_size,
+    validate_file_type,
+    validate_required_columns,
+    validate_dataframe_not_empty,
+    validate_usuarios_data
+)
+from backend.utilitarios.response_formatter import upload_response, error_response
+from backend.utilitarios.constants import ERROR_CODES
 
 router = APIRouter(prefix="/usuarios", tags=["Usuários"])
 
@@ -36,24 +46,60 @@ def inserir_usuarios_banco(df):
 
 @router.post("/upload")
 async def upload_usuarios(file: UploadFile = File(...)):
-    df = pd.read_csv(file.file)
+    inicio = time.time()
     
-    COLUNAS_OBRIGATORIAS = {"cpf", "nome"}
+    try:
+        # Validações de arquivo
+        validate_file_type(file.filename)
+        validate_file_size(file)
+        
+        # Ler CSV
+        df = pd.read_csv(file.file)
+        df.columns = df.columns.str.lower()
+        
+        # Validar DataFrame
+        validate_dataframe_not_empty(df)
+        validate_required_columns(df, "usuarios")
+        
+        total_recebidos = len(df)
+        
+        # Validar dados específicos de usuários (CPF, nome, etc.)
+        df_pre_validados, validation_errors = validate_usuarios_data(df)
+        
+        # Processar com lógica de negócio (duplicações, etc.)
+        cpfs_existentes = obter_cpfs_existentes()
+        df_validos, df_erros = processar_csv_usuarios(df_pre_validados, cpfs_existentes)
+        
+        # Combinar erros de validação e processamento
+        all_errors = validation_errors + df_erros.to_dict(orient="records") if not df_erros.empty else validation_errors
+        
+        # Inserir válidos no banco
+        if not df_validos.empty:
+            inserir_usuarios_banco(df_validos)
+        
+        # Contar total armazenado
+        total_stored = 0
+        if os.path.exists(CLIENTES_CSV):
+            total_stored = len(pd.read_csv(CLIENTES_CSV))
+        
+        tempo = time.time() - inicio
+        
+        return upload_response(
+            total_received=total_recebidos,
+            total_valid=len(df_validos),
+            total_invalid=len(all_errors),
+            processing_time=tempo,
+            total_stored=total_stored,
+            invalid_records=all_errors
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        return error_response(
+            message=f"Erro ao processar arquivo: {str(e)}",
+            code=ERROR_CODES["PROCESSING_ERROR"],
+            details={"error_type": type(e).__name__},
+            status_code=500
+        )
 
-    if not COLUNAS_OBRIGATORIAS.issubset(df.columns.str.lower()):
-        return {
-            "status": "erro",
-            "mensagem": f"Colunas obrigatórias ausentes. Esperado: {COLUNAS_OBRIGATORIAS}"
-        }
-
-    cpfs_existentes = obter_cpfs_existentes()
-
-    df_validos, df_erros = processar_csv_usuarios(df, cpfs_existentes)
-
-    inserir_usuarios_banco(df_validos)
-
-    return {
-        "status": "ok",
-        "validos": len(df_validos),
-        "invalidos": df_erros.to_dict(orient="records")
-    }
