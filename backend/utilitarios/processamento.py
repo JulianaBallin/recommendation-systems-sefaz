@@ -5,7 +5,7 @@ from backend.utilitarios.utilitarios_dicionarios import detectar_marca
 
 
 RAW_PATH = "dataset/raw/nfs.csv"
-PROCESSED_PATH = "dataset/processado/nfs_processadas.csv"
+PROCESSADO_PATH = "dataset/processado/nfs_processadas.csv"
 
 
 def processar_nfs():
@@ -39,9 +39,9 @@ def processar_nfs():
     df_final.columns = ["descricao", "supermercado", "marca"]
 
     # Garante diretório
-    os.makedirs(os.path.dirname(PROCESSED_PATH), exist_ok=True)
+    os.makedirs(os.path.dirname(PROCESSADO_PATH), exist_ok=True)
 
     # Salva
-    df_final.to_csv(PROCESSED_PATH, index=False, encoding="utf-8")
+    df_final.to_csv(PROCESSADO_PATH, index=False, encoding="utf-8")
 
-    print(f"✅ Processamento concluído! Arquivo salvo em: {PROCESSED_PATH}")
+    print(f"✅ Processamento concluído! Arquivo salvo em: {PROCESSADO_PATH}")

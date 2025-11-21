@@ -10,7 +10,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 if ROOT_DIR not in sys.path:
     sys.path.append(ROOT_DIR)
 
-from modules import app_home, app_dataset, app_ratings
+from modules import app_home, app_dataset, app_ratings, app_recomendation
 
 
 def load_css():
@@ -35,7 +35,8 @@ pagina = st.sidebar.selectbox(
     [
         "🏠 Home", 
         "📂 Upload de Dados", 
-        "⭐ Avaliação"
+        "⭐ Avaliação",
+        "📊 Recomendação"
     ]
 )
 
@@ -47,4 +48,7 @@ elif pagina == "📂 Upload de Dados":
 
 elif pagina == "⭐ Avaliação":
     app_ratings.run()
+
+elif pagina == "📊 Recomendação":
+    app_recomendation.run()
 

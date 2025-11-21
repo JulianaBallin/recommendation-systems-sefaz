@@ -11,9 +11,10 @@ def main():
     qtd = args.qtd
     
     # Caminhos dos arquivos
-    usuarios_path = "dataset/raw/usuarios_simulados.csv"
-    produtos_path = "dataset/standardized/produtos_padronizados.csv"
-    output_path = "dataset/raw/avaliacoes.csv"
+    dataset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../dataset"))
+    usuarios_path = os.path.join(dataset_dir, "processado/usuarios.csv")
+    produtos_path = os.path.join(dataset_dir, "standardized/produtos_padronizados.csv")
+    output_path = os.path.join(dataset_dir, "ratings/avaliacoes.csv")
     
     # Verificar existência dos arquivos base
     if not os.path.exists(usuarios_path):

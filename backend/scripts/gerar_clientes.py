@@ -73,9 +73,9 @@ def main():
     
     df = pd.DataFrame(dados)
     
-    output_dir = "dataset/raw"
+    output_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../dataset/processado"))
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "usuarios_simulados.csv")
+    output_path = os.path.join(output_dir, "usuarios.csv")
     
     df.to_csv(output_path, index=False)
     print(f"✅ Arquivo gerado com sucesso: {output_path}")

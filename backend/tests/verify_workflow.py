@@ -7,16 +7,16 @@ import shutil
 import mimetypes
 
 API_URL = "http://127.0.0.1:8000"
-DATASET_DIR = "dataset"
-PROCESSED_DIR = os.path.join(DATASET_DIR, "processed")
+DATASET_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../dataset"))
+PROCESSADO_DIR = os.path.join(DATASET_DIR, "processado")
 STANDARDIZED_DIR = os.path.join(DATASET_DIR, "standardized")
 
 def setup():
-    if os.path.exists(PROCESSED_DIR):
-        shutil.rmtree(PROCESSED_DIR)
+    if os.path.exists(PROCESSADO_DIR):
+        shutil.rmtree(PROCESSADO_DIR)
     if os.path.exists(STANDARDIZED_DIR):
         shutil.rmtree(STANDARDIZED_DIR)
-    os.makedirs(PROCESSED_DIR, exist_ok=True)
+    os.makedirs(PROCESSADO_DIR, exist_ok=True)
 
 def post_multipart(url, fields, files):
     boundary = '----------BoundaryString'
@@ -63,9 +63,9 @@ def test_upload_usuarios():
         print("Upload Users: OK")
         print(response_text)
         
-        if os.path.exists(os.path.join(PROCESSED_DIR, "clientes.csv")):
+        if os.path.exists(os.path.join(PROCESSADO_DIR, "clientes.csv")):
             try:
-                rows = read_csv_rows(os.path.join(PROCESSED_DIR, "clientes.csv"))
+                rows = read_csv_rows(os.path.join(PROCESSADO_DIR, "clientes.csv"))
                 print(f"Clientes CSV rows: {len(rows)}")
                 if len(rows) >= 1:
                     print("Persistence Users: OK")
@@ -90,10 +90,10 @@ def test_upload_nfs():
         print("Upload NFs: OK")
         print(response_text)
         
-        processed_path = os.path.join(PROCESSED_DIR, "nfs_processadas.csv")
-        if os.path.exists(processed_path):
+        processado_path = os.path.join(PROCESSADO_DIR, "nfs_processadas.csv")
+        if os.path.exists(processado_path):
             try:
-                rows = read_csv_rows(processed_path)
+                rows = read_csv_rows(processado_path)
                 print(f"NFs Processadas rows: {len(rows)}")
                 if rows and "marca" in rows[0]:
                     print("Brand Extraction: OK")

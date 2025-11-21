@@ -4,7 +4,7 @@ import shutil
 import sys
 
 # Adicionar diretório raiz ao path para importar módulos do backend
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 from backend.utilitarios.tfidf_produtos import processar_comparacao_tf_idf
 
@@ -12,9 +12,11 @@ def reprocessar():
     print("🔄 Iniciando reprocessamento de produtos...")
     
     # Caminhos
-    nfs_path = "dataset/processado/nfs_processadas.csv"
-    standardized_path = "dataset/standardized/produtos_padronizados.csv"
-    base_dir = "dataset/produtos_base"
+    # Caminhos
+    dataset_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../dataset"))
+    nfs_path = os.path.join(dataset_dir, "processado/nfs_processadas.csv")
+    standardized_path = os.path.join(dataset_dir, "standardized/produtos_padronizados.csv")
+    base_dir = os.path.join(dataset_dir, "produtos_base")
     
     # 1. Limpar dados antigos
     if os.path.exists(standardized_path):

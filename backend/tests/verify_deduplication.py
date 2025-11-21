@@ -1,9 +1,12 @@
 import pandas as pd
 import os
 import shutil
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
 from backend.utilitarios.tfidf_produtos import processar_comparacao_tf_idf
 
-DATASET_DIR = "dataset"
+DATASET_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../dataset"))
 STANDARDIZED_PATH = os.path.join(DATASET_DIR, "standardized", "produtos_padronizados.csv")
 
 def setup():
