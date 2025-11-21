@@ -92,6 +92,7 @@ def run():
                         st.session_state["last_recommendations"] = recommendations
                         st.session_state["last_algo"] = algo_type
                         st.session_state["last_user"] = selected_client["cpf"]
+                        st.session_state["last_n_recs"] = n_recs
                     else:
                         st.error(f"Erro na API: {response.text}")
                     
@@ -177,10 +178,12 @@ def run():
                             st.warning("Gere recomendações primeiro antes de avaliar a acurácia.")
                         else:
                             algo_key = algo_map.get(last_algo)
+                            k_value = st.session_state.get('last_n_recs', 10)
                             
                             payload = {
                                 "user_cpf": str(selected_client["cpf"]),
-                                "algo_type": algo_key
+                                "algo_type": algo_key,
+                                "k": k_value
                             }
                             
                             response = requests.post(f"{API_URL}/recomendacao/metricas", json=payload)
@@ -192,18 +195,19 @@ def run():
                                 if "message" in metrics:
                                     st.warning(metrics["message"])
                                 else:
+                                    k_value = metrics.get('total_recommended', 10)
                                     col1, col2, col3 = st.columns(3)
                                     
                                     with col1:
                                         st.metric(
-                                            label="Precision@10",
+                                            label=f"Precision@{k_value}",
                                             value=f"{metrics['precision_at_k']:.2%}",
                                             help="Proporção de itens recomendados que são relevantes"
                                         )
                                     
                                     with col2:
                                         st.metric(
-                                            label="Recall@10",
+                                            label=f"Recall@{k_value}",
                                             value=f"{metrics.get('recall_at_k', 0):.2%}",
                                             help="Proporção de itens relevantes que foram recomendados"
                                         )

@@ -17,6 +17,7 @@ class RecommendationRequest(BaseModel):
 class MetricsRequest(BaseModel):
     user_cpf: str
     algo_type: str
+    k: int = 10  # Número de recomendações para avaliar
 
 class FeedbackRequest(BaseModel):
     user_cpf: str
@@ -43,12 +44,12 @@ def calcular_metricas(request: MetricsRequest):
     try:
         if request.algo_type == "content":
             recommender = ContentBasedRecommender()
-            metrics = recommender.evaluate_metrics(request.user_cpf)
+            metrics = recommender.evaluate_metrics(request.user_cpf, k=request.k)
         else:
             ratings = loader.load_ratings()
             recommender = CollaborativeFilteringRecommender(ratings)
             recommender.train(algo_type=request.algo_type)
-            metrics = recommender.evaluate_metrics(request.user_cpf)
+            metrics = recommender.evaluate_metrics(request.user_cpf, k=request.k)
         return metrics
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

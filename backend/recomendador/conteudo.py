@@ -111,16 +111,20 @@ class ContentBasedRecommender:
                 
         return recommendations
 
-    def evaluate_metrics(self, user_cpf: str):
+    def evaluate_metrics(self, user_cpf: str, k: int = 10):
         """
         Avalia as métricas das recomendações para um usuário.
+        
+        Args:
+            user_cpf: CPF do usuário
+            k: Número de recomendações a gerar para avaliação (padrão: 10)
         """
         
         user_ratings = self.ratings_df[self.ratings_df["cpf"].astype(str) == str(user_cpf)]
         if len(user_ratings) < 4:
             return {
                 "precision_at_k": 0, "recall_at_k": 0, "f1_score": 0,
-                "hits": 0, "total_recommended": 10, "total_relevant": 0,
+                "hits": 0, "total_recommended": k, "total_relevant": 0,
                 "message": "Poucas avaliações."
             }
         train_data, test_data = train_test_split(user_ratings, test_size=0.5, random_state=42)
@@ -136,7 +140,7 @@ class ContentBasedRecommender:
         if not train_liked_items:
             return {
                 "precision_at_k": 0, "recall_at_k": 0, "f1_score": 0,
-                "hits": 0, "total_recommended": 10, "total_relevant": 0,
+                "hits": 0, "total_recommended": k, "total_relevant": 0,
                 "message": "Sem itens bem avaliados no treino."
             }
             
@@ -153,7 +157,7 @@ class ContentBasedRecommender:
         if not product_indices:
             return {
                 "precision_at_k": 0, "recall_at_k": 0, "f1_score": 0,
-                "hits": 0, "total_recommended": 10, "total_relevant": 0,
+                "hits": 0, "total_recommended": k, "total_relevant": 0,
                 "message": "Produtos não encontrados."
             }
             
@@ -178,7 +182,7 @@ class ContentBasedRecommender:
             if item_val in train_items:
                 continue
             recommendations.append(str(item_val)) # Converter para string para comparação
-            if len(recommendations) >= 10:
+            if len(recommendations) >= k:
                 break
         
         relevant_items = [str(r) for r in relevant_items] # Converter para string

@@ -125,12 +125,19 @@ class CollaborativeFilteringRecommender:
         
         return recommended_items[:n_recommendations]
 
-    def evaluate_metrics(self, user_cpf: str):
+    def evaluate_metrics(self, user_cpf: str, k: int = 10):
+        """
+        Avalia as métricas das recomendações para um usuário.
+        
+        Args:
+            user_cpf: CPF do usuário
+            k: Número de recomendações a gerar para avaliação (padrão: 10)
+        """
         user_ratings = self.ratings_df[self.ratings_df['cpf'] == user_cpf]
         if len(user_ratings) < 4:
             return {
                 "precision_at_k": 0, "recall_at_k": 0, "f1_score": 0,
-                "hits": 0, "total_recommended": 10, "total_relevant": 0,
+                "hits": 0, "total_recommended": k, "total_relevant": 0,
                 "message": "Poucas avaliações."
             }
         train_data, test_data = train_test_split(user_ratings, test_size=0.5, random_state=42)
@@ -143,7 +150,7 @@ class CollaborativeFilteringRecommender:
         temp_rec.best_params = self.best_params
         temp_rec.train(algo_type=self.algo_type)
         
-        recs = temp_rec.recommend_items(user_cpf, n_recommendations=10)
+        recs = temp_rec.recommend_items(user_cpf, n_recommendations=k)
         rec_ids = [str(item['id']) for item in recs]  # Converter para string
         rel_ids = [str(id_val) for id_val in test_data[test_data['avaliacao_descricao'] >= 3]['id'].tolist()]  # Converter para string
         
