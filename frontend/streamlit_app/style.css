@@ -295,3 +295,9 @@ div[data-testid="stToast"] p {
         padding-right: 20px !important;
     }
 }
+
+/* ===== Métricas (st.metric) ===== */
+/* Força cor escura nos valores das métricas */
+div[data-testid="stMetricValue"] {
+    color: #2b2525 !important;
+}

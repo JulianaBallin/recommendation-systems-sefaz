@@ -1,18 +1,33 @@
 import streamlit as st
 import pandas as pd
-from backend.dataset import loader
-from backend.recomendador.colaborativo import CollaborativeFilteringRecommender
-from backend.recomendador.conteudo import ContentBasedRecommender
-from backend.recomendador.feedback_manager import FeedbackManager
+import requests
+
+API_URL = "http://127.0.0.1:8000"
 
 def run():
     st.title("🎯 Recomendações")
     st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
-    # === Carregar dados ===
-    clients = loader.load_raw_clients()
-    products = loader.load_derived_products()
-    ratings = loader.load_ratings()
+    # === Carregar dados via API ===
+    try:
+        resp_clients = requests.get(f"{API_URL}/recomendacao/usuarios")
+        if resp_clients.status_code == 200:
+            clients = pd.DataFrame(resp_clients.json())
+        else:
+            st.error("Erro ao carregar usuários da API.")
+            clients = pd.DataFrame()
+
+        resp_products = requests.get(f"{API_URL}/recomendacao/itens")
+        if resp_products.status_code == 200:
+            products = pd.DataFrame(resp_products.json())
+        else:
+            st.error("Erro ao carregar produtos da API.")
+            products = pd.DataFrame()
+            
+    except Exception as e:
+        st.error(f"Erro de conexão com a API: {e}")
+        clients = pd.DataFrame()
+        products = pd.DataFrame()
 
     # =======================
     # SEÇÃO 1: CONFIGURAÇÃO
@@ -28,6 +43,7 @@ def run():
         
         if client_choice != "Selecione um cliente...":
             selected_cpf = client_choice.split('(')[-1].replace(')', '')
+            # Garantir tipo string para comparação
             match = clients[clients["cpf"].astype(str) == str(selected_cpf)]
             if not match.empty:
                 selected_client = match.iloc[0].to_dict()
@@ -57,24 +73,27 @@ def run():
     # =======================
     if selected_client:
         if st.button("🚀 Gerar Recomendações", type="primary"):
-            with st.spinner("Gerando recomendações personalizadas..."):
+            with st.spinner("Gerando recomendações personalizadas via API..."):
                 recommendations = []
                 
                 try:
-                    if algo_map[algo_type] == "content":
-                        recommender = ContentBasedRecommender()
-                        recommendations = recommender.recommend(selected_client["cpf"], n_recs)
-                    else:
-                        # Colaborativo
-                        recommender = CollaborativeFilteringRecommender(ratings)
-                        # Treinar com o algoritmo selecionado
-                        recommender.train(algo_type=algo_map[algo_type])
-                        recommendations = recommender.recommend_items(selected_client["cpf"], n_recs)
+                    payload = {
+                        "user_cpf": str(selected_client["cpf"]),
+                        "n_recs": n_recs,
+                        "algo_type": algo_map[algo_type]
+                    }
                     
-                    # Salvar no session state para persistir após feedback
-                    st.session_state["last_recommendations"] = recommendations
-                    st.session_state["last_algo"] = algo_type
-                    st.session_state["last_user"] = selected_client["cpf"]
+                    response = requests.post(f"{API_URL}/recomendacao/gerar", json=payload)
+                    
+                    if response.status_code == 200:
+                        recommendations = response.json()
+                        
+                        # Salvar no session state
+                        st.session_state["last_recommendations"] = recommendations
+                        st.session_state["last_algo"] = algo_type
+                        st.session_state["last_user"] = selected_client["cpf"]
+                    else:
+                        st.error(f"Erro na API: {response.text}")
                     
                 except Exception as e:
                     st.error(f"Erro ao gerar recomendações: {str(e)}")
@@ -90,16 +109,23 @@ def run():
             st.subheader(f"Recomendações para {selected_client['nome']}")
             st.caption(f"Algoritmo: {st.session_state.get('last_algo')}")
             
-            feedback_manager = FeedbackManager()
-            
             for i, rec in enumerate(recommendations):
                 # Tentar obter detalhes do produto se não vierem (caso do colaborativo)
                 rec_id = rec.get("id")
+                
+                # Se vier do colaborativo, pode não ter descrição/marca
                 if "descricao" not in rec:
-                    prod_details = products[products["id"] == rec_id]
-                    if not prod_details.empty:
-                        rec["descricao"] = prod_details.iloc[0]["descricao"]
-                        rec["marca"] = prod_details.iloc[0]["marca"]
+                    if not products.empty:
+                        # Converter IDs para string para garantir match
+                        # O ID na recomendação pode ser int ou str, no products também
+                        # Vamos tentar converter ambos para string
+                        prod_details = products[products["id"].astype(str) == str(rec_id)]
+                        if not prod_details.empty:
+                            rec["descricao"] = prod_details.iloc[0]["descricao"]
+                            rec["marca"] = prod_details.iloc[0]["marca"]
+                        else:
+                            rec["descricao"] = f"Produto {rec_id}"
+                            rec["marca"] = "Desconhecida"
                     else:
                         rec["descricao"] = f"Produto {rec_id}"
                         rec["marca"] = "Desconhecida"
@@ -108,23 +134,97 @@ def run():
                     col1, col2, col3 = st.columns([3, 1, 1])
                     
                     with col1:
-                        st.markdown(f"**{rec['descricao']}**")
-                        st.caption(f"Marca: {rec['marca']} | Score: {rec.get('score', 0):.2f}")
+                        st.markdown(f"**{rec.get('descricao', 'Sem descrição')}**")
+                        st.caption(f"Marca: {rec.get('marca', 'N/A')} | Score: {rec.get('score', 0):.2f}")
                     
                     with col2:
-                        # Adicionando índice 'i' à chave para garantir unicidade mesmo se o produto aparecer duplicado
                         if st.button("👍 Gostei", key=f"like_{rec_id}_{i}"):
-                            feedback_manager.add_feedback(selected_client["cpf"], rec_id, "like")
-                            st.toast(f"Você gostou de {rec['descricao']}!", icon="👍")
+                            try:
+                                requests.post(f"{API_URL}/recomendacao/feedback", json={
+                                    "user_cpf": str(selected_client["cpf"]),
+                                    "item_id": rec_id,
+                                    "feedback_type": "like"
+                                })
+                                st.toast(f"Você gostou de {rec.get('descricao')}!", icon="👍")
+                            except Exception as e:
+                                st.error(f"Erro ao enviar feedback: {e}")
                     
                     with col3:
                         if st.button("👎 Não Gostei", key=f"dislike_{rec_id}_{i}"):
-                            feedback_manager.add_feedback(selected_client["cpf"], rec_id, "dislike")
-                            st.toast(f"Você não gostou de {rec['descricao']}. Ajustaremos as recomendações.", icon="👎")
+                            try:
+                                requests.post(f"{API_URL}/recomendacao/feedback", json={
+                                    "user_cpf": str(selected_client["cpf"]),
+                                    "item_id": rec_id,
+                                    "feedback_type": "dislike"
+                                })
+                                st.toast(f"Você não gostou de {rec.get('descricao')}.", icon="👎")
+                            except Exception as e:
+                                st.error(f"Erro ao enviar feedback: {e}")
                     
                     st.divider()
+            
+            # =======================
+            # SEÇÃO 4: MÉTRICAS DE AVALIAÇÃO
+            # =======================
+            st.markdown("---")
+            st.subheader("📊 Métricas de Avaliação")
+            
+            if st.button("🔍 Avaliar Acurácia", key="evaluate_metrics"):
+                with st.spinner("Calculando métricas via API..."):
+                    try:
+                        last_algo = st.session_state.get('last_algo')
+                        if not last_algo:
+                            st.warning("Gere recomendações primeiro antes de avaliar a acurácia.")
+                        else:
+                            algo_key = algo_map.get(last_algo)
+                            
+                            payload = {
+                                "user_cpf": str(selected_client["cpf"]),
+                                "algo_type": algo_key
+                            }
+                            
+                            response = requests.post(f"{API_URL}/recomendacao/metricas", json=payload)
+                            
+                            if response.status_code == 200:
+                                metrics = response.json()
+                                
+                                # Exibir métricas
+                                if "message" in metrics:
+                                    st.warning(metrics["message"])
+                                else:
+                                    col1, col2, col3 = st.columns(3)
+                                    
+                                    with col1:
+                                        st.metric(
+                                            label="Precision@10",
+                                            value=f"{metrics['precision_at_k']:.2%}",
+                                            help="Proporção de itens recomendados que são relevantes"
+                                        )
+                                    
+                                    with col2:
+                                        st.metric(
+                                            label="Recall@10",
+                                            value=f"{metrics.get('recall_at_k', 0):.2%}",
+                                            help="Proporção de itens relevantes que foram recomendados"
+                                        )
+                                    
+                                    with col3:
+                                        st.metric(
+                                            label="F1-Score",
+                                            value=f"{metrics.get('f1_score', 0):.2%}",
+                                            help="Média harmônica entre Precision e Recall"
+                                        )
+                                    
+                                    st.caption(f"**Hits:** {metrics['hits']} de {metrics['total_recommended']} recomendações | **Relevantes:** {metrics.get('total_relevant', 'N/A')}")
+                            else:
+                                st.error(f"Erro na API de métricas: {response.text}")
+                    
+                    except Exception as e:
+                        import traceback
+                        st.error(f"Erro ao calcular métricas: {str(e)}")
+                        st.code(traceback.format_exc())
         else:
-            if st.session_state.get("last_algo"): # Se já tentou gerar
+            if st.session_state.get("last_algo"):
                 st.info("Nenhuma recomendação encontrada com os critérios atuais.")
     elif not selected_client:
         st.info("Selecione um usuário para começar.")
