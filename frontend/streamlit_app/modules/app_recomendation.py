@@ -1,219 +1,248 @@
 import streamlit as st
 import pandas as pd
 import requests
-import altair as alt
-from backend.dataset import loader
 
-def load_and_preprocess_data():
-    """Carrega clientes e produtos, e padroniza colunas."""
-    clients = loader.load_raw_clients()
-    products = loader.load_derived_products()
-
-    rename_map = {
-        "descricao": "DESCRICAO",
-        "description": "DESCRICAO",
-        "codigo": "CODIGO",
-        "categoria": "CATEGORIA",
-        "marca": "MARCA",
-    }
-    products.columns = [c.upper() for c in products.columns]
-    products = products.rename(columns=rename_map)
-    
-    # Garantir que o ID seja string para comparações
-    if "ID" in products.columns:
-        products["ID"] = products["ID"].astype(str)
-        
-    return clients, products
-
-def select_client(clients):
-    """Exibe o seletor de clientes e retorna o cliente selecionado."""
-    st.subheader("👤 Selecionar Usuário")
-
-    if not clients.empty:
-        client_options = ["Selecione um cliente..."] + [
-            f"{row['NOME']} ({row['CPF']})" for index, row in clients.iterrows()
-        ]
-        
-        client_choice = st.selectbox(
-            "Escolha um cliente na lista para gerar recomendações:",
-            options=client_options,
-            index=0
-        )
-
-        if client_choice != "Selecione um cliente...":
-            selected_cpf = client_choice.split('(')[-1].replace(')', '')
-            match = clients[clients["CPF"] == selected_cpf]
-            if not match.empty:
-                selected_client = match.iloc[0].to_dict()
-                st.success(f"Cliente selecionado: **{selected_client['NOME']}** (CPF: {selected_client['CPF']})")
-                return selected_client
-    else:
-        st.warning("Nenhum cliente cadastrado.")
-    
-    return None
-
-def get_recommendations(cpf, n_recs):
-    """Faz a requisição para a API de recomendação."""
-    API_URL = "http://127.0.0.1:8000/recommend"
-    try:
-        response = requests.get(f"{API_URL}/{cpf}?n_items={n_recs}")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            st.error(f"Erro ao contatar o serviço de recomendação: {response.text}")
-            return None
-    except requests.exceptions.ConnectionError:
-        st.error("Não foi possível conectar ao serviço de recomendação. Verifique se o backend está em execução.")
-        return None
-
-def display_recommendations(products, recommended_items_data):
-    """Exibe a lista de produtos recomendados."""
-    # Extrai IDs e scores
-    recommended_ids = [item['id'] for item in recommended_items_data]
-    recommended_scores = {str(item['id']): item['score'] for item in recommended_items_data}
-
-    st.subheader("🎁 Produtos Recomendados")
-    if recommended_ids:
-        # Filtra os produtos recomendados
-        recommended_products_df = products[products["ID"].isin([str(i) for i in recommended_ids])].copy()
-        # Adiciona o score ao DataFrame para poder ordenar
-        recommended_products_df['SCORE'] = recommended_products_df['ID'].apply(lambda x: recommended_scores.get(str(x), 0))
-        # Ordena o DataFrame pelo score em ordem decrescente
-        sorted_recommended_products = recommended_products_df.sort_values(by='SCORE', ascending=False)
-
-        for index, row in sorted_recommended_products.iterrows():
-            score = row['SCORE']
-            st.markdown(f"- **{row['DESCRICAO']}** (Score: {score:.2f})")
-    else:
-        st.info("Não foi possível gerar novas recomendações no momento.")
-
-def display_accuracy_report(accuracy_report):
-    """Exibe o relatório de acurácia e gráfico."""
-    st.markdown("---")
-    st.subheader("🎯 Relatório de Acurácia do Modelo")
-    st.markdown(
-        "<p style='font-size: 14px;'>A acurácia é calculada através de uma simulação. O sistema esconde metade do histórico de avaliações do usuário (o gabarito) e tenta prever esses itens usando a outra metade. A métrica representa a porcentagem de acertos dentro das 10 previsões feitas durante este teste.</p>",
-        unsafe_allow_html=True
-    )
-    
-    if accuracy_report.get("message") != "Acurácia calculada com sucesso.":
-        st.warning(accuracy_report.get("message", "Não foi possível calcular a acurácia."))
-        return
-
-    hits = accuracy_report.get("hits", 0)
-    total = accuracy_report.get("total_recommended", 0)
-    accuracy = accuracy_report.get("precision_at_k", 0.0)
-    misses = total - hits
-
-    col1_acc, col2_acc, _ = st.columns([1, 1, 2])
-    col1_acc.metric("Acertos", f"{hits}/{total}")
-    col2_acc.metric("Acurácia", f"{accuracy:.0%}", help="Dos 10 itens recomendados na simulação, quantos foram acertos? Mede a eficiência do espaço.")
-    
-    chart_data = pd.DataFrame({
-        'Tipo': ['Acertos', 'Erros'],
-        'Quantidade': [hits, misses],
-        'Cor': ['#3e721d', '#a69076']
-    })
-
-    chart = alt.Chart(chart_data).mark_arc(innerRadius=50).encode(
-        theta=alt.Theta(field="Quantidade", type="quantitative"),
-        color=alt.Color(field="Cor", type="nominal", scale=None),
-        tooltip=['Tipo', 'Quantidade']
-    ).properties(title='Distribuição de Acertos vs. Erros')
-    st.altair_chart(chart, use_container_width=True)
-
-def display_simulation_details(products, accuracy_report):
-    """Exibe os detalhes da simulação (acertos/erros)."""
-    st.markdown("---")
-    st.subheader("🔬 Recomendações da Simulação (para Acurácia)")
-    st.markdown("Esta é a lista de itens que o modelo previu durante a simulação de acurácia. É comparando esta lista com o 'Gabarito' que obtemos a métrica.")
-
-    simulated_rec_ids = accuracy_report.get("simulated_recommendations", [])
-    hit_item_ids = accuracy_report.get("hit_items", [])
-
-    if simulated_rec_ids:
-        simulated_rec_products = products[products["ID"].isin([str(i) for i in simulated_rec_ids])]
-        for index, row in simulated_rec_products.iterrows():
-            if row["ID"] in [str(i) for i in hit_item_ids]:
-                st.markdown(f"- ✅ **{row['DESCRICAO']}**: <span style='color:green;'>**Acerto!**</span>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"- ❌ **{row['DESCRICAO']}**: <span style='color:red;'>**Erro** (Recomendado, mas não estava no gabarito)</span>", unsafe_allow_html=True)
-    else:
-        st.info("Não foi possível gerar recomendações na simulação.")
-
-def display_ground_truth(products, accuracy_report):
-    """Exibe o gabarito (itens que o usuário gostou)."""
-    st.markdown("---")
-    st.subheader("🔍 Detalhes do Gabarito")
-    st.markdown("Itens que o usuário gostou (com nota ≥ 3) no conjunto de teste e que foram usados para medir a acurácia.")
-
-    ground_truth_ids = accuracy_report.get("ground_truth_liked_items", [])
-    if ground_truth_ids:
-        ground_truth_products = products[products["ID"].isin([str(i) for i in ground_truth_ids])]
-
-        # A comparação deve ser com as recomendações da SIMULAÇÃO
-        simulated_rec_ids_str = [str(i) for i in accuracy_report.get("simulated_recommendations", [])]
-
-        for index, row in ground_truth_products.iterrows():
-            if row["ID"] in simulated_rec_ids_str:
-                st.markdown(f"- ✅ **{row['DESCRICAO']}**: <span style='color:green;'>**Acerto!** (Recomendado corretamente)</span>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"- ❌ **{row['DESCRICAO']}**: <span style='color:orange;'>**Não recomendado** (Era uma boa sugestão, mas não foi prevista)</span>", unsafe_allow_html=True)
-    else:
-        st.info("Não havia itens com nota positiva no conjunto de teste para compor o gabarito.")
-
-def display_training_items(products, accuracy_report):
-    """Exibe os itens usados para treino."""
-    st.markdown("---")
-    st.subheader("📚 Itens Usados para Treino (na Simulação)")
-    st.markdown("Itens do histórico do usuário que foram usados para treinar o modelo temporário que gerou as recomendações para o cálculo de acurácia.")
-
-    training_ids = accuracy_report.get("training_items", [])
-    if training_ids:
-        training_products = products[products["ID"].isin([str(i) for i in training_ids])]
-        for index, row in training_products.iterrows():
-            st.markdown(f"- {row['DESCRICAO']}")
-    else:
-        st.info("Não foi possível identificar os itens de treino.")
+API_URL = "http://127.0.0.1:8000"
 
 def run():
-    st.title("🧠 Geração de Recomendações")
-    st.markdown("---")
-    st.markdown(
-        """
-        <p style="text-align: center; margin-bottom: 25px;">
-            Obtenha recomendações personalizadas para os clientes baseadas no histórico de avaliações.
-        </p>
-        """,
-        unsafe_allow_html=True
-    )
+    st.title("🎯 Recomendações")
+    st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
-    # 1. Carregar dados
-    clients, products = load_and_preprocess_data()
+    # === Carregar dados via API ===
+    try:
+        resp_clients = requests.get(f"{API_URL}/recomendacao/usuarios")
+        if resp_clients.status_code == 200:
+            clients = pd.DataFrame(resp_clients.json())
+        else:
+            st.error("Erro ao carregar usuários da API.")
+            clients = pd.DataFrame()
 
-    # 2. Selecionar usuário
-    selected_client = select_client(clients)
-
-    # 3. Gerar recomendações
-    if selected_client:
-        st.markdown("---")
-        st.subheader("⚙️ Configuração da Recomendação")
-        
-        n_recs = st.slider("Número de recomendações a gerar:", min_value=1, max_value=10, value=5, key="n_recs_slider_rec_page")
-
-        if st.button("Gerar Recomendações"):
-            cpf = selected_client["CPF"]
+        resp_products = requests.get(f"{API_URL}/recomendacao/itens")
+        if resp_products.status_code == 200:
+            products = pd.DataFrame(resp_products.json())
+        else:
+            st.error("Erro ao carregar produtos da API.")
+            products = pd.DataFrame()
             
-            with st.spinner("Buscando recomendações personalizadas..."):
-                data = get_recommendations(cpf, n_recs)
-                
-                if data:
-                    recommended_items_data = data.get("recommendations", [])
-                    accuracy_report = data.get("accuracy_report", {})
+    except Exception as e:
+        st.error(f"Erro de conexão com a API: {e}")
+        clients = pd.DataFrame()
+        products = pd.DataFrame()
 
-                    # 4. Exibir resultados
-                    display_recommendations(products, recommended_items_data)
-                    display_accuracy_report(accuracy_report)
-                    display_simulation_details(products, accuracy_report)
-                    display_ground_truth(products, accuracy_report)
-                    display_training_items(products, accuracy_report)
+    # =======================
+    # SEÇÃO 1: CONFIGURAÇÃO
+    # =======================
+    
+    # Seleção de Usuário
+    selected_client = None
+    if not clients.empty:
+        client_options = ["Selecione um cliente..."] + [
+            f"{row['nome']} ({row['cpf']})" for index, row in clients.iterrows()
+        ]
+        client_choice = st.selectbox("👤 Usuário:", options=client_options, index=0)
+        
+        if client_choice != "Selecione um cliente...":
+            selected_cpf = client_choice.split('(')[-1].replace(')', '')
+            # Garantir tipo string para comparação
+            match = clients[clients["cpf"].astype(str) == str(selected_cpf)]
+            if not match.empty:
+                selected_client = match.iloc[0].to_dict()
+    
+    # Configurações de Recomendação
+    n_recs = st.slider("Número de recomendações:", 1, 20, 5)
+    
+    algo_type = st.selectbox(
+        "Tipo de Filtragem:",
+        [
+            "SVD++",
+            "Colaborativa (Baseada em Item)",
+            "Colaborativa (Baseada em Usuário)",
+            "Baseada em Conteúdo"
+        ]
+    )
+    
+    algo_map = {
+        "SVD++": "svd",
+        "Colaborativa (Baseada em Item)": "item_knn",
+        "Colaborativa (Baseada em Usuário)": "user_knn",
+        "Baseada em Conteúdo": "content"
+    }
+
+    # =======================
+    # SEÇÃO 2: GERAR RECOMENDAÇÕES
+    # =======================
+    if selected_client:
+        if st.button("🚀 Gerar Recomendações", type="primary"):
+            with st.spinner("Gerando recomendações personalizadas via API..."):
+                recommendations = []
+                
+                try:
+                    payload = {
+                        "user_cpf": str(selected_client["cpf"]),
+                        "n_recs": n_recs,
+                        "algo_type": algo_map[algo_type]
+                    }
+                    
+                    response = requests.post(f"{API_URL}/recomendacao/recomendar", json=payload)
+                    
+                    if response.status_code == 200:
+                        response_data = response.json()
+                        
+                        # Extrair recomendações da nova estrutura de resposta
+                        if "data" in response_data and "recommendations" in response_data["data"]:
+                            recommendations = response_data["data"]["recommendations"]
+                        else:
+                            # Fallback para estrutura antiga
+                            recommendations = response_data
+                        
+                        # Salvar no session state
+                        st.session_state["last_recommendations"] = recommendations
+                        st.session_state["last_algo"] = algo_type
+                        st.session_state["last_user"] = selected_client["cpf"]
+                        st.session_state["last_n_recs"] = n_recs
+                    else:
+                        st.error(f"Erro na API: {response.text}")
+                    
+                except Exception as e:
+                    st.error(f"Erro ao gerar recomendações: {str(e)}")
+
+    # =======================
+    # SEÇÃO 3: EXIBIÇÃO E FEEDBACK
+    # =======================
+    # Recuperar recomendações do estado se o usuário for o mesmo
+    if selected_client and st.session_state.get("last_user") == selected_client["cpf"]:
+        recommendations = st.session_state.get("last_recommendations", [])
+        
+        if recommendations:
+            st.subheader(f"Recomendações para {selected_client['nome']}")
+            st.caption(f"Algoritmo: {st.session_state.get('last_algo')}")
+            
+            for i, rec in enumerate(recommendations):
+                # Tentar obter detalhes do produto se não vierem (caso do colaborativo)
+                rec_id = rec.get("id")
+                
+                # Se vier do colaborativo, pode não ter descrição/marca
+                if "descricao" not in rec:
+                    if not products.empty:
+                        # Converter IDs para string para garantir match
+                        # O ID na recomendação pode ser int ou str, no products também
+                        # Vamos tentar converter ambos para string
+                        prod_details = products[products["id"].astype(str) == str(rec_id)]
+                        if not prod_details.empty:
+                            rec["descricao"] = prod_details.iloc[0]["descricao"]
+                            rec["marca"] = prod_details.iloc[0]["marca"]
+                        else:
+                            rec["descricao"] = f"Produto {rec_id}"
+                            rec["marca"] = "Desconhecida"
+                    else:
+                        rec["descricao"] = f"Produto {rec_id}"
+                        rec["marca"] = "Desconhecida"
+
+                with st.container():
+                    col1, col2, col3 = st.columns([3, 1, 1])
+                    
+                    with col1:
+                        st.markdown(f"**{rec.get('descricao', 'Sem descrição')}**")
+                        st.caption(f"Marca: {rec.get('marca', 'N/A')} | Score: {rec.get('score', 0):.2f}")
+                    
+                    with col2:
+                        if st.button("👍 Gostei", key=f"like_{rec_id}_{i}"):
+                            try:
+                                requests.post(f"{API_URL}/recomendacao/feedback", json={
+                                    "user_cpf": str(selected_client["cpf"]),
+                                    "item_id": rec_id,
+                                    "feedback_type": "like"
+                                })
+                                st.toast(f"Você gostou de {rec.get('descricao')}!", icon="👍")
+                            except Exception as e:
+                                st.error(f"Erro ao enviar feedback: {e}")
+                    
+                    with col3:
+                        if st.button("👎 Não Gostei", key=f"dislike_{rec_id}_{i}"):
+                            try:
+                                requests.post(f"{API_URL}/recomendacao/feedback", json={
+                                    "user_cpf": str(selected_client["cpf"]),
+                                    "item_id": rec_id,
+                                    "feedback_type": "dislike"
+                                })
+                                st.toast(f"Você não gostou de {rec.get('descricao')}.", icon="👎")
+                            except Exception as e:
+                                st.error(f"Erro ao enviar feedback: {e}")
+                    
+                    st.divider()
+            
+            # =======================
+            # SEÇÃO 4: MÉTRICAS DE AVALIAÇÃO
+            # =======================
+            st.markdown("---")
+            st.subheader("📊 Métricas de Avaliação")
+            
+            if st.button("🔍 Avaliar Acurácia", key="evaluate_metrics"):
+                with st.spinner("Calculando métricas via API..."):
+                    try:
+                        last_algo = st.session_state.get('last_algo')
+                        if not last_algo:
+                            st.warning("Gere recomendações primeiro antes de avaliar a acurácia.")
+                        else:
+                            algo_key = algo_map.get(last_algo)
+                            k_value = st.session_state.get('last_n_recs', 10)
+                            
+                            payload = {
+                                "user_cpf": str(selected_client["cpf"]),
+                                "algo_type": algo_key,
+                                "k": k_value
+                            }
+                            
+                            response = requests.post(f"{API_URL}/recomendacao/metricas", json=payload)
+                            
+                            if response.status_code == 200:
+                                response_data = response.json()
+                                
+                                # Extrair métricas da nova estrutura de resposta
+                                if "data" in response_data:
+                                    metrics = response_data["data"]
+                                else:
+                                    # Fallback para estrutura antiga
+                                    metrics = response_data
+                                
+                                # Exibir métricas
+                                if "message" in metrics:
+                                    st.warning(metrics["message"])
+                                else:
+                                    k_value = metrics.get('total_recommended', 10)
+                                    col1, col2, col3 = st.columns(3)
+                                    
+                                    with col1:
+                                        st.metric(
+                                            label=f"Precision@{k_value}",
+                                            value=f"{metrics['precision_at_k']:.2%}",
+                                            help="Proporção de itens recomendados que são relevantes"
+                                        )
+                                    
+                                    with col2:
+                                        st.metric(
+                                            label=f"Recall@{k_value}",
+                                            value=f"{metrics.get('recall_at_k', 0):.2%}",
+                                            help="Proporção de itens relevantes que foram recomendados"
+                                        )
+                                    
+                                    with col3:
+                                        st.metric(
+                                            label="F1-Score",
+                                            value=f"{metrics.get('f1_score', 0):.2%}",
+                                            help="Média harmônica entre Precision e Recall"
+                                        )
+                                    
+                                    st.caption(f"**Hits:** {metrics['hits']} de {metrics['total_recommended']} recomendações | **Relevantes:** {metrics.get('total_relevant', 'N/A')}")
+                            else:
+                                st.error(f"Erro na API de métricas: {response.text}")
+                    
+                    except Exception as e:
+                        import traceback
+                        st.error(f"Erro ao calcular métricas: {str(e)}")
+                        st.code(traceback.format_exc())
+        else:
+            if st.session_state.get("last_algo"):
+                st.info("Nenhuma recomendação encontrada com os critérios atuais.")
+    elif not selected_client:
+        st.info("Selecione um usuário para começar.")

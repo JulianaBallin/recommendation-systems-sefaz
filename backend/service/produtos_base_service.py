@@ -151,7 +151,7 @@ def _calcular_score_hibrido(
 def garantir_produto_base_para_descricao(
     descricao: str,
     marca: Optional[str] = None,
-    threshold: float = 0.80
+    threshold: float = 0.85  # Aumentado de 0.80 para 0.85 (mais rigoroso)
 ) -> str:
     """
     Retorna a 'descricao canônica' (linha base) do cluster ao qual a descrição pertence.

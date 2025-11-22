@@ -5,7 +5,7 @@ from backend.utilitarios.utilitarios_dicionarios import detectar_marca
 
 
 RAW_PATH = "dataset/raw/nfs.csv"
-PROCESSED_PATH = "dataset/processado/nfs_processadas.csv"
+PROCESSADO_PATH = "dataset/processado/nfs_processadas.csv"
 
 
 def processar_nfs():
@@ -18,12 +18,12 @@ def processar_nfs():
     df = pd.read_csv(RAW_PATH)
 
     # Valida colunas
-    if "DESCRICAO" not in df.columns or "SUPERMERCADO" not in df.columns:
-        raise ValueError("❌ O CSV deve conter as colunas: DESCRICAO e SUPERMERCADO")
+    if "descricao" not in df.columns or "supermercado" not in df.columns:
+        raise ValueError("❌ O CSV deve conter as colunas: descricao e supermercado")
 
     # Limpeza
-    df["descricao_limpa"] = df["DESCRICAO"].apply(limpar_descricao)
-    df["supermercado_limpo"] = df["SUPERMERCADO"].apply(limpar_supermercado)
+    df["descricao_limpa"] = df["descricao"].apply(limpar_descricao)
+    df["supermercado_limpo"] = df["supermercado"].apply(limpar_supermercado)
 
     # Detecta marca
     df["marca"] = df["descricao_limpa"].apply(detectar_marca)
@@ -39,9 +39,9 @@ def processar_nfs():
     df_final.columns = ["descricao", "supermercado", "marca"]
 
     # Garante diretório
-    os.makedirs(os.path.dirname(PROCESSED_PATH), exist_ok=True)
+    os.makedirs(os.path.dirname(PROCESSADO_PATH), exist_ok=True)
 
     # Salva
-    df_final.to_csv(PROCESSED_PATH, index=False, encoding="utf-8")
+    df_final.to_csv(PROCESSADO_PATH, index=False, encoding="utf-8")
 
-    print(f"✅ Processamento concluído! Arquivo salvo em: {PROCESSED_PATH}")
+    print(f"✅ Processamento concluído! Arquivo salvo em: {PROCESSADO_PATH}")
