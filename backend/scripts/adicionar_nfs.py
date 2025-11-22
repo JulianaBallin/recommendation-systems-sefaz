@@ -25,11 +25,11 @@ def adicionar_nfs(qtd=30):
     if os.path.exists(NFS_FILE):
         df = pd.read_csv(NFS_FILE)
     else:
-        df = pd.DataFrame(columns=["DESCRICAO"])
+        df = pd.DataFrame(columns=["descricao"])
 
     novos = []
     for _ in range(qtd):
-        novos.append({"DESCRICAO": random.choice(produtos_exemplo)})
+        novos.append({"descricao": random.choice(produtos_exemplo)})
 
     df_novo = pd.DataFrame(novos)
     df = pd.concat([df, df_novo], ignore_index=True)

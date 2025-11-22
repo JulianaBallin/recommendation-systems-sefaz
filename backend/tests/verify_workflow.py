@@ -81,7 +81,7 @@ def test_upload_usuarios():
 
 def test_upload_nfs():
     print("\nTesting Upload NFs...")
-    csv_content = "DESCRICAO,SUPERMERCADO\nLEITE CONDENSADO MOCOCA 395G,SUPERMERCADO A\nSABONETE DOVE ORIGINAL 90G,SUPERMERCADO B\nPRODUTO DESCONHECIDO XYZ,SUPERMERCADO C"
+    csv_content = "descricao,supermercado\nLEITE CONDENSADO MOCOCA 395G,SUPERMERCADO A\nSABONETE DOVE ORIGINAL 90G,SUPERMERCADO B\nPRODUTO DESCONHECIDO XYZ,SUPERMERCADO C"
     
     files = {"file": ("nfs.csv", csv_content, "text/csv")}
     status, response_text = post_multipart(f"{API_URL}/nfs/upload", {}, files)

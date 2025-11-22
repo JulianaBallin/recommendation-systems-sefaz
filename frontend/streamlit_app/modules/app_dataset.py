@@ -37,7 +37,7 @@ def upload_usuarios():
 
 
 def upload_nfs():
-    st.subheader("🧾 Upload de Notas Fiscais (DESCRICAO)")
+    st.subheader("🧾 Upload de Notas Fiscais (descricao)")
 
     file = st.file_uploader("Selecione o arquivo CSV", type=["csv"])
 
@@ -73,13 +73,22 @@ def mostrar_retorno(resp):
             st.success(f"✔ {lines_valid} linhas válidas inseridas!")
             st.info(f"📊 Total de registros no banco: {total_stored}")
         else:
-            st.warning(f"⚠️ Nenhuma linha válida para inserir")
+            st.warning(f"⚠️ Nenhuma linha nova para inserir")
         
         # Sempre mostrar linhas rejeitadas se houver
         if lines_invalid > 0:
-            st.error(f"❌ {lines_invalid} de {lines_received} linhas foram rejeitadas")
+            # Contar quantas são duplicatas
+            duplicates_count = sum(1 for rec in invalid_records if 'já existe' in str(rec.get('errors', [])).lower())
+            invalid_count = lines_invalid - duplicates_count
+            
+            if duplicates_count > 0:
+                st.info(f"ℹ️ {duplicates_count} de {lines_received} linhas já existem no banco (duplicadas)")
+            
+            if invalid_count > 0:
+                st.error(f"❌ {invalid_count} de {lines_received} linhas foram rejeitadas (inválidas)")
+            
             if invalid_records:
-                with st.expander("Ver detalhes das linhas rejeitadas"):
+                with st.expander("Ver detalhes das linhas rejeitadas/duplicadas"):
                     st.dataframe(pd.DataFrame(invalid_records))
     else:
         # Estrutura antiga (fallback)

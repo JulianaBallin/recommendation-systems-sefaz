@@ -23,11 +23,11 @@ def processar_csv_nfs(df: pd.DataFrame, nfs_existentes: set):
     validos = []
 
     # verificar se tem as colunas certas
-    if "DESCRICAO" not in df.columns:
-        raise ValueError("CSV deve conter a coluna: DESCRICAO")
+    if "descricao" not in df.columns:
+        raise ValueError("CSV deve conter a coluna: descricao")
 
     for _, row in df.iterrows():
-        raw_desc = row["DESCRICAO"]
+        raw_desc = row["descricao"]
 
         # 1. Limpeza
         desc = limpar_descricao(str(raw_desc))

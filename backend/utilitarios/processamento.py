@@ -18,12 +18,12 @@ def processar_nfs():
     df = pd.read_csv(RAW_PATH)
 
     # Valida colunas
-    if "DESCRICAO" not in df.columns or "SUPERMERCADO" not in df.columns:
-        raise ValueError("❌ O CSV deve conter as colunas: DESCRICAO e SUPERMERCADO")
+    if "descricao" not in df.columns or "supermercado" not in df.columns:
+        raise ValueError("❌ O CSV deve conter as colunas: descricao e supermercado")
 
     # Limpeza
-    df["descricao_limpa"] = df["DESCRICAO"].apply(limpar_descricao)
-    df["supermercado_limpo"] = df["SUPERMERCADO"].apply(limpar_supermercado)
+    df["descricao_limpa"] = df["descricao"].apply(limpar_descricao)
+    df["supermercado_limpo"] = df["supermercado"].apply(limpar_supermercado)
 
     # Detecta marca
     df["marca"] = df["descricao_limpa"].apply(detectar_marca)
