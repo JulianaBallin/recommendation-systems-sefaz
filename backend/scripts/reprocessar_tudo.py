@@ -105,7 +105,13 @@ def reprocessar_tudo():
     if os.path.exists(STANDARD):
         df_antigo = pd.read_csv(STANDARD)
 
-    # 1. Limpeza
+    # 1. Backup
+    if os.path.exists(STANDARD):
+        backup_path = STANDARD + ".bak"
+        shutil.copy(STANDARD, backup_path)
+        print(f"📦 Backup criado: {backup_path}")
+
+    # 2. Limpeza
     limpar_produtos()
 
     # 2. Rodar pipeline completa

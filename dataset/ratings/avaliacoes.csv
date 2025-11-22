@@ -1,0 +1,401 @@
+nome_usuario,cpf,descricao_produto,avaliacao_descricao,marca_produto,avaliacao_marca,product_id
+Patricia Oliveira Barbosa,86406968026,rosquinha coco galo,4,galo,3,404ff7046866c3ed
+Isabela Santos Lima,25925780132,chocolate po dubom,2,dubom,5,5f37a52700f1804a
+Joao Nascimento Lima,6167112398,refrigerante bare,5,bare,2,da41e5c5c5ddf98c
+Matheus Ferreira Santana,1291102647,frango perdigao,3,perdigao,2,820d2ae8c8ad4579
+Larissa Carvalho Ferreira,45756376372,refrigerante laranjinha,1,laranjinha,3,45c4d145142850d3
+Zoe Carvalho Ferreira,60747317305,oleo soja concord,2,concord,1,d62cd37fcb75ae41
+Henrique Santos Almeida,10114581010,suco laranja kapo,5,kapo,4,b0f19386516f2f69
+Zoe Carvalho Ferreira,60747317305,papel higienico perfurmado flor lotus,4,flor de lotus,5,0bfd9ef01bb0c0be
+Isabela Santos Lima,25925780132,suco maracuja kapo,1,kapo,4,c9e0b63010291868
+Olivia Oliveira Freitas,94232829032,sabonete palm,1,palmolive,1,a0b9e00f24ed41d1
+Vinicius Cardoso Costa,97616924000,sabonete dove,3,dove,5,02b277c4789da68c
+Isabela Santos Lima,25925780132,refrigerante grapette,1,grapette,3,b18ec33b49021f37
+Isabela Costa Souza,71475109172,papel higienico perfurmado flor lotus,5,flor de lotus,3,0bfd9ef01bb0c0be
+Vitoria Costa Andrade,13247830448,biscoito brig trigolino,4,trigolino,2,bae138b239e23b96
+Vinicius Cardoso Costa,97616924000,goma tapioca jo alimentos,4,generico,1,b0f59646ddc9458c
+Joao Nascimento Lima,6167112398,pao integral rap10,2,rap10,4,152e5ac17c247386
+Vitoria Costa Andrade,13247830448,papel higienico perfurmado flor lotus,5,flor de lotus,1,0bfd9ef01bb0c0be
+Isabela Costa Souza,71475109172,oleo soya,5,soya,3,a487f6e16421e74e
+Larissa Carvalho Ferreira,45756376372,pao de forma,4,generico,4,7c0d84a202081aeb
+Ana Marques Vieira,81076193820,suco laranja dafruta,5,dafruta,1,3dbc58dc82f8efe9
+Isabela Nunes Cardoso,45161646632,rosquinha coco galo,3,galo,3,404ff7046866c3ed
+Isabela Costa Souza,71475109172,rosquinha coco galo,2,galo,2,404ff7046866c3ed
+Ana Marques Vieira,81076193820,presunto cozido bigbom,3,big bom,3,bbd7ad169db9ba96
+Zoe Carvalho Ferreira,60747317305,melancia,3,generico,3,4fa3230bc9e14928
+Olivia Oliveira Freitas,94232829032,bala eucalipto freegells,3,freegells,5,5fa1193e6c084a06
+Vitoria Costa Andrade,13247830448,pao integral rap10,4,rap10,2,152e5ac17c247386
+Joao Nascimento Lima,6167112398,refrigerante bare,5,bare,1,da41e5c5c5ddf98c
+Isabela Costa Souza,71475109172,frango perdigao,3,perdigao,4,820d2ae8c8ad4579
+Igor Souza Moreira,95830436809,frango perdigao congelado,2,perdigao,5,d6c46501a2daf86d
+Patricia Oliveira Barbosa,86406968026,melancia,4,generico,3,4fa3230bc9e14928
+Matheus Ferreira Santana,1291102647,guarana classic 2lt,3,guarana antartica,3,6e227f0d7bb97433
+Caio Moreira Costa,11387575864,sabonete dove,4,dove,2,02b277c4789da68c
+Isabela Santos Lima,25925780132,leite condensado mococa,5,mococa,1,6cc6e39b987fc50a
+Patricia Oliveira Barbosa,86406968026,bala eucalipto freegells,1,freegells,5,5fa1193e6c084a06
+Patricia Oliveira Barbosa,86406968026,mini waffer brig trigolino,3,trigolino,2,d0c1db793f17062e
+Vinicius Lopes Fernandes,64448139212,refrigerante grapette,2,grapette,4,b18ec33b49021f37
+Otavio Souza Rocha,12548055590,cheiro verde misto,5,generico,3,a6af865ce62f0ffd
+Lucas Carvalho,98765432100,guarana classic 2lt,3,guarana antartica,4,6e227f0d7bb97433
+Isabela Costa Souza,71475109172,farinha lactea nestle,3,nestle,4,46ab29ed9bb90277
+Vitoria Costa Andrade,13247830448,suco uva kapo,2,kapo,4,27738d64070f7151
+Vitoria Costa Andrade,13247830448,refrigerante bare,4,bare,1,da41e5c5c5ddf98c
+Henrique Santos Almeida,10114581010,salsicha hot dog seara,2,seara,5,80aed25561e211eb
+Henrique Santos Almeida,10114581010,suco laranja dafruta,5,dafruta,4,3dbc58dc82f8efe9
+Olivia Oliveira Freitas,94232829032,calabresa perdigao,2,perdigao,3,3b786ddf17a84fdb
+Patricia Oliveira Barbosa,86406968026,milho pipoca campi,4,campi,2,ce8e300dffdeb602
+Isabela Nunes Cardoso,45161646632,rosquinha coco galo,1,galo,1,404ff7046866c3ed
+Zoe Carvalho Ferreira,60747317305,papel higienico neve,4,neve,3,2787dd01f45d49b0
+Larissa Carvalho Ferreira,45756376372,oleo soja soya,2,soya,4,115b0cd735758b62
+Larissa Carvalho Ferreira,45756376372,papel higienico perfurmado flor lotus,2,flor de lotus,4,0bfd9ef01bb0c0be
+Lucas Carvalho,98765432100,sorvete chocolate toya,2,toya,4,4d1321dc998bb78c
+Andre Barbosa Lima,77106803308,sorvete chocolate toya,1,toya,1,4d1321dc998bb78c
+Caio Moreira Costa,11387575864,milho pipoca campi,1,campi,5,ce8e300dffdeb602
+Vinicius Cardoso Costa,97616924000,presunto cozido bigbom,5,big bom,1,bbd7ad169db9ba96
+Matheus Ferreira Santana,1291102647,manteiga aviacao,5,aviacao,4,5397960aeba2e6b3
+Joao Nascimento Lima,6167112398,calabresa perdigao,2,perdigao,3,3b786ddf17a84fdb
+Isabela Costa Souza,71475109172,feij carioca,2,generico,4,8f865ec7d9f1b4d7
+Isabela Costa Souza,71475109172,guarana classic 2lt,3,guarana antartica,5,6e227f0d7bb97433
+Otavio Souza Rocha,12548055590,chocolate po dubom,5,dubom,5,5f37a52700f1804a
+Joao Nascimento Lima,6167112398,suco laranja kapo,4,kapo,1,b0f19386516f2f69
+Vinicius Lopes Fernandes,64448139212,suco maracuja kapo,4,kapo,2,c9e0b63010291868
+Zoe Carvalho Ferreira,60747317305,milho pipoca campi,4,campi,4,ce8e300dffdeb602
+Beatriz Marques Barbosa,55565857503,papel higienico perfurmado flor lotus,3,flor de lotus,3,0bfd9ef01bb0c0be
+Vinicius Lopes Fernandes,64448139212,goma tapioca jo alimentos,3,generico,2,b0f59646ddc9458c
+Beatriz Marques Barbosa,55565857503,papel higienico perfurmado flor lotus,4,flor de lotus,4,0bfd9ef01bb0c0be
+Isabela Costa Souza,71475109172,arroz tio joao,5,tio joão,4,91e92082aec624ed
+Ana Marques Vieira,81076193820,farinha lactea nestle,4,nestle,4,46ab29ed9bb90277
+Isabela Costa Souza,71475109172,frango perdigao,3,perdigao,3,820d2ae8c8ad4579
+Matheus Ferreira Santana,1291102647,biscoito brig trigolino,2,trigolino,2,bae138b239e23b96
+Matheus Ferreira Santana,1291102647,nissin tomate turma monica,1,nissin,5,100aa838694d80b7
+Larissa Carvalho Ferreira,45756376372,suco laranja kapo,1,kapo,4,b0f19386516f2f69
+Zoe Carvalho Ferreira,60747317305,salsicha hot dog seara,3,seara,1,80aed25561e211eb
+Caio Moreira Costa,11387575864,cheiro verde misto,4,generico,2,a6af865ce62f0ffd
+Vitoria Costa Andrade,13247830448,suco laranja kapo,1,kapo,5,b0f19386516f2f69
+Otavio Souza Rocha,12548055590,suco maracuja kapo,2,kapo,2,c9e0b63010291868
+Vitoria Costa Andrade,13247830448,salsicha hot dog seara,5,seara,5,80aed25561e211eb
+Igor Souza Moreira,95830436809,frango perdigao congelado,1,perdigao,4,d6c46501a2daf86d
+Beatriz Moreira Lima,70903418525,manteiga aviacao,3,aviacao,5,5397960aeba2e6b3
+Beatriz Moreira Lima,70903418525,calabresa perdigao,3,perdigao,1,3b786ddf17a84fdb
+Larissa Carvalho Ferreira,45756376372,nissin tomate turma monica,3,nissin,1,100aa838694d80b7
+Patricia Oliveira Barbosa,86406968026,sabonete dove,1,dove,4,02b277c4789da68c
+Ana Marques Vieira,81076193820,papel higienico neve,3,neve,5,2787dd01f45d49b0
+Andre Barbosa Lima,77106803308,oleo soja concord,3,concord,5,d62cd37fcb75ae41
+Patricia Oliveira Barbosa,86406968026,refrigerante laranjinha,3,laranjinha,5,45c4d145142850d3
+Ana Marques Vieira,81076193820,cafe pilao,4,pilao,1,595a16276251ffad
+Otavio Souza Rocha,12548055590,macarrao renata espaguete,1,renata,1,ee1490e9b7a35448
+Vinicius Lopes Fernandes,64448139212,nissin tomate turma monica,2,nissin,2,100aa838694d80b7
+Vinicius Lopes Fernandes,64448139212,batata palha scrush,2,scrush,1,896e9930b557a4ee
+Ana Marques Vieira,81076193820,bala eucalipto freegells,2,freegells,3,5fa1193e6c084a06
+Vinicius Lopes Fernandes,64448139212,milho pipoca campi,3,campi,2,ce8e300dffdeb602
+Olivia Oliveira Freitas,94232829032,frango perdigao,3,perdigao,2,820d2ae8c8ad4579
+Lucas Carvalho,98765432100,farinha lactea nestle,5,nestle,3,46ab29ed9bb90277
+Zoe Carvalho Ferreira,60747317305,oleo soja soya,2,soya,5,115b0cd735758b62
+Olivia Oliveira Freitas,94232829032,acucar uniao,3,união,5,fc1b0d5db586ebe9
+Beatriz Moreira Lima,70903418525,suco laranja dafruta,4,dafruta,4,3dbc58dc82f8efe9
+Henrique Santos Almeida,10114581010,achocolatado po nescau,3,nescau,3,4b18a3d1193a0b75
+Isabela Costa Souza,71475109172,nissin tomate turma monica,2,nissin,5,100aa838694d80b7
+Isabela Nunes Cardoso,45161646632,refrigerante bare,2,bare,5,da41e5c5c5ddf98c
+Zoe Carvalho Ferreira,60747317305,biscoito brig trigolino,5,trigolino,4,bae138b239e23b96
+Vitoria Costa Andrade,13247830448,nescau po,3,nescau,2,a18b3d828ffb3386
+Larissa Carvalho Ferreira,45756376372,sorvete chocolate toya,5,toya,2,4d1321dc998bb78c
+Vinicius Cardoso Costa,97616924000,suco morango kapo,4,kapo,1,2a03f46abe452c69
+Vinicius Lopes Fernandes,64448139212,acucar refinado uniao,1,união,3,4ad51bf5be0f6ebf
+Isabela Costa Souza,71475109172,frango perdigao congelado,2,perdigao,5,d6c46501a2daf86d
+Patricia Oliveira Barbosa,86406968026,melancia,4,generico,3,4fa3230bc9e14928
+Andre Barbosa Lima,77106803308,papel higienico perfurmado flor lotus,5,flor de lotus,4,0bfd9ef01bb0c0be
+Vinicius Cardoso Costa,97616924000,suco maracuja kapo,3,kapo,2,c9e0b63010291868
+Larissa Carvalho Ferreira,45756376372,achocolatado po nescau,3,nescau,4,4b18a3d1193a0b75
+Patricia Oliveira Barbosa,86406968026,papel higienico neve,3,neve,4,2787dd01f45d49b0
+Igor Souza Moreira,95830436809,sabonete dove,4,dove,4,02b277c4789da68c
+Olivia Oliveira Freitas,94232829032,suco laranja kapo,1,kapo,5,b0f19386516f2f69
+Larissa Carvalho Ferreira,45756376372,rosquinha coco galo,4,galo,3,404ff7046866c3ed
+Zoe Carvalho Ferreira,60747317305,presunto cozido bigbom,4,big bom,3,bbd7ad169db9ba96
+Olivia Oliveira Freitas,94232829032,farinha lactea nestle,4,nestle,5,46ab29ed9bb90277
+Beatriz Marques Barbosa,55565857503,farinha lactea nestle,1,nestle,4,46ab29ed9bb90277
+Isabela Nunes Cardoso,45161646632,goma tapioca jo alimentos,4,generico,3,b0f59646ddc9458c
+Isabela Costa Souza,71475109172,suco maracuja kapo,5,kapo,3,c9e0b63010291868
+Henrique Santos Almeida,10114581010,achocolatado po nescau,3,nescau,2,4b18a3d1193a0b75
+Otavio Souza Rocha,12548055590,cheiro verde misto,1,generico,2,a6af865ce62f0ffd
+Isabela Nunes Cardoso,45161646632,frango perdigao congelado,4,perdigao,4,d6c46501a2daf86d
+Olivia Oliveira Freitas,94232829032,leite condensado semidesnatado tirol,2,tirol,3,d1f22bd632c5ff26
+Isabela Costa Souza,71475109172,pao integral rap10,3,rap10,3,152e5ac17c247386
+Igor Souza Moreira,95830436809,achocolatado po nescau,1,nescau,2,4b18a3d1193a0b75
+Isabela Santos Lima,25925780132,frango perdigao,5,perdigao,2,820d2ae8c8ad4579
+Beatriz Moreira Lima,70903418525,cafe pilao,2,pilao,4,595a16276251ffad
+Beatriz Marques Barbosa,55565857503,batata palha scrush,5,scrush,4,896e9930b557a4ee
+Joao Nascimento Lima,6167112398,farinha lactea nestle,5,nestle,2,46ab29ed9bb90277
+Beatriz Moreira Lima,70903418525,frango perdigao,3,perdigao,2,820d2ae8c8ad4579
+Patricia Oliveira Barbosa,86406968026,refrigerante bare,5,bare,4,da41e5c5c5ddf98c
+Igor Souza Moreira,95830436809,farinha lactea nestle,2,nestle,5,46ab29ed9bb90277
+Otavio Souza Rocha,12548055590,cheiro verde misto,2,generico,4,a6af865ce62f0ffd
+Zoe Carvalho Ferreira,60747317305,leite condensado semidesnatado tirol,5,tirol,5,d1f22bd632c5ff26
+Isabela Costa Souza,71475109172,guarana classic 2lt,2,guarana antartica,4,6e227f0d7bb97433
+Vitoria Costa Andrade,13247830448,suco morango kapo,2,kapo,3,2a03f46abe452c69
+Isabela Santos Lima,25925780132,oleo soya,4,soya,5,a487f6e16421e74e
+Andre Barbosa Lima,77106803308,sorvete chocolate toya,3,toya,4,4d1321dc998bb78c
+Isabela Santos Lima,25925780132,oleo soja soya,3,soya,5,115b0cd735758b62
+Ana Marques Vieira,81076193820,suco laranja dafruta,1,dafruta,4,3dbc58dc82f8efe9
+Olivia Oliveira Freitas,94232829032,sorvete chocolate toya,1,toya,1,4d1321dc998bb78c
+Lucas Carvalho,98765432100,queijo mussarela fatiado,1,generico,5,405c85bc4c79e9d8
+Patricia Oliveira Barbosa,86406968026,cheiro verde misto,1,generico,1,a6af865ce62f0ffd
+Henrique Santos Almeida,10114581010,oleo soya,3,soya,1,a487f6e16421e74e
+Joao Nascimento Lima,6167112398,presunto cozido bigbom,2,big bom,5,bbd7ad169db9ba96
+Matheus Ferreira Santana,1291102647,biscoito brig trigolino,5,trigolino,1,bae138b239e23b96
+Larissa Carvalho Ferreira,45756376372,nissin tomate turma monica,3,nissin,3,100aa838694d80b7
+Andre Barbosa Lima,77106803308,refrigerante coca cola,3,coca cola,5,b859dc801d8350ec
+Lucas Carvalho,98765432100,refrigerante laranjinha,1,laranjinha,1,45c4d145142850d3
+Caio Moreira Costa,11387575864,frango perdigao congelado,3,perdigao,1,d6c46501a2daf86d
+Patricia Oliveira Barbosa,86406968026,rosquinha coco galo,3,galo,1,404ff7046866c3ed
+Olivia Oliveira Freitas,94232829032,nissin tomate turma monica,1,nissin,3,100aa838694d80b7
+Isabela Nunes Cardoso,45161646632,pao de forma,3,generico,3,7c0d84a202081aeb
+Vitoria Costa Andrade,13247830448,leite condensado semidesnatado tirol,4,tirol,2,d1f22bd632c5ff26
+Isabela Santos Lima,25925780132,farinha lactea nestle,4,nestle,3,46ab29ed9bb90277
+Lucas Carvalho,98765432100,arroz tio joao,4,tio joão,3,91e92082aec624ed
+Joao Nascimento Lima,6167112398,queijo mussarela fatiado,5,generico,2,405c85bc4c79e9d8
+Beatriz Marques Barbosa,55565857503,rosquinha coco galo,4,galo,5,404ff7046866c3ed
+Otavio Souza Rocha,12548055590,oleo soya,4,soya,4,a487f6e16421e74e
+Vitoria Costa Andrade,13247830448,cheiro verde misto,5,generico,3,a6af865ce62f0ffd
+Isabela Nunes Cardoso,45161646632,arroz tio joao,5,tio joão,3,91e92082aec624ed
+Isabela Nunes Cardoso,45161646632,mini waffer brig trigolino,1,trigolino,4,d0c1db793f17062e
+Igor Souza Moreira,95830436809,refrigerante bare,4,bare,2,da41e5c5c5ddf98c
+Zoe Carvalho Ferreira,60747317305,melancia,3,generico,3,4fa3230bc9e14928
+Vinicius Cardoso Costa,97616924000,goma tapioca jo alimentos,2,generico,3,b0f59646ddc9458c
+Caio Moreira Costa,11387575864,melancia,1,generico,2,4fa3230bc9e14928
+Larissa Carvalho Ferreira,45756376372,calabresa perdigao,3,perdigao,2,3b786ddf17a84fdb
+Otavio Souza Rocha,12548055590,leite condensado semidesnatado tirol,4,tirol,3,d1f22bd632c5ff26
+Caio Moreira Costa,11387575864,pao frances,5,generico,5,d50b681b711f8c2e
+Lucas Carvalho,98765432100,goma tapioca jo alimentos,4,generico,3,b0f59646ddc9458c
+Zoe Carvalho Ferreira,60747317305,calabresa perdigao,2,perdigao,4,3b786ddf17a84fdb
+Isabela Costa Souza,71475109172,bala eucalipto freegells,5,freegells,3,5fa1193e6c084a06
+Patricia Oliveira Barbosa,86406968026,biscoito brig trigolino,2,trigolino,2,bae138b239e23b96
+Zoe Carvalho Ferreira,60747317305,pao integral rap10,1,rap10,2,152e5ac17c247386
+Otavio Souza Rocha,12548055590,rosquinha coco galo,3,galo,2,404ff7046866c3ed
+Isabela Nunes Cardoso,45161646632,leite condensado semidesnatado tirol,3,tirol,4,d1f22bd632c5ff26
+Olivia Oliveira Freitas,94232829032,salsicha hot dog seara,3,seara,4,80aed25561e211eb
+Andre Barbosa Lima,77106803308,chocolate po dubom,2,dubom,1,5f37a52700f1804a
+Andre Barbosa Lima,77106803308,oleo soja concord,3,concord,4,d62cd37fcb75ae41
+Isabela Costa Souza,71475109172,mini waffer brig trigolino,1,trigolino,1,d0c1db793f17062e
+Isabela Nunes Cardoso,45161646632,bala eucalipto freegells,3,freegells,5,5fa1193e6c084a06
+Olivia Oliveira Freitas,94232829032,creme dental colgate,4,colgate,1,6675903bd8378edd
+Igor Souza Moreira,95830436809,sabonete dove,3,dove,4,02b277c4789da68c
+Ana Marques Vieira,81076193820,oleo soya,3,soya,3,a487f6e16421e74e
+Otavio Souza Rocha,12548055590,batata palha scrush,4,scrush,5,896e9930b557a4ee
+Beatriz Marques Barbosa,55565857503,rosquinha coco galo,5,galo,3,404ff7046866c3ed
+Larissa Carvalho Ferreira,45756376372,papel higienico neve,2,neve,2,2787dd01f45d49b0
+Igor Souza Moreira,95830436809,milho pipoca campi,3,campi,2,ce8e300dffdeb602
+Vitoria Costa Andrade,13247830448,nissin tomate turma monica,2,nissin,4,100aa838694d80b7
+Isabela Santos Lima,25925780132,pao integral rap10,2,rap10,2,152e5ac17c247386
+Lucas Carvalho,98765432100,bala eucalipto freegells,2,freegells,4,5fa1193e6c084a06
+Larissa Carvalho Ferreira,45756376372,creme dental colgate,3,colgate,4,6675903bd8378edd
+Patricia Oliveira Barbosa,86406968026,achocolatado po nescau,3,nescau,4,4b18a3d1193a0b75
+Otavio Souza Rocha,12548055590,chocolate po dubom,4,dubom,3,5f37a52700f1804a
+Vinicius Lopes Fernandes,64448139212,pao integral rap10,5,rap10,4,152e5ac17c247386
+Vitoria Costa Andrade,13247830448,cheiro verde misto,2,generico,2,a6af865ce62f0ffd
+Ana Marques Vieira,81076193820,refrigerante bare,2,bare,3,da41e5c5c5ddf98c
+Isabela Nunes Cardoso,45161646632,papel higienico neve,2,neve,1,2787dd01f45d49b0
+Andre Barbosa Lima,77106803308,refrigerante bare,4,bare,4,da41e5c5c5ddf98c
+Isabela Nunes Cardoso,45161646632,suco uva kapo,2,kapo,3,27738d64070f7151
+Matheus Ferreira Santana,1291102647,suco laranja dafruta,4,dafruta,3,3dbc58dc82f8efe9
+Otavio Souza Rocha,12548055590,macarrao renata espaguete,3,renata,1,ee1490e9b7a35448
+Caio Moreira Costa,11387575864,presunto cozido bigbom,3,big bom,1,bbd7ad169db9ba96
+Isabela Costa Souza,71475109172,nissin tomate turma monica,5,nissin,1,100aa838694d80b7
+Beatriz Moreira Lima,70903418525,leite condensado mococa,3,mococa,3,6cc6e39b987fc50a
+Otavio Souza Rocha,12548055590,pao frances,5,generico,2,d50b681b711f8c2e
+Isabela Nunes Cardoso,45161646632,pao frances,5,generico,3,d50b681b711f8c2e
+Olivia Oliveira Freitas,94232829032,acucar uniao,2,união,4,fc1b0d5db586ebe9
+Joao Nascimento Lima,6167112398,suco laranja kapo,4,kapo,5,b0f19386516f2f69
+Larissa Carvalho Ferreira,45756376372,suco laranja dafruta,3,dafruta,1,3dbc58dc82f8efe9
+Vinicius Lopes Fernandes,64448139212,cheiro verde misto,3,generico,3,a6af865ce62f0ffd
+Ana Marques Vieira,81076193820,nescau po,3,nescau,4,a18b3d828ffb3386
+Patricia Oliveira Barbosa,86406968026,cafe pilao,5,pilao,2,595a16276251ffad
+Henrique Santos Almeida,10114581010,leite condensado semidesnatado tirol,2,tirol,1,d1f22bd632c5ff26
+Vinicius Cardoso Costa,97616924000,sorvete chocolate toya,1,toya,5,4d1321dc998bb78c
+Larissa Carvalho Ferreira,45756376372,suco maracuja kapo,4,kapo,3,c9e0b63010291868
+Larissa Carvalho Ferreira,45756376372,feij carioca,3,generico,5,8f865ec7d9f1b4d7
+Olivia Oliveira Freitas,94232829032,oleo soja concord,4,concord,1,d62cd37fcb75ae41
+Beatriz Moreira Lima,70903418525,calabresa perdigao,2,perdigao,3,3b786ddf17a84fdb
+Isabela Nunes Cardoso,45161646632,oleo soja concord,4,concord,4,d62cd37fcb75ae41
+Beatriz Moreira Lima,70903418525,batata palha scrush,3,scrush,1,896e9930b557a4ee
+Joao Nascimento Lima,6167112398,leite condensado mococa,5,mococa,5,6cc6e39b987fc50a
+Isabela Santos Lima,25925780132,cafe pilao,4,pilao,2,595a16276251ffad
+Otavio Souza Rocha,12548055590,batata palha scrush,3,scrush,2,896e9930b557a4ee
+Caio Moreira Costa,11387575864,rosquinha coco galo,4,galo,5,404ff7046866c3ed
+Zoe Carvalho Ferreira,60747317305,suco laranja dafruta,5,dafruta,3,3dbc58dc82f8efe9
+Joao Nascimento Lima,6167112398,arroz tio joao,1,tio joão,1,91e92082aec624ed
+Isabela Costa Souza,71475109172,feij carioca,4,generico,2,8f865ec7d9f1b4d7
+Andre Barbosa Lima,77106803308,frango perdigao congelado,4,perdigao,3,d6c46501a2daf86d
+Zoe Carvalho Ferreira,60747317305,melancia,5,generico,5,4fa3230bc9e14928
+Andre Barbosa Lima,77106803308,refrigerante bare,5,bare,3,da41e5c5c5ddf98c
+Patricia Oliveira Barbosa,86406968026,presunto cozido bigbom,5,big bom,3,bbd7ad169db9ba96
+Isabela Santos Lima,25925780132,milho pipoca campi,4,campi,4,ce8e300dffdeb602
+Isabela Santos Lima,25925780132,nissin tomate turma monica,3,nissin,2,100aa838694d80b7
+Igor Souza Moreira,95830436809,oleo soja concord,5,concord,5,d62cd37fcb75ae41
+Beatriz Moreira Lima,70903418525,pao integral rap10,1,rap10,3,152e5ac17c247386
+Ana Marques Vieira,81076193820,feij carioca,1,generico,1,8f865ec7d9f1b4d7
+Vinicius Cardoso Costa,97616924000,suco maracuja kapo,1,kapo,5,c9e0b63010291868
+Patricia Oliveira Barbosa,86406968026,milho pipoca campi,1,campi,1,ce8e300dffdeb602
+Olivia Oliveira Freitas,94232829032,refrigerante grapette,2,grapette,5,b18ec33b49021f37
+Andre Barbosa Lima,77106803308,frango perdigao congelado,2,perdigao,1,d6c46501a2daf86d
+Henrique Santos Almeida,10114581010,acucar refinado uniao,3,união,3,4ad51bf5be0f6ebf
+Lucas Carvalho,98765432100,manteiga aviacao,1,aviacao,1,5397960aeba2e6b3
+Vinicius Lopes Fernandes,64448139212,refrigerante coca cola,4,coca cola,3,b859dc801d8350ec
+Isabela Santos Lima,25925780132,chocolate po dubom,3,dubom,2,5f37a52700f1804a
+Matheus Ferreira Santana,1291102647,macarrao renata espaguete,1,renata,2,ee1490e9b7a35448
+Zoe Carvalho Ferreira,60747317305,sabonete dove,3,dove,2,02b277c4789da68c
+Isabela Costa Souza,71475109172,presunto cozido bigbom,2,big bom,1,bbd7ad169db9ba96
+Olivia Oliveira Freitas,94232829032,manteiga aviacao,2,aviacao,2,5397960aeba2e6b3
+Vinicius Cardoso Costa,97616924000,refrigerante laranjinha,3,laranjinha,3,45c4d145142850d3
+Vinicius Lopes Fernandes,64448139212,queijo mussarela fatiado,1,generico,1,405c85bc4c79e9d8
+Henrique Santos Almeida,10114581010,oleo soja concord,3,concord,4,d62cd37fcb75ae41
+Matheus Ferreira Santana,1291102647,queijo mussarela fatiado,1,generico,2,405c85bc4c79e9d8
+Andre Barbosa Lima,77106803308,achocolatado po nescau,5,nescau,2,4b18a3d1193a0b75
+Vitoria Costa Andrade,13247830448,melancia,1,generico,1,4fa3230bc9e14928
+Ana Marques Vieira,81076193820,refrigerante laranjinha,4,laranjinha,2,45c4d145142850d3
+Andre Barbosa Lima,77106803308,feijao carioca,2,generico,1,34fa3239bb692bcf
+Henrique Santos Almeida,10114581010,refrigerante coca cola,4,coca cola,1,b859dc801d8350ec
+Isabela Nunes Cardoso,45161646632,oleo soja concord,3,concord,4,d62cd37fcb75ae41
+Olivia Oliveira Freitas,94232829032,refrigerante grapette,5,grapette,3,b18ec33b49021f37
+Zoe Carvalho Ferreira,60747317305,calabresa perdigao,4,perdigao,5,3b786ddf17a84fdb
+Zoe Carvalho Ferreira,60747317305,guarana classic 2lt,1,guarana antartica,3,6e227f0d7bb97433
+Olivia Oliveira Freitas,94232829032,nescau po,4,nescau,5,a18b3d828ffb3386
+Matheus Ferreira Santana,1291102647,frango perdigao,4,perdigao,3,820d2ae8c8ad4579
+Matheus Ferreira Santana,1291102647,acucar refinado uniao,2,união,5,4ad51bf5be0f6ebf
+Vitoria Costa Andrade,13247830448,frango perdigao,1,perdigao,5,820d2ae8c8ad4579
+Andre Barbosa Lima,77106803308,arroz tio joao,2,tio joão,2,91e92082aec624ed
+Igor Souza Moreira,95830436809,pao de forma,2,generico,5,7c0d84a202081aeb
+Vinicius Lopes Fernandes,64448139212,pao integral rap10,2,rap10,3,152e5ac17c247386
+Vinicius Lopes Fernandes,64448139212,acucar refinado uniao,3,união,3,4ad51bf5be0f6ebf
+Vinicius Lopes Fernandes,64448139212,acucar refinado uniao,2,união,4,4ad51bf5be0f6ebf
+Andre Barbosa Lima,77106803308,refrigerante laranjinha,2,laranjinha,1,45c4d145142850d3
+Isabela Santos Lima,25925780132,feij carioca,2,generico,2,8f865ec7d9f1b4d7
+Beatriz Marques Barbosa,55565857503,creme dental colgate,1,colgate,3,6675903bd8378edd
+Vinicius Lopes Fernandes,64448139212,arroz tio joao,2,tio joão,1,91e92082aec624ed
+Ana Marques Vieira,81076193820,biscoito brig trigolino,1,trigolino,5,bae138b239e23b96
+Vitoria Costa Andrade,13247830448,milho pipoca campi,1,campi,2,ce8e300dffdeb602
+Andre Barbosa Lima,77106803308,suco laranja dafruta,4,dafruta,2,3dbc58dc82f8efe9
+Igor Souza Moreira,95830436809,papel higienico perfurmado flor lotus,1,flor de lotus,2,0bfd9ef01bb0c0be
+Olivia Oliveira Freitas,94232829032,acucar refinado uniao,2,união,5,4ad51bf5be0f6ebf
+Patricia Oliveira Barbosa,86406968026,sabonete dove,2,dove,5,02b277c4789da68c
+Isabela Costa Souza,71475109172,suco laranja kapo,3,kapo,5,b0f19386516f2f69
+Ana Marques Vieira,81076193820,rosquinha coco galo,2,galo,5,404ff7046866c3ed
+Matheus Ferreira Santana,1291102647,frango perdigao,4,perdigao,1,820d2ae8c8ad4579
+Vinicius Lopes Fernandes,64448139212,sabonete palm,1,palmolive,1,a0b9e00f24ed41d1
+Matheus Ferreira Santana,1291102647,refrigerante grapette,5,grapette,4,b18ec33b49021f37
+Olivia Oliveira Freitas,94232829032,rosquinha coco galo,3,galo,3,404ff7046866c3ed
+Igor Souza Moreira,95830436809,nissin tomate turma monica,2,nissin,2,100aa838694d80b7
+Joao Nascimento Lima,6167112398,leite condensado semidesnatado tirol,3,tirol,5,d1f22bd632c5ff26
+Joao Nascimento Lima,6167112398,batata palha scrush,2,scrush,1,896e9930b557a4ee
+Lucas Carvalho,98765432100,oleo soja concord,5,concord,4,d62cd37fcb75ae41
+Henrique Santos Almeida,10114581010,salsicha hot dog seara,2,seara,2,80aed25561e211eb
+Otavio Souza Rocha,12548055590,pao integral rap10,2,rap10,2,152e5ac17c247386
+Vitoria Costa Andrade,13247830448,suco uva kapo,1,kapo,5,27738d64070f7151
+Andre Barbosa Lima,77106803308,guarana classic 2lt,4,guarana antartica,5,6e227f0d7bb97433
+Olivia Oliveira Freitas,94232829032,frango perdigao congelado,3,perdigao,3,d6c46501a2daf86d
+Andre Barbosa Lima,77106803308,sorvete chocolate toya,4,toya,4,4d1321dc998bb78c
+Henrique Santos Almeida,10114581010,refrigerante coca cola,1,coca cola,5,b859dc801d8350ec
+Lucas Carvalho,98765432100,achocolatado po nescau,2,nescau,4,4b18a3d1193a0b75
+Vinicius Cardoso Costa,97616924000,suco morango kapo,1,kapo,3,2a03f46abe452c69
+Joao Nascimento Lima,6167112398,presunto cozido bigbom,3,big bom,5,bbd7ad169db9ba96
+Isabela Costa Souza,71475109172,queijo mussarela fatiado,2,generico,1,405c85bc4c79e9d8
+Larissa Carvalho Ferreira,45756376372,macarrao renata espaguete,4,renata,4,ee1490e9b7a35448
+Isabela Santos Lima,25925780132,refrigerante bare,1,bare,4,da41e5c5c5ddf98c
+Zoe Carvalho Ferreira,60747317305,mini waffer brig trigolino,5,trigolino,5,d0c1db793f17062e
+Larissa Carvalho Ferreira,45756376372,achocolatado po nescau,4,nescau,4,4b18a3d1193a0b75
+Igor Souza Moreira,95830436809,nissin tomate turma monica,3,nissin,3,100aa838694d80b7
+Beatriz Marques Barbosa,55565857503,feijao carioca,5,generico,5,34fa3239bb692bcf
+Isabela Costa Souza,71475109172,milho pipoca campi,1,campi,1,ce8e300dffdeb602
+Igor Souza Moreira,95830436809,suco morango kapo,5,kapo,1,2a03f46abe452c69
+Lucas Carvalho,98765432100,papel higienico neve,5,neve,2,2787dd01f45d49b0
+Vinicius Cardoso Costa,97616924000,sorvete chocolate toya,5,toya,3,4d1321dc998bb78c
+Vinicius Cardoso Costa,97616924000,leite condensado mococa,4,mococa,2,6cc6e39b987fc50a
+Isabela Costa Souza,71475109172,batata palha scrush,2,scrush,2,896e9930b557a4ee
+Vinicius Cardoso Costa,97616924000,oleo soja soya,5,soya,4,115b0cd735758b62
+Vitoria Costa Andrade,13247830448,arroz tio joao,1,tio joão,1,91e92082aec624ed
+Otavio Souza Rocha,12548055590,leite condensado semidesnatado tirol,5,tirol,1,d1f22bd632c5ff26
+Isabela Costa Souza,71475109172,bala eucalipto freegells,4,freegells,4,5fa1193e6c084a06
+Vinicius Lopes Fernandes,64448139212,chocolate po dubom,5,dubom,5,5f37a52700f1804a
+Larissa Carvalho Ferreira,45756376372,batata palha scrush,4,scrush,4,896e9930b557a4ee
+Vinicius Cardoso Costa,97616924000,biscoito brig trigolino,1,trigolino,4,bae138b239e23b96
+Patricia Oliveira Barbosa,86406968026,sabonete dove,5,dove,4,02b277c4789da68c
+Vinicius Lopes Fernandes,64448139212,arroz tio joao,5,tio joão,5,91e92082aec624ed
+Henrique Santos Almeida,10114581010,leite condensado semidesnatado tirol,5,tirol,5,d1f22bd632c5ff26
+Vinicius Lopes Fernandes,64448139212,pao frances,1,generico,1,d50b681b711f8c2e
+Beatriz Moreira Lima,70903418525,batata palha scrush,1,scrush,1,896e9930b557a4ee
+Larissa Carvalho Ferreira,45756376372,leite condensado mococa,1,mococa,4,6cc6e39b987fc50a
+Isabela Santos Lima,25925780132,oleo soya,4,soya,1,a487f6e16421e74e
+Isabela Costa Souza,71475109172,biscoito brig trigolino,4,trigolino,3,bae138b239e23b96
+Olivia Oliveira Freitas,94232829032,suco laranja dafruta,5,dafruta,4,3dbc58dc82f8efe9
+Patricia Oliveira Barbosa,86406968026,refrigerante bare,3,bare,2,da41e5c5c5ddf98c
+Isabela Costa Souza,71475109172,rosquinha coco galo,2,galo,1,404ff7046866c3ed
+Beatriz Marques Barbosa,55565857503,pao frances,5,generico,3,d50b681b711f8c2e
+Otavio Souza Rocha,12548055590,frango perdigao,3,perdigao,2,820d2ae8c8ad4579
+Isabela Nunes Cardoso,45161646632,sabonete palm,2,palmolive,5,a0b9e00f24ed41d1
+Andre Barbosa Lima,77106803308,arroz tio joao,3,tio joão,3,91e92082aec624ed
+Lucas Carvalho,98765432100,oleo soja soya,4,soya,1,115b0cd735758b62
+Vinicius Lopes Fernandes,64448139212,presunto cozido bigbom,1,big bom,4,bbd7ad169db9ba96
+Lucas Carvalho,98765432100,batata palha scrush,1,scrush,2,896e9930b557a4ee
+Larissa Carvalho Ferreira,45756376372,batata palha scrush,2,scrush,2,896e9930b557a4ee
+Igor Souza Moreira,95830436809,mini waffer brig trigolino,3,trigolino,5,d0c1db793f17062e
+Otavio Souza Rocha,12548055590,suco laranja dafruta,1,dafruta,4,3dbc58dc82f8efe9
+Matheus Ferreira Santana,1291102647,presunto cozido bigbom,1,big bom,2,bbd7ad169db9ba96
+Henrique Santos Almeida,10114581010,feijao carioca,1,generico,1,34fa3239bb692bcf
+Otavio Souza Rocha,12548055590,suco morango kapo,4,kapo,1,2a03f46abe452c69
+Vitoria Costa Andrade,13247830448,goma tapioca jo alimentos,5,generico,1,b0f59646ddc9458c
+Ana Marques Vieira,81076193820,nissin tomate turma monica,4,nissin,4,100aa838694d80b7
+Isabela Costa Souza,71475109172,batata palha scrush,4,scrush,2,896e9930b557a4ee
+Matheus Ferreira Santana,1291102647,refrigerante bare,5,bare,3,da41e5c5c5ddf98c
+Beatriz Marques Barbosa,55565857503,biscoito brig trigolino,4,trigolino,2,bae138b239e23b96
+Isabela Nunes Cardoso,45161646632,papel higienico neve,2,neve,5,2787dd01f45d49b0
+Isabela Costa Souza,71475109172,biscoito brig trigolino,5,trigolino,1,bae138b239e23b96
+Isabela Santos Lima,25925780132,refrigerante coca cola,3,coca cola,5,b859dc801d8350ec
+Larissa Carvalho Ferreira,45756376372,nescau po,5,nescau,2,a18b3d828ffb3386
+Vinicius Cardoso Costa,97616924000,feijao carioca,5,generico,5,34fa3239bb692bcf
+Beatriz Marques Barbosa,55565857503,biscoito brig trigolino,5,trigolino,4,bae138b239e23b96
+Igor Souza Moreira,95830436809,oleo soya,1,soya,1,a487f6e16421e74e
+Matheus Ferreira Santana,1291102647,sabonete palm,1,palmolive,5,a0b9e00f24ed41d1
+Caio Moreira Costa,11387575864,rosquinha coco galo,2,galo,2,404ff7046866c3ed
+Joao Nascimento Lima,6167112398,oleo soja soya,2,soya,1,115b0cd735758b62
+Beatriz Moreira Lima,70903418525,pao frances,1,generico,2,d50b681b711f8c2e
+Matheus Ferreira Santana,1291102647,nissin tomate turma monica,5,nissin,5,100aa838694d80b7
+Beatriz Moreira Lima,70903418525,biscoito brig trigolino,1,trigolino,5,bae138b239e23b96
+Larissa Carvalho Ferreira,45756376372,acucar refinado uniao,5,união,3,4ad51bf5be0f6ebf
+Ana Marques Vieira,81076193820,goma tapioca jo alimentos,3,generico,2,b0f59646ddc9458c
+Henrique Santos Almeida,10114581010,arroz tio joao,4,tio joão,1,91e92082aec624ed
+Isabela Santos Lima,25925780132,nescau po,4,nescau,3,a18b3d828ffb3386
+Vinicius Cardoso Costa,97616924000,leite condensado mococa,4,mococa,4,6cc6e39b987fc50a
+Matheus Ferreira Santana,1291102647,iogurte nestle morango,5,nestle,4,7e9c0100871ad92b
+Vitoria Costa Andrade,13247830448,acucar uniao,5,união,5,fc1b0d5db586ebe9
+Henrique Santos Almeida,10114581010,leite condensado mococa,5,mococa,4,6cc6e39b987fc50a
+Otavio Souza Rocha,12548055590,manteiga aviacao,5,aviacao,4,5397960aeba2e6b3
+Beatriz Moreira Lima,70903418525,pao frances,3,generico,2,d50b681b711f8c2e
+Joao Nascimento Lima,6167112398,suco laranja kapo,1,kapo,1,b0f19386516f2f69
+Patricia Oliveira Barbosa,86406968026,feijao carioca,5,generico,3,34fa3239bb692bcf
+Vinicius Cardoso Costa,97616924000,suco morango kapo,3,kapo,3,2a03f46abe452c69
+Isabela Costa Souza,71475109172,sorvete chocolate toya,2,toya,5,4d1321dc998bb78c
+Otavio Souza Rocha,12548055590,feij carioca,5,generico,3,8f865ec7d9f1b4d7
+Matheus Ferreira Santana,1291102647,acucar uniao,5,união,1,fc1b0d5db586ebe9
+Igor Souza Moreira,95830436809,refrigerante grapette,3,grapette,3,b18ec33b49021f37
+Matheus Ferreira Santana,1291102647,feij carioca,4,generico,3,8f865ec7d9f1b4d7
+Matheus Ferreira Santana,1291102647,milho pipoca campi,3,campi,3,ce8e300dffdeb602
+Joao Nascimento Lima,6167112398,pao frances,3,generico,1,d50b681b711f8c2e
+Zoe Carvalho Ferreira,60747317305,papel higienico perfurmado flor lotus,2,flor de lotus,4,0bfd9ef01bb0c0be
+Ana Marques Vieira,81076193820,cafe pilao,4,pilao,3,595a16276251ffad
+Andre Barbosa Lima,77106803308,macarrao renata espaguete,4,renata,5,ee1490e9b7a35448
+Zoe Carvalho Ferreira,60747317305,achocolatado po nescau,2,nescau,1,4b18a3d1193a0b75
+Isabela Costa Souza,71475109172,melancia,4,generico,2,4fa3230bc9e14928
+Vinicius Cardoso Costa,97616924000,chocolate po dubom,1,dubom,4,5f37a52700f1804a
+Vinicius Lopes Fernandes,64448139212,creme dental colgate,4,colgate,5,6675903bd8378edd
+Joao Nascimento Lima,6167112398,leite condensado semidesnatado tirol,2,tirol,4,d1f22bd632c5ff26
+Zoe Carvalho Ferreira,60747317305,pao frances,2,generico,3,d50b681b711f8c2e
+Patricia Oliveira Barbosa,86406968026,leite condensado semidesnatado tirol,1,tirol,2,d1f22bd632c5ff26
+Matheus Ferreira Santana,1291102647,pao integral rap10,2,rap10,3,152e5ac17c247386
+Beatriz Moreira Lima,70903418525,guarana classic 2lt,3,guarana antartica,1,6e227f0d7bb97433
+Beatriz Moreira Lima,70903418525,feij carioca,2,generico,1,8f865ec7d9f1b4d7
+Vitoria Costa Andrade,13247830448,calabresa perdigao,3,perdigao,5,3b786ddf17a84fdb
+Isabela Costa Souza,71475109172,melancia,4,generico,5,4fa3230bc9e14928
+Caio Moreira Costa,11387575864,melancia,4,generico,1,4fa3230bc9e14928
+Zoe Carvalho Ferreira,60747317305,creme dental colgate,1,colgate,3,6675903bd8378edd
+Joao Nascimento Lima,6167112398,suco uva kapo,3,kapo,1,27738d64070f7151
+Otavio Souza Rocha,12548055590,pao integral rap10,3,rap10,1,152e5ac17c247386
+Andre Barbosa Lima,77106803308,iogurte nestle morango,4,nestle,1,7e9c0100871ad92b
