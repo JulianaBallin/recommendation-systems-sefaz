@@ -48,10 +48,9 @@ def main():
         # Escolher produto aleatório
         produto = df_produtos.sample(1).iloc[0]
         
-        # Gerar avaliações aleatórias (1 a 5)
-        # Peso maior para notas altas para simular dados mais realistas (opcional, mas bom)
+        # Notas simuladas
         notas = [1, 2, 3, 4, 5]
-        pesos = [0.1, 0.1, 0.2, 0.3, 0.3] # Tendência a gostar
+        pesos = [0.1, 0.1, 0.2, 0.3, 0.3]
         
         avaliacao_desc = random.choices(notas, weights=pesos, k=1)[0]
         avaliacao_marca = random.choices(notas, weights=pesos, k=1)[0]
@@ -63,7 +62,7 @@ def main():
             "avaliacao_descricao": avaliacao_desc,
             "marca_produto": produto["marca"],
             "avaliacao_marca": avaliacao_marca,
-            "product_id": produto["id"]
+            "id": produto["id"]    
         })
         
     df_avaliacoes = pd.DataFrame(avaliacoes)

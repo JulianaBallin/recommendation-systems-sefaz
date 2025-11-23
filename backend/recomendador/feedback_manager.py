@@ -20,6 +20,13 @@ class FeedbackManager:
             "timestamp": pd.Timestamp.now()
         }
         
+        # 🔒 Validar ID: só aceitar produtos existentes
+        valid_ids = self.products_df["id"].astype(str).tolist()
+
+        if str(item_id) not in valid_ids:
+            raise ValueError(f"ID inválido recebido no feedback: {item_id}")
+
+        
         # Remove feedback anterior se existir
         self.feedback_df = self.feedback_df[
             ~((self.feedback_df["cpf"] == user_cpf) & (self.feedback_df["item_id"] == item_id))

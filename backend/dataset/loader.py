@@ -26,13 +26,16 @@ def load_ratings():
     if os.path.exists(RATINGS_PATH):
         df = pd.read_csv(RATINGS_PATH)
 
-        # mapear product_id → id padronizado
+        # Se já existe product_id, renomear corretamente
         if "product_id" in df.columns:
-            df_products = load_derived_products()  # id, descricao, marca
+            df.rename(columns={"product_id": "id"}, inplace=True)
 
-            # Mapa da descrição do CSV rating → id padronizado
-            mapping = dict(zip(df_products["descricao"], df_products["id"]))
+        # Garantir que id está consistente com produtos_padronizados
+        df_products = load_derived_products()
+        mapping = dict(zip(df_products["descricao"], df_products["id"]))
 
+        # Preencher IDs faltando
+        if "id" not in df.columns or df["id"].isna().any():
             if "descricao_produto" in df.columns:
                 df["id"] = df["descricao_produto"].map(mapping)
 

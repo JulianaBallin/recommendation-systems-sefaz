@@ -101,7 +101,8 @@ class ContentBasedRecommender:
                 "id": item_id,
                 "descricao": item_desc,
                 "marca": self.products_df.iloc[idx]["marca"],
-                "score": score
+                "score": score,
+                "explanation": "Recomendado por similaridade de descrição com itens que você avaliou bem."
             })
             
             added_ids.add(item_id)

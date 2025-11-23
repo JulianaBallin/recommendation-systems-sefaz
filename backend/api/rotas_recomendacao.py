@@ -38,10 +38,11 @@ def gerar_recomendacoes(request: RecommendationRequest):
     inicio = time.time()
     
     try:
+        # ========== 1. Gerar recomendações ==========
         if request.algo_type == "content":
             recommender = ContentBasedRecommender()
             recs = recommender.recommend(request.user_cpf, request.n_recs)
-            
+
         elif request.algo_type == "hybrid":
             recommender = HybridRecommender()
             recs = recommender.recommend(request.user_cpf, request.n_recs)
@@ -52,8 +53,27 @@ def gerar_recomendacoes(request: RecommendationRequest):
             recommender.train(algo_type=request.algo_type)
             recs = recommender.recommend_items(request.user_cpf, request.n_recs)
 
+        # ========== 2. Normalização UNIVERSAL ==========
+        # Garantir que recs é uma lista
+        if not isinstance(recs, list):
+            recs = []
+
+        clean_recs = []
+
+        for r in recs:
+            # descartar strings (ex: "status", "timestamp")
+            if isinstance(r, str):
+                continue
+
+            # somente aceitar dicts válidos
+            if isinstance(r, dict):
+                clean_recs.append(r)
+
+        recs = clean_recs
+
+        # ========== 3. Montar resposta ==========
         tempo = time.time() - inicio
-        
+
         return recommendation_response(
             recommendations=recs,
             user_cpf=request.user_cpf,
@@ -61,6 +81,7 @@ def gerar_recomendacoes(request: RecommendationRequest):
             processing_time=tempo,
             additional_metadata={"requested_count": request.n_recs}
         )
+
     except Exception as e:
         return error_response(
             message=f"Erro ao gerar recomendações: {str(e)}",
@@ -76,6 +97,9 @@ def calcular_metricas(request: MetricsRequest):
     try:
         if request.algo_type == "content":
             recommender = ContentBasedRecommender()
+            metrics = recommender.evaluate_metrics(request.user_cpf, k=request.k)
+        elif request.algo_type == "hybrid":
+            recommender = HybridRecommender()
             metrics = recommender.evaluate_metrics(request.user_cpf, k=request.k)
         else:
             ratings = loader.load_ratings()

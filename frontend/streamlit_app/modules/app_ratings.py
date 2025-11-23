@@ -106,7 +106,8 @@ def run():
                         "descricao_produto": product_row["descricao"],
                         "avaliacao_descricao": rating_desc,
                         "marca_produto": product_row["marca"],
-                        "avaliacao_marca": rating_brand
+                        "avaliacao_marca": rating_brand,
+                        "id": product_row["id"]
                     }
                     
                     # Adicionar ao dataframe

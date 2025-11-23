@@ -117,13 +117,17 @@ def run():
         # --- NORMALIZAÇÃO DE RECOMENDAÇÕES ---
         normalized = []
         for item in recommendations:
+
+            # ⛔ Se vier string, significa que a resposta da API está incorreta
             if isinstance(item, str):
-                # veio só o ID → transformar em dict mínimo
-                normalized.append({"id": item})
-            elif isinstance(item, dict):
+                st.error(f"⚠️ Resposta inválida recebida da API: {item}")
+                continue
+
+            # Somente aceitar recomendações em formato dict
+            if isinstance(item, dict):
                 normalized.append(item)
             else:
-                st.error(f"Formato inesperado de recomendação: {item}")
+                st.error(f"⚠️ Formato inesperado de recomendação: {item}")
 
         recommendations = normalized
         st.session_state["last_recommendations"] = normalized

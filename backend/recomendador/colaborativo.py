@@ -104,7 +104,22 @@ class CollaborativeFilteringRecommender:
         predictions = [self.model.predict(user_cpf, item_id) for item_id in items_to_predict]
         predictions.sort(key=lambda x: x.est, reverse=True)
         
-        recommended_items = [{'id': pred.iid, 'score': pred.est} for pred in predictions]
+        recommended_items = []
+        for pred in predictions:
+            raw_score = float(pred.est)
+
+            # Normalizar de 1–5 para 0–1
+            norm_score = (raw_score - 1) / 4
+            if norm_score < 0: 
+                norm_score = 0
+            if norm_score > 1:
+                norm_score = 1
+
+            recommended_items.append({
+                "id": pred.iid,
+                "score": norm_score
+            })
+
 
         # Fallback para itens populares
         if len(recommended_items) < n_recommendations:
@@ -123,7 +138,26 @@ class CollaborativeFilteringRecommender:
             needed = n_recommendations - len(recommended_items)
             recommended_items.extend([{'id': item_id, 'score': 0} for item_id in fallback_favorites[:needed]])
         
-        return recommended_items[:n_recommendations]
+        final_list = []
+
+        for item in recommended_items[:n_recommendations]:
+            expl = ""
+
+            if self.algo_type == "svd":
+                expl = "Recomendado pelo modelo SVD++ com base nos padrões de avaliação."
+            elif self.algo_type == "user_knn":
+                expl = "Recomendado por usuários semelhantes (User-KNN)."
+            elif self.algo_type == "item_knn":
+                expl = "Recomendado por itens semelhantes ao que você avaliou."
+
+            final_list.append({
+                "id": item["id"],
+                "score": item["score"], 
+                "explanation": expl
+            })
+
+        return final_list
+
 
     def evaluate_metrics(self, user_cpf: str, k: int = 10):
         """
