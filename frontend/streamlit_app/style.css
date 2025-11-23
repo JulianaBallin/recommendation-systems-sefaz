@@ -16,6 +16,32 @@ header .decoration {
     padding-right: 120px !important;
 }
 
+/* ===== BARRA LATERAL - CORRIGIDA ===== */
+/* Barra lateral com verde escuro */
+section[data-testid="stSidebar"] {
+    background-color: #1a472a !important;
+}
+
+/* Texto da sidebar - melhor contraste */
+section[data-testid="stSidebar"] * {
+    color: #ffffff !important;
+}
+
+/* Seleção de páginas na sidebar */
+section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background-color: #2d5a3d !important;
+    border: 2px solid #3d6b4f !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+}
+
+/* Label "Navegação" com melhor contraste */
+section[data-testid="stSidebar"] label {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+
 /* ===== Layout geral ===== */
 body, .stApp {
     background-color: #fff9f1 !important;
@@ -207,6 +233,38 @@ img {
     padding: 2px 8px !important; /* Padding horizontal no hover */
 }
 
+/* ===== CARDS PARA PRODUTOS RECOMENDADOS ===== */
+.product-card {
+    background-color: #f8f9fa !important;
+    border: 2px solid #1a472a !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    margin: 10px 0 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
+.product-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ===== BOTÕES DE UPLOAD - VERDE ESCURO ===== */
+.stFileUploader section {
+    background-color: #1a472a !important;
+    border: 2px solid #2d5a3d !important;
+    border-radius: 8px !important;
+}
+
+.stFileUploader section div {
+    color: white !important;
+}
+
+.stFileUploader section button {
+    background-color: #2d5a3d !important;
+    color: white !important;
+}
+
 /* ===== Divisores ===== */
 hr.divider {
     border: 1px solid #a69076 !important;
@@ -272,6 +330,43 @@ div[data-testid="stToast"] {
 
 div[data-testid="stToast"] p {
     color: #ffffff !important;
+}
+
+/* ===== MENSAGENS COM MELHOR CONTRASTE ===== */
+.stSuccess {
+    background-color: #d4edda !important;
+    border: 1px solid #c3e6cb !important;
+    color: #155724 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin: 10px 0 !important;
+}
+
+.stInfo {
+    background-color: #d1ecf1 !important;
+    border: 1px solid #bee5eb !important;
+    color: #0c5460 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin: 10px 0 !important;
+}
+
+.stWarning {
+    background-color: #fff3cd !important;
+    border: 1px solid #ffeaa7 !important;
+    color: #856404 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin: 10px 0 !important;
+}
+
+.stError {
+    background-color: #f8d7da !important;
+    border: 1px solid #f5c6cb !important;
+    color: #721c24 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin: 10px 0 !important;
 }
 
 /* ===== RESPONSIVIDADE ===== */

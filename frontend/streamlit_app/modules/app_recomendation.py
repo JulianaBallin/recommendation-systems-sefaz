@@ -136,6 +136,81 @@ def run():
             st.subheader(f"Recomendações para {selected_client['nome']}")
             st.caption(f"Algoritmo: {st.session_state.get('last_algo')}")
             
+            st.markdown("""
+            <style>
+                .product-card {
+                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                    border: 2px solid #1a472a;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin: 15px 0;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+                
+                .product-card:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+                }
+                
+                .product-title {
+                    color: #1a472a;
+                    font-size: 24px !important;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                    line-height: 1.3;
+                }
+                
+                .product-meta {
+                    color: #6c757d;
+                    font-size: 20px !important; 
+                    margin-bottom: 12px;
+                    line-height: 1.4;
+                }
+                
+                .product-score {
+                    background: linear-gradient(135deg, #1a472a, #2d5a3d);
+                    color: white;
+                    padding: 8px 16px !important;  /* Aumentado o padding */
+                    border-radius: 20px;
+                    font-size: 20px !important;    /* Aumentado de 12px para 16px */
+                    font-weight: bold;
+                    display: inline-block;
+                }
+                
+                .product-explanation {
+                    background-color: #e8f5e8;
+                    border-left: 4px solid #28a745;
+                    padding: 14px 18px !important;  /* Aumentado o padding */
+                    margin: 12px 0;
+                    border-radius: 4px;
+                    font-size: 20px !important;     /* Aumentado de 14px para 16px */
+                    color: #155724;
+                    line-height: 1.4;
+                }
+                
+                .feedback-buttons {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 15px;
+                }
+                
+                .recommendation-badge {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: #ff6b35;
+                    color: white;
+                    padding: 6px 12px !important; 
+                    border-radius: 12px;
+                    font-size: 22px !important; 
+                    font-weight: bold;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+
+            
+            # Exibir recomendações em cards
             for i, rec in enumerate(recommendations):
                 # Tentar obter detalhes do produto se não vierem (caso do colaborativo)
                 rec_id = rec.get("id")
@@ -144,8 +219,6 @@ def run():
                 if "descricao" not in rec:
                     if not products.empty:
                         # Converter IDs para string para garantir match
-                        # O ID na recomendação pode ser int ou str, no products também
-                        # Vamos tentar converter ambos para string
                         prod_details = products[products["id"].astype(str) == str(rec_id)]
                         if not prod_details.empty:
                             rec["descricao"] = prod_details.iloc[0]["descricao"]
@@ -157,17 +230,34 @@ def run():
                         rec["descricao"] = f"Produto {rec_id}"
                         rec["marca"] = "Desconhecida"
 
+                # Criar card para cada recomendação
                 with st.container():
-                    col1, col2, col3 = st.columns([3, 1, 1])
+                    st.markdown(f"""
+                    <div class="product-card">
+                        <div style="position: relative;">
+                            <div class="recommendation-badge">#{i+1}</div>
+                            <div class="product-title">{rec.get('descricao', 'Sem descrição')}</div>
+                            <div class="product-meta">
+                                <strong>Marca:</strong> {rec.get('marca', 'N/A')} | 
+                                <strong>Categoria:</strong> {rec.get('categoria', 'Geral')}
+                            </div>
+                            <div class="product-score">Score: {rec.get('score', 0):.3f}</div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Explicação se disponível
+                    if "explanation" in rec:
+                        st.markdown(f"""
+                        <div class="product-explanation">
+                            💡 {rec['explanation']}
+                        </div>
+                        """, unsafe_allow_html=True)
+                    
+                    # Botões de feedback
+                    col1, col2 = st.columns([1, 1])
                     
                     with col1:
-                        st.markdown(f"**{rec.get('descricao', 'Sem descrição')}**")
-                        st.caption(f"Marca: {rec.get('marca', 'N/A')} | Score: {rec.get('score', 0):.2f}")
-                        if "explanation" in rec:
-                            st.write(f"🟢 *{rec['explanation']}*")
-
-                    with col2:
-                        if st.button("👍 Gostei", key=f"like_{rec_id}_{i}"):
+                        if st.button("👍 Gostei", key=f"like_{rec_id}_{i}", 
+                                   use_container_width=True, type="primary"):
                             try:
                                 requests.post(f"{API_URL}/recomendacao/feedback", json={
                                     "user_cpf": str(selected_client["cpf"]),
@@ -185,8 +275,9 @@ def run():
                             except Exception as e:
                                 st.error(f"Erro ao enviar feedback: {e}")
                     
-                    with col3:
-                        if st.button("👎 Não Gostei", key=f"dislike_{rec_id}_{i}"):
+                    with col2:
+                        if st.button("👎 Não Gostei", key=f"dislike_{rec_id}_{i}", 
+                                   use_container_width=True, type="secondary"):
                             try:
                                 requests.post(f"{API_URL}/recomendacao/feedback", json={
                                     "user_cpf": str(selected_client["cpf"]),
@@ -205,7 +296,8 @@ def run():
                             except Exception as e:
                                 st.error(f"Erro ao enviar feedback: {e}")
                     
-                    st.divider()
+                    st.markdown("</div></div>", unsafe_allow_html=True)
+                    st.markdown("<br>", unsafe_allow_html=True)
             
             # =======================
             # SEÇÃO 4: MÉTRICAS DE AVALIAÇÃO
@@ -213,7 +305,7 @@ def run():
             st.markdown("---")
             st.subheader("📊 Métricas de Avaliação")
             
-            if st.button("🔍 Avaliar Acurácia", key="evaluate_metrics"):
+            if st.button("🔍 Avaliar Acurácia", key="evaluate_metrics", type="primary"):
                 with st.spinner("Calculando métricas via API..."):
                     try:
                         last_algo = st.session_state.get('last_algo')
@@ -246,6 +338,13 @@ def run():
                                     st.warning(metrics["message"])
                                 else:
                                     k_value = metrics.get('total_recommended', 10)
+                                    
+                                    # Card para métricas
+                                    st.markdown("""
+                                    <div class="product-card" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #1976d2;">
+                                        <h4 style="color: #1976d2; margin-bottom: 20px; text-align: center;">📈 Métricas de Desempenho</h4>
+                                    """, unsafe_allow_html=True)
+                                    
                                     col1, col2, col3 = st.columns(3)
                                     
                                     with col1:
@@ -268,6 +367,8 @@ def run():
                                             value=f"{metrics.get('f1_score', 0):.2%}",
                                             help="Média harmônica entre Precision e Recall"
                                         )
+                                    
+                                    st.markdown("</div>", unsafe_allow_html=True)
                                     
                                     st.caption(f"**Hits:** {metrics['hits']} de {metrics['total_recommended']} recomendações | **Relevantes:** {metrics.get('total_relevant', 'N/A')}")
                             else:
