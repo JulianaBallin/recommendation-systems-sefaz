@@ -57,7 +57,8 @@ def run():
             "SVD++",
             "Colaborativa (Baseada em Item)",
             "Colaborativa (Baseada em Usuário)",
-            "Baseada em Conteúdo"
+            "Baseada em Conteúdo",
+            "Híbrida (Conteúdo + CF)"
         ]
     )
     
@@ -65,7 +66,8 @@ def run():
         "SVD++": "svd",
         "Colaborativa (Baseada em Item)": "item_knn",
         "Colaborativa (Baseada em Usuário)": "user_knn",
-        "Baseada em Conteúdo": "content"
+        "Baseada em Conteúdo": "content",
+        "Híbrida (Conteúdo + CF)": "hybrid"
     }
 
     # =======================
@@ -112,7 +114,20 @@ def run():
     # Recuperar recomendações do estado se o usuário for o mesmo
     if selected_client and st.session_state.get("last_user") == selected_client["cpf"]:
         recommendations = st.session_state.get("last_recommendations", [])
-        
+        # --- NORMALIZAÇÃO DE RECOMENDAÇÕES ---
+        normalized = []
+        for item in recommendations:
+            if isinstance(item, str):
+                # veio só o ID → transformar em dict mínimo
+                normalized.append({"id": item})
+            elif isinstance(item, dict):
+                normalized.append(item)
+            else:
+                st.error(f"Formato inesperado de recomendação: {item}")
+
+        recommendations = normalized
+        st.session_state["last_recommendations"] = normalized
+
         if recommendations:
             st.subheader(f"Recomendações para {selected_client['nome']}")
             st.caption(f"Algoritmo: {st.session_state.get('last_algo')}")
@@ -144,7 +159,9 @@ def run():
                     with col1:
                         st.markdown(f"**{rec.get('descricao', 'Sem descrição')}**")
                         st.caption(f"Marca: {rec.get('marca', 'N/A')} | Score: {rec.get('score', 0):.2f}")
-                    
+                        if "explanation" in rec:
+                            st.write(f"🟢 *{rec['explanation']}*")
+
                     with col2:
                         if st.button("👍 Gostei", key=f"like_{rec_id}_{i}"):
                             try:
@@ -154,6 +171,13 @@ def run():
                                     "feedback_type": "like"
                                 })
                                 st.toast(f"Você gostou de {rec.get('descricao')}!", icon="👍")
+
+                                st.session_state["last_recommendations"] = [
+                                    r for r in st.session_state["last_recommendations"]
+                                    if r.get("id") != rec_id
+                                ]
+                                st.rerun()
+
                             except Exception as e:
                                 st.error(f"Erro ao enviar feedback: {e}")
                     
@@ -166,6 +190,14 @@ def run():
                                     "feedback_type": "dislike"
                                 })
                                 st.toast(f"Você não gostou de {rec.get('descricao')}.", icon="👎")
+                                            
+                                st.session_state["last_recommendations"] = [
+                                    r for r in st.session_state["last_recommendations"]
+                                    if r.get("id") != rec_id
+                                ]
+                               
+                                st.rerun()
+                                
                             except Exception as e:
                                 st.error(f"Erro ao enviar feedback: {e}")
                     

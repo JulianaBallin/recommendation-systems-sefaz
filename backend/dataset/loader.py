@@ -24,8 +24,24 @@ def load_derived_products():
 
 def load_ratings():
     if os.path.exists(RATINGS_PATH):
-        return pd.read_csv(RATINGS_PATH)
-    return pd.DataFrame(columns=["nome_usuario", "cpf", "descricao_produto", "avaliacao_descricao", "marca_produto", "avaliacao_marca", "product_id"])
+        df = pd.read_csv(RATINGS_PATH)
+
+        # mapear product_id → id padronizado
+        if "product_id" in df.columns:
+            df_products = load_derived_products()  # id, descricao, marca
+
+            # Mapa da descrição do CSV rating → id padronizado
+            mapping = dict(zip(df_products["descricao"], df_products["id"]))
+
+            if "descricao_produto" in df.columns:
+                df["id"] = df["descricao_produto"].map(mapping)
+
+        return df
+
+    return pd.DataFrame(columns=["nome_usuario", "cpf", "descricao_produto",
+                                 "avaliacao_descricao", "marca_produto",
+                                 "avaliacao_marca", "product_id"])
+
 
 def save_ratings(df):
     os.makedirs(os.path.dirname(RATINGS_PATH), exist_ok=True)

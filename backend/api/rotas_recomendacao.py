@@ -6,6 +6,7 @@ from typing import List, Optional, Dict, Any
 from backend.recomendador.conteudo import ContentBasedRecommender
 from backend.recomendador.colaborativo import CollaborativeFilteringRecommender
 from backend.recomendador.feedback_manager import FeedbackManager
+from backend.recomendador.hibrido import HybridRecommender
 from backend.dataset import loader
 from backend.utilitarios.response_formatter import (
     recommendation_response,
@@ -40,12 +41,17 @@ def gerar_recomendacoes(request: RecommendationRequest):
         if request.algo_type == "content":
             recommender = ContentBasedRecommender()
             recs = recommender.recommend(request.user_cpf, request.n_recs)
+            
+        elif request.algo_type == "hybrid":
+            recommender = HybridRecommender()
+            recs = recommender.recommend(request.user_cpf, request.n_recs)
+
         else:
             ratings = loader.load_ratings()
             recommender = CollaborativeFilteringRecommender(ratings)
             recommender.train(algo_type=request.algo_type)
             recs = recommender.recommend_items(request.user_cpf, request.n_recs)
-        
+
         tempo = time.time() - inicio
         
         return recommendation_response(
