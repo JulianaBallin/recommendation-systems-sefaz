@@ -145,7 +145,7 @@ class HybridRecommender:
             if score_cf_norm > 0.1 and score_ct_norm > 0.1:
                 explanation = "Recomendado por similaridade de conteúdo e usuários semelhantes."
             elif score_cf_norm > 0.1:
-                explanation = "Recomendado por usuários com interesses similares."
+                explanation = "Recomendado com base em padrões de compra de usuários com gostos parecidos com o seu."
             elif score_ct_norm > 0.1:
                 explanation = "Recomendado por similaridade com itens que você avaliou bem."
             else:

@@ -54,18 +54,18 @@ def run():
     algo_type = st.selectbox(
         "Tipo de Filtragem:",
         [
-            "SVD++",
             "Colaborativa (Baseada em Item)",
             "Colaborativa (Baseada em Usuário)",
+            "SVD++ (Características Latentes)",
             "Baseada em Conteúdo",
             "Híbrida (Conteúdo + CF)"
         ]
     )
     
     algo_map = {
-        "SVD++": "svd",
         "Colaborativa (Baseada em Item)": "item_knn",
         "Colaborativa (Baseada em Usuário)": "user_knn",
+        "SVD++ (Características Latentes)": "svd",
         "Baseada em Conteúdo": "content",
         "Híbrida (Conteúdo + CF)": "hybrid"
     }
